@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 3D</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    overflow:hidden;
+}
+
+header{
+    background:#b71c1c;
+    color:white;
+    padding:15px;
+}
+
+.main{
+    display:flex;
+    height:calc(100vh - 70px);
+}
+
+.viewport{
+    flex:3;
+    background:#1e1e1e;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.panel{
+    flex:1;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+.controls button{
+    width:100%;
+    margin-bottom:10px;
+    padding:10px;
+}
+
+header{
+    background:#b71c1c;
+    color:white;
+    padding:15px;
+}
+
+.header-container{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.btn-back{
+    text-decoration:none;
+    background:white;
+    color:#b71c1c;
+    padding:10px 15px;
+    border-radius:5px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn-back:hover{
+    background:#f5f5f5;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <a href="index.html" class="btn-back">← Regresar al Inicio</a>
+        <h1>Simulación 3D - Uso de Extintores</h1>
+    </div>
+</header>
+
+<div class="main">
+
+    <div class="viewport">
+        Escenario 3D (Three.js / Unity WebGL)
+    </div>
+
+    <div class="panel">
+
+        <h3>Objetivos</h3>
+
+        <ul>
+            <li>Identificar el fuego.</li>
+            <li>Seleccionar extintor.</li>
+            <li>Aplicar técnica PASS.</li>
+            <li>Controlar la emergencia.</li>
+        </ul>
+
+        <div class="controls">
+            <button>Tomar Extintor</button>
+            <button>Apuntar</button>
+            <button>Activar Descarga</button>
+            <button>Reiniciar Escenario</button>
+        </div>
+
+        <h3>Indicadores</h3>
+        <p>Tiempo: 00:00</p>
+        <p>Puntuación: 100</p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

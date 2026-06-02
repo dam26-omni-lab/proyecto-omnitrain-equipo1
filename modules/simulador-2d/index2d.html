@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 2D</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+}
+
+header{
+    background:#b71c1c;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    display:flex;
+    height:90vh;
+}
+
+.sidebar{
+    width:250px;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+.content{
+    flex:1;
+    padding:20px;
+}
+
+.lesson{
+    background:#e0e0e0;
+    height:350px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.quiz{
+    margin-top:20px;
+    background:#f5f5f5;
+    padding:15px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Módulo 2D - Teoría y Simulación</h1>
+</header>
+
+<div class="container">
+
+    <aside class="sidebar">
+        <!-- NUEVO BOTÓN AÑADIDO AQUÍ -->
+        <!-- Si ambos archivos están en la misma carpeta, cambia href="principal.html" o index.html -->
+        <div style="margin-bottom: 20px;">
+            <a href="../index.html">
+                <button>Regresar a Principal</button>
+            </a>
+        </div>
+        <!-- FIN DEL BOTÓN -->
+
+        <h3>Temario</h3>
+        <ul>
+            <li>Tipos de Incendio</li>
+            <li>Tipos de Extintores</li>
+            <li>Normas de Seguridad</li>
+            <li>Método PASS</li>
+        </ul>
+    </aside>
+
+    <main class="content">
+
+        <div class="lesson">
+            Área para Video / Animación 2D
+        </div>
+
+        <div class="quiz">
+            <h3>Actividad</h3>
+            <p>Selecciona el extintor correcto para un incendio eléctrico.</p>
+            <button>Responder</button>
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
