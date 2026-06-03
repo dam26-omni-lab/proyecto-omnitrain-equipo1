@@ -1,0 +1,145 @@
+body{
+    background:#f4f6f9;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* NAVBAR */
+
+.custom-navbar{
+    background:linear-gradient(90deg,#7f0000,#c62828);
+}
+
+/* HERO */
+
+.hero-module{
+    background:
+    linear-gradient(
+        rgba(0,0,0,.75),
+        rgba(0,0,0,.75)
+    ),
+    linear-gradient(
+        135deg,
+        #b71c1c,
+        #212121
+    );
+
+    color:white;
+    padding:70px 0;
+}
+
+/* SIDEBAR */
+
+.sidebar-card{
+    border:none;
+    border-radius:20px;
+}
+
+.custom-list .list-group-item{
+    border:none;
+    padding:15px;
+    transition:.3s;
+}
+
+.custom-list .list-group-item:hover{
+    background:#f5f5f5;
+    transform:translateX(5px);
+}
+
+.custom-list .active{
+    background:#c62828 !important;
+    border-color:#c62828 !important;
+}
+
+/* LECCIÓN */
+
+.lesson-card{
+    border:none;
+    border-radius:20px;
+}
+
+.lesson-area{
+    height:420px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #eceff1,
+        #cfd8dc
+    );
+
+    border:2px dashed #b0bec5;
+}
+
+/* ACTIVIDAD */
+
+.activity-card{
+    border:none;
+    border-radius:20px;
+}
+
+/* BOTONES */
+
+.btn-danger{
+    background:#c62828;
+    border:none;
+    transition:.3s;
+}
+
+.btn-danger:hover{
+    background:#e53935;
+    transform:translateY(-2px);
+}
+
+.btn-outline-secondary{
+    transition:.3s;
+}
+
+.btn-outline-secondary:hover{
+    transform:translateY(-2px);
+}
+
+/* --- FIX PARA BOTONES CLAROS EN LA NAVBAR --- */
+.custom-navbar .btn-outline-light {
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+    background-color: transparent !important;
+    transition: .3s;
+}
+
+.custom-navbar .btn-outline-light:hover {
+    color: #b71c1c !important; /* Texto rojo fuego al pasar el cursor */
+    background-color: #ffffff !important; /* Fondo blanco */
+    border-color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+/* TARJETAS */
+
+.card{
+    transition:.35s;
+}
+
+.card:hover{
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+}
+
+/* PROGRESS */
+
+.progress{
+    border-radius:20px;
+}
+
+/* FOOTER */
+
+.footer-custom{
+    background:#1b1b1b;
+    color:white;
+    padding:25px;
+    margin-top:50px;
+}

@@ -1,93 +1,203 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Módulo 2D</title>
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 2D - Teoría y Simulación</title>
 
-header{
-    background:#b71c1c;
-    color:white;
-    padding:20px;
-}
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-.container{
-    display:flex;
-    height:90vh;
-}
-
-.sidebar{
-    width:250px;
-    background:#f5f5f5;
-    padding:20px;
-}
-
-.content{
-    flex:1;
-    padding:20px;
-}
-
-.lesson{
-    background:#e0e0e0;
-    height:350px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.quiz{
-    margin-top:20px;
-    background:#f5f5f5;
-    padding:15px;
-}
-</style>
+    <link rel="stylesheet" href="/css/styles2d.css">
 </head>
+
 <body>
 
-<header>
-    <h1>Módulo 2D - Teoría y Simulación</h1>
-</header>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow" style="background: linear-gradient(90deg,#7f0000,#c62828) !important;">
+        <div class="container">
 
-<div class="container">
-
-    <aside class="sidebar">
-        <!-- NUEVO BOTÓN AÑADIDO AQUÍ -->
-        <!-- Si ambos archivos están en la misma carpeta, cambia href="principal.html" o index.html -->
-        <div style="margin-bottom: 20px;">
-            <a href="../index.html">
-                <button>Regresar a Principal</button>
+            <a href="/index.html" class="btn btn-outline-light me-3">
+                ← Volver
             </a>
+
+            <a class="navbar-brand fw-bold" href="#">
+                🔥 Fire Training VR
+            </a>
+
+            <div class="ms-auto">
+                <a href="/index.html" class="btn btn-outline-light">
+                    ← Regresar al Inicio
+                </a>
+            </div>
+
         </div>
-        <!-- FIN DEL BOTÓN -->
+    </nav>
 
-        <h3>Temario</h3>
-        <ul>
-            <li>Tipos de Incendio</li>
-            <li>Tipos de Extintores</li>
-            <li>Normas de Seguridad</li>
-            <li>Método PASS</li>
-        </ul>
-    </aside>
+    <section class="hero-module">
 
-    <main class="content">
+        <div class="container">
 
-        <div class="lesson">
-            Área para Video / Animación 2D
+            <span class="badge bg-warning text-dark mb-3">
+                Capacitación Interactiva
+            </span>
+
+            <h1 class="display-5 fw-bold">
+                Módulo 2D - Teoría y Simulación
+            </h1>
+
+            <p class="lead">
+                Aprende los fundamentos de la prevención de incendios,
+                clasificación de riesgos y uso correcto de extintores.
+            </p>
+
         </div>
 
-        <div class="quiz">
-            <h3>Actividad</h3>
-            <p>Selecciona el extintor correcto para un incendio eléctrico.</p>
-            <button>Responder</button>
+    </section>
+
+    <div class="container-fluid py-5">
+
+        <div class="row">
+
+            <div class="col-lg-3 mb-4">
+
+                <div class="card sidebar-card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-4">
+                            📚 Temario
+                        </h4>
+
+                        <div class="list-group custom-list">
+
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                🔥 Tipos de Incendio
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action">
+                                🧯 Tipos de Extintores
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action">
+                                ⚠️ Normas de Seguridad
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action">
+                                ✅ Método PASS
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="card lesson-card shadow">
+
+                    <div class="card-body">
+
+                        <h3 class="mb-4">
+                            Lección Interactiva
+                        </h3>
+
+                        <div class="lesson-area">
+
+                            <div class="text-center">
+
+                                <h2>
+                                    🎥 Área para Video / Animación 2D
+                                </h2>
+
+                                <p class="mt-3">
+                                    Aquí se integrará el contenido multimedia del curso.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card activity-card shadow mt-4">
+
+                    <div class="card-body">
+
+                        <h3 class="mb-3">
+                            📝 Actividad de Evaluación
+                        </h3>
+
+                        <p>
+                            Selecciona el extintor correcto para un incendio eléctrico.
+                        </p>
+
+                        <div class="d-flex gap-3 flex-wrap">
+
+                            <button class="btn btn-danger btn-lg">
+                                Responder Actividad
+                            </button>
+
+                            <button class="btn btn-outline-secondary btn-lg">
+                                Ver Explicación
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow mt-4">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-3">
+                            📈 Progreso del Módulo
+                        </h4>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Completado</span>
+                            <strong>35%</strong>
+                        </div>
+
+                        <div class="progress" style="height:25px;">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                style="width:35%;">
+
+                                35%
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-    </main>
+    </div>
 
-</div>
+    <footer class="footer-custom">
+
+        <div class="container text-center">
+
+            <p class="mb-0">
+                Plataforma Corporativa de Capacitación
+            </p>
+
+        </div>
+
+    </footer>
 
 </body>
+
 </html>
