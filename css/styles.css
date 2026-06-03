@@ -1,0 +1,130 @@
+body{
+    background:#f4f6f9;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* NAVBAR */
+
+.custom-navbar{
+    background:linear-gradient(90deg,#7f0000,#c62828);
+}
+
+/* HERO */
+
+.hero-section{
+    background:
+        linear-gradient(
+        rgba(0,0,0,.65),
+        rgba(0,0,0,.65)
+        ),
+        linear-gradient(135deg,#b71c1c,#212121);
+
+    color:white;
+    padding:90px 0;
+}
+
+.hero-image{
+    height:320px;
+    border-radius:20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ef5350,
+    #b71c1c
+    );
+
+    border:3px solid rgba(255,255,255,.2);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.4);
+
+    font-size:1.2rem;
+    font-weight:bold;
+}
+
+/* CARDS */
+
+.module-card{
+    border:none;
+    border-radius:20px;
+
+    transition:.35s;
+    overflow:hidden;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.1);
+}
+
+.module-card:hover{
+    transform:translateY(-10px);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,.2);
+}
+
+.icon-circle{
+    width:90px;
+    height:90px;
+
+    margin:auto;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:40px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff7043,
+    #c62828
+    );
+
+    color:white;
+}
+
+/* BOTONES */
+
+.btn-danger{
+    background:#c62828;
+    border:none;
+    transition:.3s;
+}
+
+.btn-danger:hover{
+    background:#e53935;
+    transform:scale(1.03);
+}
+
+/* PROGRESO */
+
+.progress-section{
+    padding:50px 0;
+}
+
+.progress-card{
+    border:none;
+    border-radius:20px;
+}
+
+.progress{
+    border-radius:20px;
+}
+
+/* FOOTER */
+
+.footer-custom{
+    background:#1c1c1c;
+    color:white;
+    padding:30px;
+    margin-top:50px;
+}
