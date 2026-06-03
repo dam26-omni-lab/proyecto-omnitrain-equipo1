@@ -1,118 +1,238 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Capacitación en Uso de Extintores</title>
-<style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f4f4f4;
-}
-header{
-    background:#b71c1c;
-    color:white;
-    padding:20px;
-}
-nav{
-    background:#212121;
-    color:white;
-    padding:10px;
-}
-nav ul{
-    display:flex;
-    gap:20px;
-    list-style:none;
-    padding:0;
-}
-.hero{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:40px;
-    background:white;
-}
-.hero-image{
-    width:40%;
-    height:250px;
-    background:#ddd;
-}
-.modules{
-    display:flex;
-    gap:20px;
-    padding:30px;
-}
-.card{
-    flex:1;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-}
-.progress{
-    background:white;
-    margin:20px;
-    padding:20px;
-}
-footer{
-    background:#212121;
-    color:white;
-    text-align:center;
-    padding:15px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacitación en Prevención de Incendios</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
 
-<header>
-    <h1>Capacitación en Prevención de Incendios y Uso de Extintores</h1>
-</header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                🔥 Fire Training VR
+            </a>
 
-<nav>
-    <ul>
-        <li>Inicio</li>
-        <li>Módulo 2D</li>
-        <li>Módulo 3D</li>
-        <li>Evaluaciones</li>
-        <li>Certificados</li>
-    </ul>
-</nav>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-<section class="hero">
-    <div>
-        <h2>Bienvenido al Sistema de Capacitación</h2>
-        <p>Aprende a identificar riesgos y utilizar correctamente un extintor.</p>
-        <button>Comenzar Curso</button>
-    </div>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                    </li>
 
-    <div class="hero-image">
-        Imagen Principal
-    </div>
-</section>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./modules/simulador-2d/index2d.html">Módulo 2D</a>
+                    </li>
 
-<section class="modules">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./modules/showroom-3d/index3d.html">Módulo 3D</a>
+                    </li>
 
-    <div class="card">
-        <h3>Módulo Interactivo 2D</h3>
-        <p>Teoría, diagramas y simulaciones básicas.</p>
-        <a href="/modules/simulador-2d/index2d" class="btn">Ingresar</a>
-    </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./modules/resultados/index-resultados.html">Evaluaciones</a>
+                    </li>
 
-    <div class="card">
-        <h3>Módulo Inmersivo 3D</h3>
-        <p>Prácticas virtuales de uso de extintores.</p>
-        <a href="/modules/simulador-3d/index3d" class="btn">Ingresar</a>
-    </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Certificados</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-</section>
+    <!-- Hero -->
+    <section class="hero-section">
 
-<section class="progress">
-    <h3>Mi Progreso</h3>
-    <p>Curso completado: 60%</p>
-</section>
+        <div class="container">
+            <div class="row align-items-center">
 
-<footer>
-    Plataforma Corporativa de Capacitación
-</footer>
+                <div class="col-lg-6">
+                    <span class="badge bg-warning text-dark mb-3">
+                        Capacitación Empresarial
+                    </span>
+
+                    <h1 class="display-4 fw-bold">
+                        Prevención de Incendios y Uso de Extintores
+                    </h1>
+
+                    <p class="lead mt-3">
+                        Capacítate mediante simulaciones interactivas 2D y entornos
+                        inmersivos 3D para responder correctamente ante emergencias.
+                    </p>
+
+                    <a href="#" class="btn btn-danger btn-lg me-3 shadow">
+                        Iniciar Capacitación
+                    </a>
+
+                    <a href="#" class="btn btn-outline-light btn-lg">
+                        Más Información
+                    </a>
+                </div>
+
+                <div class="col-lg-6 text-center">
+                    <div class="hero-image">
+                        <span>Imagen / Banner Corporativo</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Módulos -->
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Módulos Disponibles</h2>
+                <p class="text-muted">
+                    Accede a los entornos de aprendizaje y seguimiento.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="card module-card h-100">
+
+                        <div class="card-body text-center">
+
+                            <div class="icon-circle">
+                                📚
+                            </div>
+
+                            <h4>Módulo Interactivo 2D</h4>
+
+                            <p>
+                                Teoría, prácticas guiadas y simulaciones básicas.
+                            </p>
+
+                            <a href="./modules/simulador-2d/index2d.html"
+                                class="btn btn-danger w-100">
+                                Ingresar
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card module-card h-100">
+
+                        <div class="card-body text-center">
+
+                            <div class="icon-circle">
+                                🥽
+                            </div>
+
+                            <h4>Módulo Inmersivo 3D</h4>
+
+                            <p>
+                                Entrenamiento virtual avanzado para escenarios reales.
+                            </p>
+
+                            <a href="./modules/showroom-3d/index3d.html"
+                                class="btn btn-danger w-100">
+                                Ingresar
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card module-card h-100">
+
+                        <div class="card-body text-center">
+
+                            <div class="icon-circle">
+                                📊
+                            </div>
+
+                            <h4>Métricas y Resultados</h4>
+
+                            <p>
+                                Consulta estadísticas y porcentaje de avance.
+                            </p>
+
+                            <a href="./modules/resultados/index-resultados.html"
+                                class="btn btn-danger w-100">
+                                Ingresar
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Progreso -->
+    <section class="progress-section">
+
+        <div class="container">
+
+            <div class="card progress-card shadow">
+
+                <div class="card-body">
+
+                    <h3 class="mb-4">
+                        Mi Progreso General
+                    </h3>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Capacitación completada</span>
+                        <strong>60%</strong>
+                    </div>
+
+                    <div class="progress" style="height:25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                            style="width:60%">
+                            60%
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-custom">
+
+        <div class="container text-center">
+
+            <h5>Plataforma Corporativa de Capacitación</h5>
+
+            <p class="mb-0">
+                Prevención de Incendios • Seguridad Industrial • Simulación Virtual
+            </p>
+
+        </div>
+
+    </footer>
 
 </body>
+
 </html>
