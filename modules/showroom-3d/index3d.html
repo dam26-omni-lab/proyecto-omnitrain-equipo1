@@ -1,114 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Módulo 3D</title>
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    overflow:hidden;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3D</title>
 
-header{
-    background:#b71c1c;
-    color:white;
-    padding:15px;
-}
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-.main{
-    display:flex;
-    height:calc(100vh - 70px);
-}
-
-.viewport{
-    flex:3;
-    background:#1e1e1e;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.panel{
-    flex:1;
-    background:#f5f5f5;
-    padding:20px;
-}
-
-.controls button{
-    width:100%;
-    margin-bottom:10px;
-    padding:10px;
-}
-
-header{
-    background:#b71c1c;
-    color:white;
-    padding:15px;
-}
-
-.header-container{
-    display:flex;
-    align-items:center;
-    gap:20px;
-}
-
-.btn-back{
-    text-decoration:none;
-    background:white;
-    color:#b71c1c;
-    padding:10px 15px;
-    border-radius:5px;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-.btn-back:hover{
-    background:#f5f5f5;
-}
-</style>
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="/css/styles3d.css">
 </head>
+
 <body>
 
-<header>
-    <div class="header-container">
-        <a href="index.html" class="btn-back">← Regresar al Inicio</a>
-        <h1>Simulación 3D - Uso de Extintores</h1>
-    </div>
-</header>
+    <header class="main-header">
 
-<div class="main">
+        <div class="container-fluid">
 
-    <div class="viewport">
-        Escenario 3D (Three.js / Unity WebGL)
-    </div>
+            <div class="header-container">
 
-    <div class="panel">
+                <a href="/index.html" class="btn-back">
+                    ← Regresar al Inicio
+                </a>
 
-        <h3>Objetivos</h3>
+                <div>
+                    <h1 class="title">
+                        Simulación 3D - Uso de Extintores
+                    </h1>
 
-        <ul>
-            <li>Identificar el fuego.</li>
-            <li>Seleccionar extintor.</li>
-            <li>Aplicar técnica PASS.</li>
-            <li>Controlar la emergencia.</li>
-        </ul>
+                    <p class="subtitle">
+                        Capacitación inmersiva para respuesta ante emergencias
+                    </p>
+                </div>
 
-        <div class="controls">
-            <button>Tomar Extintor</button>
-            <button>Apuntar</button>
-            <button>Activar Descarga</button>
-            <button>Reiniciar Escenario</button>
+            </div>
+
         </div>
 
-        <h3>Indicadores</h3>
-        <p>Tiempo: 00:00</p>
-        <p>Puntuación: 100</p>
+    </header>
+
+    <div class="main">
+
+        <!-- VIEWPORT ORIGINAL -->
+
+        <div class="viewport">
+
+            <div class="viewport-content">
+
+                <div class="fire-icon">
+                    🔥
+                </div>
+
+                <h2>
+                    Escenario 3D
+                </h2>
+
+                <p>
+                    Three.js / Unity WebGL
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- PANEL ORIGINAL -->
+
+        <div class="panel">
+
+            <div class="panel-card">
+
+                <h3>
+                    Objetivos
+                </h3>
+
+                <ul class="objective-list">
+
+                    <li>Identificar el fuego.</li>
+
+                    <li>Seleccionar extintor.</li>
+
+                    <li>Aplicar técnica PASS.</li>
+
+                    <li>Controlar la emergencia.</li>
+
+                </ul>
+
+                <hr>
+
+                <div class="controls">
+
+                    <button class="btn btn-danger btn-control">
+                        🧯 Tomar Extintor
+                    </button>
+
+                    <button class="btn btn-warning btn-control">
+                        🎯 Apuntar
+                    </button>
+
+                    <button class="btn btn-success btn-control">
+                        💨 Activar Descarga
+                    </button>
+
+                    <button class="btn btn-dark btn-control">
+                        🔄 Reiniciar Escenario
+                    </button>
+
+                </div>
+
+                <hr>
+
+                <h3>
+                    Indicadores
+                </h3>
+
+                <div class="stats-card">
+
+                    <div class="stat-row">
+                        <span>Tiempo:</span>
+                        <strong>00:00</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Puntuación:</span>
+                        <strong>100</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>

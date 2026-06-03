@@ -1,0 +1,306 @@
+/* ==========================
+   GENERAL
+========================== */
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:#0f172a;
+    overflow:hidden;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.main-header{
+
+    background:
+    linear-gradient(
+        90deg,
+        #7f0000,
+        #c62828
+    );
+
+    color:white;
+
+    padding:18px 30px;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.35);
+}
+
+.header-container{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.title{
+    margin:0;
+    font-weight:700;
+}
+
+.subtitle{
+    margin:0;
+    opacity:.85;
+}
+
+/* ==========================
+   BOTON REGRESAR
+========================== */
+
+.btn-back{
+
+    text-decoration:none;
+
+    background:white;
+
+    color:#c62828;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.25);
+}
+
+.btn-back:hover{
+
+    background:#f5f5f5;
+
+    color:#7f0000;
+
+    transform:translateY(-2px);
+}
+
+/* ==========================
+   LAYOUT PRINCIPAL
+========================== */
+
+.main{
+
+    display:flex;
+
+    height:calc(100vh - 90px);
+}
+
+/* ==========================
+   VIEWPORT
+========================== */
+
+.viewport{
+
+    flex:3;
+
+    position:relative;
+
+    background:
+    radial-gradient(
+        circle,
+        #2a2a2a,
+        #101010
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    overflow:hidden;
+}
+
+.viewport::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+    height:500px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        rgba(255,80,80,.25),
+        transparent
+    );
+
+    animation:pulse 4s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(0.9);
+        opacity:.5;
+    }
+
+    50%{
+        transform:scale(1.1);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(0.9);
+        opacity:.5;
+    }
+}
+
+.viewport-content{
+    text-align:center;
+    z-index:2;
+}
+
+.fire-icon{
+
+    font-size:90px;
+
+    margin-bottom:15px;
+
+    animation:fire 2s infinite;
+}
+
+@keyframes fire{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.12);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+/* ==========================
+   PANEL
+========================== */
+
+.panel{
+
+    flex:1;
+
+    background:#e9edf3;
+
+    padding:20px;
+
+    overflow-y:auto;
+}
+
+.panel-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.12);
+}
+
+/* ==========================
+   OBJETIVOS
+========================== */
+
+.objective-list{
+
+    list-style:none;
+
+    padding:0;
+}
+
+.objective-list li{
+
+    background:#f5f7fa;
+
+    margin-bottom:10px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    transition:.3s;
+}
+
+.objective-list li:hover{
+
+    background:#ffe8e8;
+
+    transform:translateX(5px);
+}
+
+/* ==========================
+   BOTONES
+========================== */
+
+.btn-control{
+
+    width:100%;
+
+    margin-bottom:12px;
+
+    padding:14px;
+
+    font-weight:600;
+
+    border-radius:12px;
+
+    transition:.3s;
+}
+
+.btn-control:hover{
+
+    transform:
+    translateY(-3px)
+    scale(1.02);
+
+    box-shadow:
+    0 10px 20px rgba(0,0,0,.2);
+}
+
+/* ==========================
+    INDICADORES
+========================== */
+
+.stats-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        #1e293b,
+        #334155
+    );
+
+    color:white;
+
+    padding:18px;
+
+    border-radius:15px;
+}
+
+.stat-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+}
+
+.stat-row:last-child{
+    margin-bottom:0;
+}
