@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Resultados de Capacitación</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:#b71c1c;
+    color:white;
+    padding:20px;
+}
+
+.main{
+    display:flex;
+    min-height:calc(100vh - 80px);
+}
+
+.sidebar{
+    width:250px;
+    background:white;
+    padding:20px;
+    box-shadow:2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+}
+
+.sidebar li{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.content{
+    flex:1;
+    padding:25px;
+}
+
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    margin-top:0;
+}
+
+.chart{
+    margin-top:25px;
+    background:white;
+    height:300px;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-results{
+    margin-top:25px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,
+table td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+table th{
+    background:#eeeeee;
+}
+
+.actions{
+    margin-top:20px;
+    display:flex;
+    gap:15px;
+}
+
+button{
+    background:#b71c1c;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#8e0000;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Resultados y Métricas de Capacitación</h1>
+</header>
+
+<div class="main">
+
+    <aside class="sidebar">
+
+        <h3>Panel</h3>
+
+        <ul>
+            <li>Resumen General</li>
+            <li>Resultados Módulo 2D</li>
+            <li>Resultados Módulo 3D</li>
+            <li>Evaluaciones</li>
+            <li>Certificado</li>
+        </ul>
+
+    </aside>
+
+    <section class="content">
+
+        <div class="metrics">
+
+            <div class="card">
+                <h3>Progreso Total</h3>
+                <h1>92%</h1>
+                <p>Curso completado</p>
+            </div>
+
+            <div class="card">
+                <h3>Calificación Final</h3>
+                <h1>95/100</h1>
+                <p>Excelente desempeño</p>
+            </div>
+
+            <div class="card">
+                <h3>Tiempo Total</h3>
+                <h1>3.5 h</h1>
+                <p>Capacitación realizada</p>
+            </div>
+
+            <div class="card">
+                <h3>Simulaciones Aprobadas</h3>
+                <h1>8/10</h1>
+                <p>Escenarios completados</p>
+            </div>
+
+        </div>
+
+        <div class="chart">
+            Área para Gráfica de Desempeño
+            <br>
+            (Chart.js / Power BI / Google Charts)
+        </div>
+
+        <div class="table-results">
+
+            <h2>Detalle de Resultados</h2>
+
+            <table>
+
+                <tr>
+                    <th>Módulo</th>
+                    <th>Estado</th>
+                    <th>Calificación</th>
+                    <th>Tiempo</th>
+                </tr>
+
+                <tr>
+                    <td>Introducción</td>
+                    <td>Completado</td>
+                    <td>100%</td>
+                    <td>15 min</td>
+                </tr>
+
+                <tr>
+                    <td>Módulo 2D</td>
+                    <td>Completado</td>
+                    <td>92%</td>
+                    <td>1 h</td>
+                </tr>
+
+                <tr>
+                    <td>Módulo 3D</td>
+                    <td>Completado</td>
+                    <td>95%</td>
+                    <td>2 h</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="actions">
+
+            <button>Descargar Certificado</button>
+
+            <button>Descargar Reporte PDF</button>
+
+            <a href="/index.html"><button>Volver al Inicio</button></a>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
