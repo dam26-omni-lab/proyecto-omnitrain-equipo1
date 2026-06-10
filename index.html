@@ -19,69 +19,74 @@
 <body>
 <div class="wrapper">
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-
-    <!-- LOGO -->
-    <div class="brand-logo">
-
-        <div class="logo-icon">
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-logo">
             <a href="./index.html">
-                <i class="bi bi-fire"></i>
+                <div class="logo-icon">
+                    <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
+                </div>
             </a>
+
+            <div class="brand-text">
+                <h1>OmniTrain</h1>
+                <span>Brigada de Emergencia</span>
+            </div>
         </div>
 
-        <div class="brand-text">
-            <h1>OmniTrain</h1>
-            <span>Brigada de Emergencia</span>
-        </div>
+        <!-- MENÚ -->
+        <nav class="sidebar-nav">
+            <a href="./index.html" class="sidebar-nav-item active">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Inicio</span>
+            </a>
 
-    </div>
+            <a href="./modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+                <i class="bi bi-journal-bookmark-fill"></i>
+                <span>Capacitaciones</span>
+            </a>
 
-    <!-- MENÚ -->
-    <nav class="sidebar-nav">
+            <a href="./modules/simulador-2d/index2d.html" class="sidebar-nav-item">
+                <i class="bi bi-controller"></i>
+                <span>Simulador 2D</span>
+            </a>
 
-        <a href="./index.html" class="sidebar-nav-item active">
-            <i class="bi bi-house-door-fill"></i>
-            <span>Inicio</span>
-        </a>
+            <a href="./modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+                <i class="bi bi-box-fill"></i>
+                <span>Entorno 3D</span>
+            </a>
 
-        <a href="./modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
-            <i class="bi bi-journal-bookmark-fill"></i>
-            <span>Capacitaciones</span>
-        </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="bi bi-clipboard-check-fill"></i>
+                <span>Evaluaciones</span>
+            </a>
 
-        <a href="./modules/simulador-2d/index2d.html" class="sidebar-nav-item">
-            <i class="bi bi-controller"></i>
-            <span>Simulador 2D</span>
-        </a>
-
-        <a href="./modules/showroom-3d/index3d.html" class="sidebar-nav-item">
-            <i class="bi bi-badge-3d-fill"></i>
-            <span>Entorno 3D</span>
-        </a>
-
-        <a href="#" class="sidebar-nav-item">
-            <i class="bi bi-clipboard-check-fill"></i>
-            <span>Evaluaciones</span>
-        </a>
-
-        <a href="./modules/resultados/index-resultados.html" class="sidebar-nav-item">
-            <i class="bi bi-bar-chart-fill"></i>
-            <span>Métricas & KPIs</span>
-        </a>
-
-    </nav>
+            <a href="./modules/resultados/index-resultados.html" class="sidebar-nav-item">
+                <i class="bi bi-bar-chart-fill"></i>
+                <span>Métricas & KPIs</span>
+            </a>
+        </nav>
     </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <header class="topbar">
-            <div class="breadcrumb-title">
-                <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
-                <h2>Dashboard Principal</h2>
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="breadcrumb-title">
+                    <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                    <h2>Dashboard Principal</h2>
+                </div>
             </div>
+
             <div class="user-profile">
-                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+                <div class="user-info">
+                    <h6>Juan Pérez</h6>
+                    <span>Brigadista Certificado</span>
+                </div>
+
                 <div class="user-avatar">JP</div>
             </div>
         </header>
@@ -167,5 +172,37 @@
         </div>
     </main>
 </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const icon = menuToggle.querySelector("i");
+
+        menuToggle.addEventListener("click", () => {
+
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+
+            if (sidebar.classList.contains("active")) {
+                icon.className = "bi bi-x-lg";
+            } else {
+                icon.className = "bi bi-list";
+            }
+
+        });
+
+        overlay.addEventListener("click", () => {
+
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+
+            icon.className = "bi bi-list";
+
+        });
+
+    });
+    </script>
 </body>
 </html>
