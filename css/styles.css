@@ -83,6 +83,11 @@ body {
     background: var(--primary-red);
 }
 
+.logo-icon i {
+    font-size: 20px;
+    color: #fff;
+}
+
 .brand-text h1 {
     margin: 0;
     font-size: 16px;
@@ -125,10 +130,11 @@ body {
     border-left-color: var(--sidebar-active-border);
 }
 
-.sidebar-nav-item svg {
+.sidebar-nav-item i {
     width: 20px;
-    height: 20px;
-    fill: currentColor;
+    font-size: 18px;
+    text-align: center;
+    color: currentColor;
 }
 
 /* ================= BARRA SUPERIOR ================= */
@@ -225,10 +231,9 @@ body {
     color: var(--primary-red);
 }
 
-.alert-custom svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--primary-red);
+.alert-custom i {
+    font-size: 24px;
+    color: var(--primary-red);
 }
 
 .alert-custom h6 {
@@ -306,11 +311,11 @@ body {
 .summary-card.yellow { background: #fff8e1; color: #f57f17; }
 .summary-card.red { background: #ffebee; color: #c62828; }
 
-.summary-card svg {
-    width: 32px;
-    height: 32px;
+.summary-card i {
+    display: block;
     margin-bottom: 10px;
-    fill: currentColor;
+    font-size: 32px;
+    color: currentColor;
 }
 
 .summary-card h3 {
@@ -402,10 +407,9 @@ body {
     background: rgba(255,255,255,.2);
 }
 
-.hero-icon svg {
-    width: 24px;
-    height: 24px;
-    fill: #fff;
+.hero-icon i {
+    font-size: 24px;
+    color: #fff;
 }
 
 .hero-title-row h3 {
