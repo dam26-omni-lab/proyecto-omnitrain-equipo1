@@ -10,7 +10,6 @@
 </head>
 <body>
 <div class="wrapper">
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
         <div class="brand-logo">
@@ -26,7 +25,6 @@
 
         </div>
 
-        <!-- MENÚ -->
         <nav class="sidebar-nav">
 
             <a href="../../index.html" class="sidebar-nav-item">
@@ -73,7 +71,7 @@
                 <h2>Entorno 3D</h2>
             </div>
             <div class="user-profile">
-                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+                <div class="user-info d-none d-sm-block"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
                 <div class="user-avatar">JP</div>
             </div>
         </header>
@@ -84,53 +82,53 @@
                 <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
             </div>
             
-            <div class="back-btn-row mt-3">
+            <div class="back-btn-row mt-3 d-flex flex-column flex-md-row justify-content-between gap-2">
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
-                <div>
-                    <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Ir al Simulador 2D</button>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Ir al Simulador 2D</button>
                     <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
                     <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Ver Capacitaciones</button>
                 </div>
             </div>
 
-            <div class="hero-banner dark-bg">
-                <div class="hero-title-row">
+            <div class="hero-banner dark-bg mt-3">
+                <div class="hero-title-row d-flex flex-column flex-sm-row align-items-center text-center text-sm-start gap-3">
                     <div class="hero-icon"><i class="bi bi-box-fill" style="color: #fff;"></i></div>
                     <div><h3>Entorno 3D — Inspección Virtual</h3><p>Conoce, inspecciona y aprende el uso correcto de extintores</p></div>
                 </div>
-                <div class="hero-stats-row">
-                    <div class="hero-stat-card"><h4>8/12</h4><span>Componentes Inspeccionados</span></div>
-                    <div class="hero-stat-card"><h4>67%</h4><span>Progreso</span></div>
-                    <div class="hero-stat-card"><h4>3</h4><span>Tipos de extintor</span></div>
+                <div class="hero-stats-row d-flex flex-wrap gap-2 mt-3">
+                    <div class="hero-stat-card flex-fill"><h4>8/12</h4><span>Componentes Inspeccionados</span></div>
+                    <div class="hero-stat-card flex-fill"><h4>67%</h4><span>Progreso</span></div>
+                    <div class="hero-stat-card flex-fill"><h4>3</h4><span>Tipos de extintor</span></div>
                 </div>
             </div>
 
             <h4 class="card-title mb-3" style="font-size: 18px;">Selecciona el tipo de extintor</h4>
             <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card active">
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="scenario-card active h-100">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="hero-icon me-3" style="background: var(--primary-red); width: 40px; height: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
+                            <div class="hero-icon me-3" style="background: var(--primary-red); width: 40px; height: 40px; min-width: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
                             <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor PQS</h5><span style="font-size: 12px; color: #6c757d;">Polvo Químico Seco</span></div>
                         </div>
                         <div><span class="extinguisher-tag">Clase A</span><span class="extinguisher-tag">Clase B</span><span class="extinguisher-tag">Clase C</span></div>
                         <p style="font-size: 13px; color: #6c757d; margin-bottom: 0; margin-top: 5px;">Extintor multipropósito ideal para fuegos de clase A, B y C. No conductor eléctrico.</p>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card">
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="scenario-card h-100">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="hero-icon me-3" style="background: var(--dark-panel); width: 40px; height: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
+                            <div class="hero-icon me-3" style="background: var(--dark-panel); width: 40px; height: 40px; min-width: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
                             <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor CO₂</h5><span style="font-size: 12px; color: #6c757d;">Dióxido de Carbono</span></div>
                         </div>
                         <div><span class="extinguisher-tag dark">Clase B</span><span class="extinguisher-tag dark">Clase C</span></div>
                         <p style="font-size: 13px; color: #6c757d; margin-bottom: 0; margin-top: 5px;">Ideal para fuegos eléctricos. No deja residuos. Uso en áreas cerradas con precaución.</p>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card">
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="scenario-card h-100">
                         <div class="d-flex align-items-center mb-3">
-                            <div class="hero-icon me-3" style="background: #007bff; width: 40px; height: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
+                            <div class="hero-icon me-3" style="background: #007bff; width: 40px; height: 40px; min-width: 40px;"><i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i></div>
                             <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor de Agua</h5><span style="font-size: 12px; color: #6c757d;">Agua a Presión</span></div>
                         </div>
                         <div><span class="extinguisher-tag blue">Clase A</span></div>

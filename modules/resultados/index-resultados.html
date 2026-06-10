@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTrain - Métricas</title>
-    <!-- Iconos Bootstrap Icons -->
     <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/styles.css" rel="stylesheet">
@@ -12,7 +11,6 @@
 <body>
 <div class="wrapper">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
         <div class="brand-logo">
@@ -28,7 +26,6 @@
 
         </div>
 
-        <!-- MENÚ -->
         <nav class="sidebar-nav">
 
             <a href="../../index.html" class="sidebar-nav-item">
@@ -64,20 +61,19 @@
     </aside>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
                 <button class="menu-toggle" id="menuToggle">
                     <i class="bi bi-list"></i>
                 </button>
-            </div>
-            <div class="breadcrumb-title">
-                <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
-                <h2>Métricas & KPIs</h2>
+                <div class="breadcrumb-title">
+                    <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                    <h2>Métricas & KPIs</h2>
+                </div>
             </div>
             <div class="user-profile">
-                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+                <div class="user-info d-none d-sm-block"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
                 <div class="user-avatar">JP</div>
             </div>
         </header>
@@ -88,25 +84,25 @@
                 <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
             </div>
             
-            <div class="back-btn-row mt-3">
+            <div class="back-btn-row mt-3 d-flex flex-column flex-md-row justify-content-between gap-2">
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
-                <div>
-                    <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Simulador 2D</button>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Simulador 2D</button>
                     <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Entorno 3D</button>
                 </div>
             </div>
 
-            <div class="hero-banner green-bg">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="hero-title-row mb-0">
+            <div class="hero-banner green-bg mt-3">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center align-items-md-start text-center text-md-start gap-3">
+                    <div class="hero-title-row mb-0 d-flex flex-column flex-md-row align-items-center gap-3">
                         <div class="hero-icon">
                             <i class="bi bi-bar-chart-fill" style="font-size: 24px; color: #fff;"></i>
                         </div>
-                        <div><h3>Métricas & KPIs</h3><p>Panel de desempeño y cumplimiento normativo</p></div>
+                        <div><h3>Métricas & KPIs</h3><p class="mb-0">Panel de desempeño y cumplimiento normativo</p></div>
                     </div>
-                    <button class="btn" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px;">Exportar reporte</button>
+                    <button class="btn mt-3 mt-md-0 w-100 w-md-auto" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px;">Exportar reporte</button>
                 </div>
-                <div class="pill-tabs">
+                <div class="pill-tabs d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mt-4">
                     <div class="pill-tab active">Mensual</div>
                     <div class="pill-tab">Trimestral</div>
                     <div class="pill-tab">Semestral</div>
@@ -115,24 +111,23 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3 mb-3">
-                    <div class="metric-big-card"><span class="indicator-badge badge-green">+5%</span><h2>95%</h2><span>Cumplimiento Normativo</span></div>
+                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                    <div class="metric-big-card h-100"><span class="indicator-badge badge-green">+5%</span><h2>95%</h2><span>Cumplimiento Normativo</span></div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="metric-big-card"><span class="indicator-badge badge-red">-2s</span><h2>12s</h2><span>Tiempo de Reacción</span></div>
+                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                    <div class="metric-big-card h-100"><span class="indicator-badge badge-red">-2s</span><h2>12s</h2><span>Tiempo de Reacción</span></div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="metric-big-card"><span class="indicator-badge badge-green">+8%</span><h2>91%</h2><span>Eficiencia en Control</span></div>
+                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                    <div class="metric-big-card h-100"><span class="indicator-badge badge-green">+8%</span><h2>91%</h2><span>Eficiencia en Control</span></div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="metric-big-card"><span class="indicator-badge badge-yellow">+12</span><h2>248</h2><span>Usuarios Activos</span></div>
+                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                    <div class="metric-big-card h-100"><span class="indicator-badge badge-yellow">+12</span><h2>248</h2><span>Usuarios Activos</span></div>
                 </div>
-                <!-- FILA DE MÉTRICAS -->
-<div class="row g-4 mb-4">
+            </div>
+                <div class="row g-4 mb-4">
 
-    <!-- PROGRESO POR MÓDULO -->
     <div class="col-12 col-lg-6">
-        <div class="card-custom">
+        <div class="card-custom h-100">
             <h4 class="card-title">Progreso por Módulo</h4>
 
             <div class="chart-row">
@@ -169,50 +164,49 @@
         </div>
     </div>
 
-    <!-- RESUMEN DEL PERÍODO -->
     <div class="col-12 col-lg-6">
-        <div class="card-custom">
+        <div class="card-custom h-100">
             <h4 class="card-title">Resumen del Período</h4>
 
             <div class="row g-3">
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-success">12</div>
                         <div class="summary-stat-label">Capacitaciones completadas</div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-danger">3</div>
                         <div class="summary-stat-label">Pendientes vencidas</div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-warning">85%</div>
                         <div class="summary-stat-label">Tasa de aprobación</div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-primary">4.2h</div>
                         <div class="summary-stat-label">Tiempo promedio / módulo</div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-success">95%</div>
                         <div class="summary-stat-label">Normativa cumplida</div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="summary-stat">
+                <div class="col-12 col-sm-6">
+                    <div class="summary-stat h-100">
                         <div class="summary-stat-value text-info">248</div>
                         <div class="summary-stat-label">Usuarios activos</div>
                     </div>
@@ -224,7 +218,6 @@
 
 </div>
 
-<!-- RANKING DE BRIGADISTAS -->
 <div class="card-custom mb-4">
 
     <h4 class="card-title">Ranking de Brigadistas</h4>
@@ -251,7 +244,7 @@
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="user-avatar user-avatar-sm">JP</div>
-                            Juan Pérez
+                            <span class="text-nowrap">Juan Pérez</span>
                         </div>
                     </td>
                     <td>12/15</td>
@@ -261,7 +254,7 @@
                             <div class="mini-bar">
                                 <div class="mini-bar-fill mini-bar-green" style="width:95%"></div>
                             </div>
-                            95%
+                            <span>95%</span>
                         </div>
                     </td>
                     <td><span class="status-badge status-success">Certificado</span></td>
@@ -272,7 +265,7 @@
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="user-avatar user-avatar-sm" style="background:#555;">MA</div>
-                            María Álvarez
+                            <span class="text-nowrap">María Álvarez</span>
                         </div>
                     </td>
                     <td>11/15</td>
@@ -282,7 +275,7 @@
                             <div class="mini-bar">
                                 <div class="mini-bar-fill mini-bar-green" style="width:88%"></div>
                             </div>
-                            88%
+                            <span>88%</span>
                         </div>
                     </td>
                     <td><span class="status-badge status-success">Certificado</span></td>
@@ -293,7 +286,7 @@
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="user-avatar user-avatar-sm" style="background:#2563eb;">CR</div>
-                            Carlos Ruiz
+                            <span class="text-nowrap">Carlos Ruiz</span>
                         </div>
                     </td>
                     <td>9/15</td>
@@ -303,10 +296,10 @@
                             <div class="mini-bar">
                                 <div class="mini-bar-fill mini-bar-yellow" style="width:76%"></div>
                             </div>
-                            76%
+                            <span>76%</span>
                         </div>
                     </td>
-                    <td><span class="status-badge status-warning">En progreso</span></td>
+                    <td><span class="status-badge status-warning text-nowrap">En progreso</span></td>
                 </tr>
 
                 <tr>
@@ -314,7 +307,7 @@
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="user-avatar user-avatar-sm" style="background:#666;">LM</div>
-                            Laura Mendoza
+                            <span class="text-nowrap">Laura Mendoza</span>
                         </div>
                     </td>
                     <td>7/15</td>
@@ -324,9 +317,8 @@
                             <div class="mini-bar">
                                 <div class="mini-bar-fill mini-bar-yellow" style="width:62%"></div>
                             </div>
-                            62%
+                            <span>62%</span>
                         </div>
-                            62%
                     </td>
                     <td><span class="status-badge status-danger">Pendiente</span></td>
                 </tr>
