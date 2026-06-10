@@ -11,59 +11,67 @@
 </head>
 <body>
 <div class="wrapper">
-<aside class="sidebar">
 
-    <div class="brand-logo">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
-        <a href="../../index.html"><div class="logo-icon">
-            <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
-        </div></a>
+        <div class="brand-logo">
 
-        <div class="brand-text">
-            <h1>OmniTrain</h1>
-            <span>Brigada de Emergencia</span>
+            <a href="../../index.html"><div class="logo-icon">
+                <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
+            </div></a>
+
+            <div class="brand-text">
+                <h1>OmniTrain</h1>
+                <span>Brigada de Emergencia</span>
+            </div>
+
         </div>
 
-    </div>
+        <!-- MENÚ -->
+        <nav class="sidebar-nav">
 
-    <nav class="sidebar-nav">
+            <a href="../../index.html" class="sidebar-nav-item">
+                <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
+                <span>Inicio</span>
+            </a>
 
-        <a href="../../index.html" class="sidebar-nav-item active">
-            <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
-            <span>Inicio</span>
-        </a>
+            <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+                <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
+                <span>Capacitaciones</span>
+            </a>
 
-        <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
-            <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
-            <span>Capacitaciones</span>
-        </a>
+            <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item">
+                <i class="bi bi-controller" style="font-size: 24px;"></i>
+                <span>Simulador 2D</span>
+            </a>
 
-        <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item">
-            <i class="bi bi-controller" style="font-size: 24px;"></i>
-            <span>Simulador 2D</span>
-        </a>
+            <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+                <i class="bi bi-box-fill" style="font-size: 24px;"></i>
+                <span>Entorno 3D</span>
+            </a>
 
-        <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
-            <i class="bi bi-box-fill" style="font-size: 24px;"></i>
-            <span>Entorno 3D</span>
-        </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
+                <span>Evaluaciones</span>
+            </a>
 
-        <a href="#" class="sidebar-nav-item">
-            <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
-            <span>Evaluaciones</span>
-        </a>
+            <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item active">
+                <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
+                <span>Métricas & KPIs</span>
+            </a>
+        </nav>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
-            <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
-            <span>Métricas & KPIs</span>
-        </a>
-
-    </nav>
-
-</aside>
-
+    <!-- MAIN CONTENT -->
     <main class="main-content">
         <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
             <div class="breadcrumb-title">
                 <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
                 <h2>Métricas & KPIs</h2>
@@ -117,4 +125,254 @@
                     <div class="metric-big-card"><span class="indicator-badge badge-green">+8%</span><h2>91%</h2><span>Eficiencia en Control</span></div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="metric-big-card"><span class="indicator-badge badge-yellow">+12</span><h2>24
+                    <div class="metric-big-card"><span class="indicator-badge badge-yellow">+12</span><h2>248</h2><span>Usuarios Activos</span></div>
+                </div>
+                <!-- FILA DE MÉTRICAS -->
+<div class="row g-4 mb-4">
+
+    <!-- PROGRESO POR MÓDULO -->
+    <div class="col-12 col-lg-6">
+        <div class="card-custom">
+            <h4 class="card-title">Progreso por Módulo</h4>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Simulador 2D</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-red" style="width:60%"></div>
+                </div>
+                <span class="chart-row-value">60%</span>
+            </div>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Entorno 3D</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-dark" style="width:67%"></div>
+                </div>
+                <span class="chart-row-value">67%</span>
+            </div>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Evaluaciones</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-green" style="width:88%"></div>
+                </div>
+                <span class="chart-row-value">88%</span>
+            </div>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Capacitaciones</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-blue" style="width:75%"></div>
+                </div>
+                <span class="chart-row-value">75%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESUMEN DEL PERÍODO -->
+    <div class="col-12 col-lg-6">
+        <div class="card-custom">
+            <h4 class="card-title">Resumen del Período</h4>
+
+            <div class="row g-3">
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-success">12</div>
+                        <div class="summary-stat-label">Capacitaciones completadas</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-danger">3</div>
+                        <div class="summary-stat-label">Pendientes vencidas</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-warning">85%</div>
+                        <div class="summary-stat-label">Tasa de aprobación</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-primary">4.2h</div>
+                        <div class="summary-stat-label">Tiempo promedio / módulo</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-success">95%</div>
+                        <div class="summary-stat-label">Normativa cumplida</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-info">248</div>
+                        <div class="summary-stat-label">Usuarios activos</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- RANKING DE BRIGADISTAS -->
+<div class="card-custom mb-4">
+
+    <h4 class="card-title">Ranking de Brigadistas</h4>
+
+    <div class="table-responsive">
+
+        <table class="table metrics-table align-middle">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Brigadista</th>
+                    <th>Módulos</th>
+                    <th>Puntaje</th>
+                    <th>Cumplimiento</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr class="table-highlight">
+                    <td><span class="rank-badge rank-gold">1</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm">JP</div>
+                            Juan Pérez
+                        </div>
+                    </td>
+                    <td>12/15</td>
+                    <td><strong class="text-success">2,480</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-green" style="width:95%"></div>
+                            </div>
+                            95%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-success">Certificado</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge rank-silver">2</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#555;">MA</div>
+                            María Álvarez
+                        </div>
+                    </td>
+                    <td>11/15</td>
+                    <td><strong>2,210</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-green" style="width:88%"></div>
+                            </div>
+                            88%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-success">Certificado</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge rank-bronze">3</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#2563eb;">CR</div>
+                            Carlos Ruiz
+                        </div>
+                    </td>
+                    <td>9/15</td>
+                    <td><strong>1,890</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-yellow" style="width:76%"></div>
+                            </div>
+                            76%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-warning">En progreso</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge">4</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#666;">LM</div>
+                            Laura Mendoza
+                        </div>
+                    </td>
+                    <td>7/15</td>
+                    <td><strong>1,540</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-yellow" style="width:62%"></div>
+                            </div>
+                            62%
+                        </div>
+                            62%
+                    </td>
+                    <td><span class="status-badge status-danger">Pendiente</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const icon = menuToggle.querySelector("i");
+
+        menuToggle.addEventListener("click", () => {
+
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+
+            if (sidebar.classList.contains("active")) {
+                icon.className = "bi bi-x-lg";
+            } else {
+                icon.className = "bi bi-list";
+            }
+
+        });
+
+        overlay.addEventListener("click", () => {
+
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+
+            icon.className = "bi bi-list";
+
+        });
+
+    });
+    </script>
+</body>
+</html>

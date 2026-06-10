@@ -13,12 +13,13 @@
 
 <div class="wrapper">
 
-        <aside class="sidebar">
+        <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
-                <div class="brand-logo">
+        <div class="brand-logo">
 
             <a href="../../index.html"><div class="logo-icon">
-                <i class="bi bi-geo-alt-fill" style="font-size: 20px; color: #fff;"></i>
+                <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
             </div></a>
 
             <div class="brand-text">
@@ -28,46 +29,48 @@
 
         </div>
 
-                <nav class="sidebar-nav">
+        <!-- MENÚ -->
+        <nav class="sidebar-nav">
 
-            <a href="../../index.html" class="sidebar-nav-item active">
-                <i class="bi bi-house-door-fill"></i>
+            <a href="../../index.html" class="sidebar-nav-item">
+                <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
                 <span>Inicio</span>
             </a>
 
-            <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
-                <i class="bi bi-book-fill"></i>
+            <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item active">
+                <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
                 <span>Capacitaciones</span>
             </a>
 
             <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item">
-                <i class="bi bi-controller"></i>
+                <i class="bi bi-controller" style="font-size: 24px;"></i>
                 <span>Simulador 2D</span>
             </a>
 
             <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
-                <i class="bi bi-box-fill"></i>
+                <i class="bi bi-box-fill" style="font-size: 24px;"></i>
                 <span>Entorno 3D</span>
             </a>
 
             <a href="#" class="sidebar-nav-item">
-                <i class="bi bi-file-text-fill"></i>
+                <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
                 <span>Evaluaciones</span>
             </a>
 
             <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
-                <i class="bi bi-bar-chart-fill"></i>
+                <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
                 <span>Métricas & KPIs</span>
             </a>
-
         </nav>
-
     </aside>
 
         <main class="main-content">
-
-                <header class="topbar">
-
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
             <div class="breadcrumb-title">
                 <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
                 <h2>Capacitaciones</h2>
@@ -164,3 +167,315 @@
                         <h4>8</h4>
                         <span>Completados</span>
                     </div>
+
+                    <div class="hero-stat-card">
+                        <h4>4</h4>
+                        <span>Certificaciones</span>
+                    </div>
+
+                    <div class="hero-stat-card">
+                        <h4>68%</h4>
+                        <span>Avance General</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="summary-cards-row">
+
+                <div class="summary-card green">
+                    <h3>8</h3>
+                    <span>Cursos Completados</span>
+                </div>
+
+                <div class="summary-card yellow">
+                    <h3>3</h3>
+                    <span>En Curso</span>
+                </div>
+
+                <div class="summary-card red">
+                    <h3>4</h3>
+                    <span>Pendientes</span>
+                </div>
+
+            </div>
+
+            <!-- CURSOS -->
+            <div class="row mt-4">
+
+                <div class="col-md-4 mb-4">
+
+                    <div class="scenario-card">
+
+                        <span class="scenario-badge bg-basic">
+                            BÁSICO
+                        </span>
+
+                        <h5>Uso Correcto de Extintores</h5>
+
+                        <p>
+                            Aprende la clasificación de incendios,
+                            tipos de extintores y técnicas PASS.
+                        </p>
+
+                        <div class="extinguisher-tag">
+                            ABC
+                        </div>
+
+                        <div class="extinguisher-tag blue">
+                            CO₂
+                        </div>
+
+                        <div class="mt-3">
+                            <a href="#" class="quick-access-btn red">
+                                Iniciar Curso
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 mb-4">
+
+                    <div class="scenario-card active">
+
+                        <span class="scenario-badge bg-intermediate">
+                            INTERMEDIO
+                        </span>
+
+                        <h5>Evacuación y Rescate</h5>
+
+                        <p>
+                            Procedimientos para evacuar personal
+                            de forma segura durante emergencias.
+                        </p>
+
+                        <div class="mt-3">
+                            <a href="#" class="quick-access-btn dark">
+                                Continuar Curso
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 mb-4">
+
+                    <div class="scenario-card">
+
+                        <span class="scenario-badge bg-advanced">
+                            AVANZADO
+                        </span>
+
+                        <h5>Gestión de Emergencias</h5>
+
+                        <p>
+                            Coordinación de brigadas,
+                            comunicación y liderazgo operativo.
+                        </p>
+
+                        <div class="mt-3">
+                            <a href="#" class="quick-access-btn">
+                                Ver Contenido
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RUTA DE APRENDIZAJE -->
+            <div class="card-custom mb-4">
+
+                <h4 class="card-title">
+                    Ruta Recomendada de Aprendizaje
+                </h4>
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="indicator-card">
+
+                            <span class="indicator-badge badge-green">
+                                PASO 1
+                            </span>
+
+                            <h5>Prevención</h5>
+
+                            <p>
+                                Identificación de riesgos
+                                y medidas preventivas.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="indicator-card">
+
+                            <span class="indicator-badge badge-yellow">
+                                PASO 2
+                            </span>
+
+                            <h5>Control Inicial</h5>
+
+                            <p>
+                                Manejo de extintores
+                                y respuesta inmediata.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="indicator-card">
+
+                            <span class="indicator-badge badge-yellow">
+                                PASO 3
+                            </span>
+
+                            <h5>Evacuación</h5>
+
+                            <p>
+                                Protocolos de salida
+                                y puntos de reunión.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="indicator-card">
+
+                            <span class="indicator-badge badge-red">
+                                PASO 4
+                            </span>
+
+                            <h5>Liderazgo</h5>
+
+                            <p>
+                                Coordinación de brigadas
+                                y gestión de incidentes.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- CERTIFICACIONES -->
+            <div class="card-custom">
+
+                <h4 class="card-title">
+                    Certificaciones Obtenidas
+                </h4>
+
+                <div class="table-responsive">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Certificación</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>Uso de Extintores</td>
+                                <td>Mayo 2026</td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        Vigente
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Evacuación Segura</td>
+                                <td>Abril 2026</td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        Vigente
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Primeros Auxilios</td>
+                                <td>Enero 2026</td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        Renovar
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const icon = menuToggle.querySelector("i");
+
+        menuToggle.addEventListener("click", () => {
+
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+
+            if (sidebar.classList.contains("active")) {
+                icon.className = "bi bi-x-lg";
+            } else {
+                icon.className = "bi bi-list";
+            }
+
+        });
+
+        overlay.addEventListener("click", () => {
+
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+
+            icon.className = "bi bi-list";
+
+        });
+
+    });
+    </script>
+</body>
+</html>
