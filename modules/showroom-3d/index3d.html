@@ -1,140 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 3D</title>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="../../css/styles.css">
+    <title>OmniTrain - Entorno 3D</title>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/styles.css" rel="stylesheet">
 </head>
-
 <body>
+<div class="wrapper">
+    <!-- SIDEBAR -->
+    <!-- SIDEBAR -->
+<aside class="sidebar">
 
-    <header class="main-header">
+    <!-- LOGO -->
+    <div class="brand-logo">
 
-        <div class="container-fluid">
-
-            <div class="header-container">
-
-                <a href="../../index.html" class="btn-back">
-                    ← Regresar al Inicio
-                </a>
-
-                <div>
-                    <h1 class="title">
-                        Simulación 3D - Uso de Extintores
-                    </h1>
-
-                    <p class="subtitle">
-                        Capacitación inmersiva para respuesta ante emergencias
-                    </p>
-                </div>
-
-            </div>
-
+        <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff">
+                <path d="M12 2C7.58 2 4 5.58 4 10c0 2.21.89 4.21 2.34 5.66L12 22l5.66-6.34C19.11 14.21 20 12.21 20 10c0-4.42-3.58-8-8-8zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            </svg>
         </div>
 
-    </header>
-
-    <div class="main">
-
-        <!-- VIEWPORT ORIGINAL -->
-
-        <div class="viewport">
-
-            <div class="viewport-content">
-
-                <div class="fire-icon">
-                    🔥
-                </div>
-
-                <h2>
-                    Escenario 3D
-                </h2>
-
-                <p>
-                    Three.js / Unity WebGL
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- PANEL ORIGINAL -->
-
-        <div class="panel">
-
-            <div class="panel-card">
-
-                <h3>
-                    Objetivos
-                </h3>
-
-                <ul class="objective-list">
-
-                    <li>Identificar el fuego.</li>
-
-                    <li>Seleccionar extintor.</li>
-
-                    <li>Aplicar técnica PASS.</li>
-
-                    <li>Controlar la emergencia.</li>
-
-                </ul>
-
-                <hr>
-
-                <div class="controls">
-
-                    <button class="btn btn-danger btn-control">
-                        🧯 Tomar Extintor
-                    </button>
-
-                    <button class="btn btn-warning btn-control">
-                        🎯 Apuntar
-                    </button>
-
-                    <button class="btn btn-success btn-control">
-                        💨 Activar Descarga
-                    </button>
-
-                    <button class="btn btn-dark btn-control">
-                        🔄 Reiniciar Escenario
-                    </button>
-
-                </div>
-
-                <hr>
-
-                <h3>
-                    Indicadores
-                </h3>
-
-                <div class="stats-card">
-
-                    <div class="stat-row">
-                        <span>Tiempo:</span>
-                        <strong>00:00</strong>
-                    </div>
-
-                    <div class="stat-row">
-                        <span>Puntuación:</span>
-                        <strong>100</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="brand-text">
+            <h1>OmniTrain</h1>
+            <span>Brigada de Emergencia</span>
         </div>
 
     </div>
 
-</body>
+    <!-- MENÚ -->
+    <nav class="sidebar-nav">
 
+        <a href="../../index.html" class="sidebar-nav-item active">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+            <span>Inicio</span>
+        </a>
+
+        <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            <span>Capacitaciones</span>
+        </a>
+
+        <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 7.5 18.5 7.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+            </svg>
+            <span>Simulador 2D</span>
+        </a>
+
+        <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/>
+            </svg>
+            <span>Entorno 3D</span>
+        </a>
+
+        <a href="#" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span>Evaluaciones</span>
+        </a>
+
+        <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </svg>
+            <span>Métricas & KPIs</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb-title">
+                <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                <h2>Entorno 3D</h2>
+            </div>
+            <div class="user-profile">
+                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+                <div class="user-avatar">JP</div>
+            </div>
+        </header>
+
+        <div class="content-padding">
+            <div class="global-progress">
+                <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
+                <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
+            </div>
+            
+            <div class="back-btn-row mt-3">
+                <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
+                <div>
+                    <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Ir al Simulador 2D</button>
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
+                </div>
+            </div>
+
+            <div class="hero-banner dark-bg">
+                <div class="hero-title-row">
+                    <div class="hero-icon"><svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z" fill="#fff"/></svg></div>
+                    <div><h3>Entorno 3D — Inspección Virtual</h3><p>Conoce, inspecciona y aprende el uso correcto de extintores</p></div>
+                </div>
+                <div class="hero-stats-row">
+                    <div class="hero-stat-card"><h4>8/12</h4><span>Componentes Inspeccionados</span></div>
+                    <div class="hero-stat-card"><h4>67%</h4><span>Progreso</span></div>
+                    <div class="hero-stat-card"><h4>3</h4><span>Tipos de extintor</span></div>
+                </div>
+            </div>
+
+            <h4 class="card-title mb-3" style="font-size: 18px;">Selecciona el tipo de extintor</h4>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="scenario-card active">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="hero-icon me-3" style="background: var(--primary-red); width: 40px; height: 40px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+                            <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor PQS</h5><span style="font-size: 12px; color: #6c757d;">Polvo Químico Seco</span></div>
+                        </div>
+                        <div><span class="extinguisher-tag">Clase A</span><span class="extinguisher-tag">Clase B</span><span class="extinguisher-tag">Clase C</span></div>
+                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0; margin-top: 5px;">Extintor multipropósito ideal para fuegos de clase A, B y C. No conductor eléctrico.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="scenario-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="hero-icon me-3" style="background: var(--dark-panel); width: 40px; height: 40px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+                            <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor CO₂</h5><span style="font-size: 12px; color: #6c757d;">Dióxido de Carbono</span></div>
+                        </div>
+                        <div><span class="extinguisher-tag dark">Clase B</span><span class="extinguisher-tag dark">Clase C</span></div>
+                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0; margin-top: 5px;">Ideal para fuegos eléctricos. No deja residuos. Uso en áreas cerradas con precaución.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="scenario-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="hero-icon me-3" style="background: #007bff; width: 40px; height: 40px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+                            <div><h5 style="font-size: 16px; font-weight: 700; margin:0;">Extintor de Agua</h5><span style="font-size: 12px; color: #6c757d;">Agua a Presión</span></div>
+                        </div>
+                        <div><span class="extinguisher-tag blue">Clase A</span></div>
+                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0; margin-top: 5px;">Solo para fuegos clase A (sólidos). NUNCA usar en fuegos eléctricos o líquidos inflamables.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
 </html>
