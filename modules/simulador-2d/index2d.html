@@ -4,99 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTrain - Simulador 2D</title>
+    <!-- Iconos Bootstrap Icons -->
+    <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/styles.css" rel="stylesheet">
+    <style>
+        /* Estilo rápido para centrar el lienzo de Phaser */
+        #game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="brand-logo">
-            <div class="logo-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 2C7.58 2 4 5.58 4 10c0 2.21.89 4.21 2.34 5.66L12 22l5.66-6.34C19.11 14.21 20 12.21 20 10c0-4.42-3.58-8-8-8zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
-            <div class="brand-text"><h1>OmniTrain</h1><span>Brigada de Emergencia</span></div>
+<aside class="sidebar">
+
+    <div class="brand-logo">
+        <a href="../../index.html"><div class="logo-icon">
+            <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
+        </div></a>
+        <div class="brand-text">
+            <h1>OmniTrain</h1>
+            <span>Brigada de Emergencia</span>
         </div>
-        <ul class="sidebar-nav">
-            <li class="sidebar-nav-item" onclick="window.location.href='../../index.html'">
-                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg> Inicio
-            </li>
-            <li class="sidebar-nav-item"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Capacitaciones</li>
-            <li class="sidebar-nav-item active" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">
-                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 7.5 18.5 7.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> Simulador 2D
-            </li>
-            <li class="sidebar-nav-item" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">
-                <svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></svg> Entorno 3D
-            </li>
-            <li class="sidebar-nav-item"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg> Evaluaciones</li>
-            <li class="sidebar-nav-item" onclick="window.location.href='../../modules/resultados/index-resultados.html'">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg> Métricas & KPIs
-            </li>
-        </ul>
-    </aside>
+    </div>
 
-    <main class="main-content">
-        <header class="topbar">
-            <div class="breadcrumb-title">
-                <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
-                <h2>Simulador 2D</h2>
-            </div>
-            <div class="user-profile">
-                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
-                <div class="user-avatar">JP</div>
-            </div>
-        </header>
+    <nav class="sidebar-nav">
+        <a href="../../index.html" class="sidebar-nav-item active">
+            <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+            <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
+            <span>Capacitaciones</span>
+        </a>
+        <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item">
+            <i class="bi bi-controller" style="font-size: 24px;"></i>
+            <span>Simulador 2D</span>
+        </a>
+        <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+            <i class="bi bi-box-fill" style="font-size: 24px;"></i>
+            <span>Entorno 3D</span>
+        </a>
+        <a href="#" class="sidebar-nav-item">
+            <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
+            <span>Evaluaciones</span>
+        </a>
+        <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
+            <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
+            <span>Métricas & KPIs</span>
+        </a>
+    </nav>
+</aside>
 
-        <div class="content-padding">
-            <div class="global-progress">
-                <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
-                <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
-            </div>
-            
-            <div class="back-btn-row mt-3">
-                <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
-                <div>
-                    <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
-                    <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
-                </div>
-            </div>
+<main class="main-content">
+    <header class="topbar">
+        <div class="breadcrumb-title">
+            <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+            <h2>Simulador 2D</h2>
+        </div>
+        <div class="user-profile">
+            <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+            <div class="user-avatar">JP</div>
+        </div>
+    </header>
 
-            <div class="hero-banner red-bg">
-                <div class="hero-title-row">
-                    <div class="hero-icon"><svg viewBox="0 0 24 24"><path d="M16 11.42c.08-3.05 1.2-5.4 3.58-7.53.5-.55 1.19-.88 1.92-.89v10.6c0 1.54-.33 3.05-.99 4.42-.12.24-.33.41-.59.47-.25.07-.52.02-.73-.13-2.53-1.88-3.94-4.89-3.86-8.01z" fill="#fff"/></svg></div>
-                    <div><h3>Simulador 2D — Escenarios de Emergencia</h3><p>Practica protocolos de extinción en entornos seguros y controlados</p></div>
-                </div>
-                <div class="hero-stats-row">
-                    <div class="hero-stat-card"><h4>1/3</h4><span>Escenarios completados</span></div>
-                    <div class="hero-stat-card"><h4>60%</h4><span>Progreso del módulo</span></div>
-                    <div class="hero-stat-card"><h4>92</h4><span>Mejor puntuación</span></div>
-                </div>
-            </div>
-
-            <h4 class="card-title mb-3" style="font-size: 18px;">Escenarios de Entrenamiento</h4>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card active">
-                        <span class="scenario-badge bg-basic">Básico</span>
-                        <h5 style="font-size: 16px; font-weight: 700;">Incendio Simple- Cocina</h5>
-                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo PASS en entorno de cocina.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card">
-                        <span class="scenario-badge bg-intermediate">Intermedio</span>
-                        <h5 style="font-size: 16px; font-weight: 700;">Incendio Eléctrico - Tablero</h5>
-                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase C. Desconexión de energía y uso de CO2 en cuarto de servidores.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="scenario-card">
-                        <span class="scenario-badge bg-advanced">Avanzado</span>
-                        <h5 style="font-size: 16px; font-weight: 700;">Incendio de Almacén</h5>
-                        <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase A y B combinado. Toma de decisión sobre evacuación vs extinción.</p>
-                    </div>
-                </div>
+    <div class="content-padding">
+        <div class="global-progress">
+            <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
+            <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
+        </div>
+        
+        <div class="back-btn-row mt-3">
+            <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
+            <div>
+                <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
+                <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
             </div>
         </div>
-    </main>
+
+        <div class="hero-banner red-bg">
+            <div class="hero-title-row">
+                <div class="hero-icon">
+                    <i class="bi bi-fire" style="font-size: 24px; color: #fff;"></i>
+                </div>
+                <div><h3>Simulador 2D — Escenarios de Emergencia</h3><p>Practica protocolos de extinción en entornos seguros y controlados</p></div>
+            </div>
+            <div class="hero-stats-row">
+                <div class="hero-stat-card"><h4>1/3</h4><span>Escenarios completados</span></div>
+                <div class="hero-stat-card"><h4>60%</h4><span>Progreso del módulo</span></div>
+                <div class="hero-stat-card"><h4>92</h4><span>Mejor puntuación</span></div>
+            </div>
+        </div>
+
+        <h4 class="card-title mb-3" style="font-size: 18px;">Escenarios de Entrenamiento</h4>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="scenario-card active">
+                    <span class="scenario-badge bg-basic">Básico</span>
+                    <h5 style="font-size: 16px; font-weight: 700;">Incendio Simple- Cocina</h5>
+                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo PASS en entorno de cocina.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="scenario-card">
+                    <span class="scenario-badge bg-intermediate">Intermedio</span>
+                    <h5 style="font-size: 16px; font-weight: 700;">Incendio Eléctrico - Tablero</h5>
+                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase C. Desconexión de energía y uso de CO2 en cuarto de servidores.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="scenario-card">
+                    <span class="scenario-badge bg-advanced">Avanzado</span>
+                    <h5 style="font-size: 16px; font-weight: 700;">Incendio de Almacén</h5>
+                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase A y B combinado. Toma de decisión sobre evacuación vs extinción.</p>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="card-title mt-4 mb-3" style="font-size: 18px;">Prueba de Funcionamiento 2D</h4>
+        <div id="game-container"></div>
+        </div>
+</main>
 </div>
+
+<script src="../../js/phaser.min.js"></script>
+<script src="../../js/game.js"></script>
+
 </body>
 </html>
