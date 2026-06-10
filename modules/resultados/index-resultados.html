@@ -1,233 +1,307 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Resultados de Capacitación</title>
-
-<style>
-
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f4f4f4;
-}
-
-header{
-    background:#b71c1c;
-    color:white;
-    padding:20px;
-}
-
-.main{
-    display:flex;
-    min-height:calc(100vh - 80px);
-}
-
-.sidebar{
-    width:250px;
-    background:white;
-    padding:20px;
-    box-shadow:2px 0 5px rgba(0,0,0,0.1);
-}
-
-.sidebar ul{
-    list-style:none;
-    padding:0;
-}
-
-.sidebar li{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-}
-
-.content{
-    flex:1;
-    padding:25px;
-}
-
-.metrics{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-.card h3{
-    margin-top:0;
-}
-
-.chart{
-    margin-top:25px;
-    background:white;
-    height:300px;
-    border-radius:10px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-.table-results{
-    margin-top:25px;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-table th,
-table td{
-    border:1px solid #ddd;
-    padding:12px;
-    text-align:center;
-}
-
-table th{
-    background:#eeeeee;
-}
-
-.actions{
-    margin-top:20px;
-    display:flex;
-    gap:15px;
-}
-
-button{
-    background:#b71c1c;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#8e0000;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTrain - Métricas</title>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/styles.css" rel="stylesheet">
 </head>
-
 <body>
-
-<header>
-    <h1>Resultados y Métricas de Capacitación</h1>
-</header>
-
-<div class="main">
-
+<div class="wrapper">
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-
-        <h3>Panel</h3>
-
-        <ul>
-            <li>Resumen General</li>
-            <li>Resultados Módulo 2D</li>
-            <li>Resultados Módulo 3D</li>
-            <li>Evaluaciones</li>
-            <li>Certificado</li>
+        <div class="brand-logo">
+            <div class="logo-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 2C7.58 2 4 5.58 4 10c0 2.21.89 4.21 2.34 5.66L12 22l5.66-6.34C19.11 14.21 20 12.21 20 10c0-4.42-3.58-8-8-8zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
+            <div class="brand-text"><h1>OmniTrain</h1><span>Brigada de Emergencia</span></div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item" onclick="window.location.href='../../index.html'">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg> Inicio
+            </li>
+            <li class="sidebar-nav-item"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Capacitaciones</li>
+            <li class="sidebar-nav-item" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">
+                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 7.5 18.5 7.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> Simulador 2D
+            </li>
+            <li class="sidebar-nav-item active" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">
+                <svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></svg> Entorno 3D
+            </li>
+            <li class="sidebar-nav-item"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg> Evaluaciones</li>
+            <li class="sidebar-nav-item" onclick="window.location.href='../../modules/resultados/index-resultados.html'">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg> Métricas & KPIs
+            </li>
         </ul>
-
     </aside>
 
-    <section class="content">
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb-title">
+                <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                <h2>Métricas & KPIs</h2>
+            </div>
+            <div class="user-profile">
+                <div class="user-info"><h6>Juan Pérez</h6><span>Brigadista Certificado</span></div>
+                <div class="user-avatar">JP</div>
+            </div>
+        </header>
 
-        <div class="metrics">
-
-            <div class="card">
-                <h3>Progreso Total</h3>
-                <h1>92%</h1>
-                <p>Curso completado</p>
+        <div class="content-padding">
+            <div class="global-progress">
+                <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
+                <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
+            </div>
+            
+            <div class="back-btn-row mt-3">
+                <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
+                <div>
+                    <button class="btn btn-outline-custom me-2" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Simulador 2D</button>
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Entorno 3D</button>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Calificación Final</h3>
-                <h1>95/100</h1>
-                <p>Excelente desempeño</p>
+            <div class="hero-banner green-bg">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="hero-title-row mb-0">
+                        <div class="hero-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="#fff"/></svg></div>
+                        <div><h3>Métricas & KPIs</h3><p>Panel de desempeño y cumplimiento normativo</p></div>
+                    </div>
+                    <button class="btn" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px;">Exportar reporte</button>
+                </div>
+                <div class="pill-tabs">
+                    <div class="pill-tab active">Mensual</div>
+                    <div class="pill-tab">Trimestral</div>
+                    <div class="pill-tab">Semestral</div>
+                    <div class="pill-tab">Anual</div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Tiempo Total</h3>
-                <h1>3.5 h</h1>
-                <p>Capacitación realizada</p>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="metric-big-card"><span class="indicator-badge badge-green">+5%</span><h2>95%</h2><span>Cumplimiento Normativo</span></div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-big-card"><span class="indicator-badge badge-red">-2s</span><h2>12s</h2><span>Tiempo de Reacción</span></div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-big-card"><span class="indicator-badge badge-green">+8%</span><h2>91%</h2><span>Eficiencia en Control</span></div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-big-card"><span class="indicator-badge badge-yellow">+12</span><h2>248</h2><span>Usuarios Activos</span></div>
+                </div>
+                <!-- FILA DE MÉTRICAS -->
+<div class="row g-4 mb-4">
+
+    <!-- PROGRESO POR MÓDULO -->
+    <div class="col-12 col-lg-6">
+        <div class="card-custom">
+            <h4 class="card-title">Progreso por Módulo</h4>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Simulador 2D</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-red" style="width:60%"></div>
+                </div>
+                <span class="chart-row-value">60%</span>
             </div>
 
-            <div class="card">
-                <h3>Simulaciones Aprobadas</h3>
-                <h1>8/10</h1>
-                <p>Escenarios completados</p>
+            <div class="chart-row">
+                <span class="chart-row-label">Entorno 3D</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-dark" style="width:67%"></div>
+                </div>
+                <span class="chart-row-value">67%</span>
             </div>
 
+            <div class="chart-row">
+                <span class="chart-row-label">Evaluaciones</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-green" style="width:88%"></div>
+                </div>
+                <span class="chart-row-value">88%</span>
+            </div>
+
+            <div class="chart-row">
+                <span class="chart-row-label">Capacitaciones</span>
+                <div class="chart-track">
+                    <div class="chart-fill chart-fill-blue" style="width:75%"></div>
+                </div>
+                <span class="chart-row-value">75%</span>
+            </div>
         </div>
+    </div>
 
-        <div class="chart">
-            Área para Gráfica de Desempeño
-            <br>
-            (Chart.js / Power BI / Google Charts)
+    <!-- RESUMEN DEL PERÍODO -->
+    <div class="col-12 col-lg-6">
+        <div class="card-custom">
+            <h4 class="card-title">Resumen del Período</h4>
+
+            <div class="row g-3">
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-success">12</div>
+                        <div class="summary-stat-label">Capacitaciones completadas</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-danger">3</div>
+                        <div class="summary-stat-label">Pendientes vencidas</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-warning">85%</div>
+                        <div class="summary-stat-label">Tasa de aprobación</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-primary">4.2h</div>
+                        <div class="summary-stat-label">Tiempo promedio / módulo</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-success">95%</div>
+                        <div class="summary-stat-label">Normativa cumplida</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value text-info">248</div>
+                        <div class="summary-stat-label">Usuarios activos</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-        <div class="table-results">
-
-            <h2>Detalle de Resultados</h2>
-
-            <table>
-
-                <tr>
-                    <th>Módulo</th>
-                    <th>Estado</th>
-                    <th>Calificación</th>
-                    <th>Tiempo</th>
-                </tr>
-
-                <tr>
-                    <td>Introducción</td>
-                    <td>Completado</td>
-                    <td>100%</td>
-                    <td>15 min</td>
-                </tr>
-
-                <tr>
-                    <td>Módulo 2D</td>
-                    <td>Completado</td>
-                    <td>92%</td>
-                    <td>1 h</td>
-                </tr>
-
-                <tr>
-                    <td>Módulo 3D</td>
-                    <td>Completado</td>
-                    <td>95%</td>
-                    <td>2 h</td>
-                </tr>
-
-            </table>
-
-        </div>
-
-        <div class="actions">
-
-            <button>Descargar Certificado</button>
-
-            <button>Descargar Reporte PDF</button>
-
-            <a href="../../index.html"><button>Volver al Inicio</button></a>
-
-        </div>
-
-    </section>
+    </div>
 
 </div>
 
+<!-- RANKING DE BRIGADISTAS -->
+<div class="card-custom mb-4">
+
+    <h4 class="card-title">Ranking de Brigadistas</h4>
+
+    <div class="table-responsive">
+
+        <table class="table metrics-table align-middle">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Brigadista</th>
+                    <th>Módulos</th>
+                    <th>Puntaje</th>
+                    <th>Cumplimiento</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr class="table-highlight">
+                    <td><span class="rank-badge rank-gold">1</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm">JP</div>
+                            Juan Pérez
+                        </div>
+                    </td>
+                    <td>12/15</td>
+                    <td><strong class="text-success">2,480</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-green" style="width:95%"></div>
+                            </div>
+                            95%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-success">Certificado</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge rank-silver">2</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#555;">MA</div>
+                            María Álvarez
+                        </div>
+                    </td>
+                    <td>11/15</td>
+                    <td><strong>2,210</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-green" style="width:88%"></div>
+                            </div>
+                            88%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-success">Certificado</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge rank-bronze">3</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#2563eb;">CR</div>
+                            Carlos Ruiz
+                        </div>
+                    </td>
+                    <td>9/15</td>
+                    <td><strong>1,890</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-yellow" style="width:76%"></div>
+                            </div>
+                            76%
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-warning">En progreso</span></td>
+                </tr>
+
+                <tr>
+                    <td><span class="rank-badge">4</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar user-avatar-sm" style="background:#666;">LM</div>
+                            Laura Mendoza
+                        </div>
+                    </td>
+                    <td>7/15</td>
+                    <td><strong>1,540</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill mini-bar-yellow" style="width:62%"></div>
+                            </div>
+                            62%
+                        </div>
+                            62%
+                    </td>
+                    <td><span class="status-badge status-danger">Pendiente</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+            </div>
+        </div>
+    </main>
+</div>
 </body>
 </html>
