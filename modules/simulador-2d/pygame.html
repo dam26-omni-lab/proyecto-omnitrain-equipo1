@@ -2,28 +2,130 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Prueba Phaser - Fuego</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTrain - Simulador Extintor</title>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../js/phaser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body{
-            margin:0;
-            background:#1a1a1a;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
+        body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            pointer-events: auto;
         }
 
-        canvas{
-            border:2px solid #444;
+        .step-active { color: #10b981 !important; font-weight: bold; }
+        .step-active .step-num { border-color: #10b981 !important; background-color: rgba(16, 185, 129, 0.1); }
+        .step-pending { color: #64748b !important; }
+        .step-pending .step-num { border-color: #475569 !important; }
+        .step-completed { color: #34d399 !important; }
+        .step-completed .step-num { border-color: #34d399 !important; background-color: rgba(52, 211, 153, 0.2); }
+
+        .step-num {
+            width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid;
+            display: flex; align-items: center; justify-content: center; font-weight: 800; transition: all 0.3s;
         }
+
+        #crosshair {
+            position: absolute; width: 40px; height: 40px; pointer-events: none;
+            z-index: 10000; transform: translate(-50%, -50%); display: none;
+        }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        /* Estilos del Cuestionario */
+        #quiz-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); z-index: 20000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.5s ease;
+        }
+        
+        .quiz-option {
+            width: 100%; padding: 15px; margin-bottom: 10px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;
+            text-align: left; cursor: pointer; transition: all 0.2s;
+        }
+        .quiz-option:hover { background: rgba(255,255,255,0.15); border-color: #38bdf8; }
+        .quiz-option.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; }
+        .quiz-option.incorrect { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; }
     </style>
-
-    
 </head>
 <body>
-    <script src="../../js/phaser.min.js"></script>
-    <script src="../../js/ejemplo.js"></script>
 
+<div id="sim-game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+
+<div id="sim-ui-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;">
+    <header style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+        <div class="glass-panel" style="border-radius: 1rem; padding: 1rem 1.5rem;">
+            <button onclick="window.location.href='index2d.html'" class="btn btn-outline-light btn-sm mb-2" style="pointer-events: auto;"><i class="bi bi-arrow-left"></i> Volver sin guardar</button>
+            <h1 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #ef4444;">SIMULADOR EXTINTOR</h1>
+        </div>
+        <div class="glass-panel" style="border-radius: 1rem; padding: 1rem; text-align: center; width: 220px;">
+            <span style="font-size: 0.7rem; color: #94a3b8;">INTENSIDAD DEL FUEGO</span>
+            <div style="width: 100%; height: 1rem; background-color: #1e293b; border-radius: 9999px; overflow: hidden; margin-top: 5px;">
+                <div id="fire-hp-bar" style="height: 100%; width: 100%; background: linear-gradient(to right, #dc2626, #f97316, #eab308); transition: all 0.2s;"></div>
+            </div>
+            <span id="fire-hp-text" style="font-size: 1.25rem; font-weight: 700; color: #fb923c;">100%</span>
+        </div>
+    </header>
+
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 260px;">
+        <div class="glass-panel" id="steps-panel" style="border-radius: 1rem; padding: 1.5rem;">
+            <h2 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 1rem; border-bottom: 1px solid #475569; padding-bottom: 0.5rem;">MÉTODO T.A.A.B.</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+                <li id="step-1" class="step-active flex items-center gap-3"><div class="step-num">T</div><div><span class="block font-bold">TIRAR</span><span class="text-xs">Quita el seguro</span></div></li>
+                <li id="step-2" class="step-pending flex items-center gap-3"><div class="step-num">A</div><div><span class="block font-bold">APUNTAR</span><span class="text-xs">A la base del fuego</span></div></li>
+                <li id="step-3" class="step-pending flex items-center gap-3"><div class="step-num">A</div><div><span class="block font-bold">APRETAR</span><span class="text-xs">Mantén el clic</span></div></li>
+                <li id="step-4" class="step-pending flex items-center gap-3"><div class="step-num">B</div><div><span class="block font-bold">BARRER</span><span class="text-xs">De lado a lado</span></div></li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div id="action-tooltip" class="glass-panel d-inline-block px-4 py-2" style="border-radius: 9999px; font-weight: 600; color: #facc15; animation: bounce 2s infinite;">
+            👆 Haz clic en el SEGURO AMARILLO del extintor
+        </div>
+    </div>
+
+    <div id="victory-screen" style="position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 1s; z-index: 50;">
+        <h1 style="font-size: 3.5rem; font-weight: 900; color: #34d399; text-shadow: 0 0 15px rgba(52, 211, 153, 0.6);">¡FUEGO EXTINGUIDO!</h1>
+        <p style="font-size: 1.2rem; color: #e2e8f0; margin-bottom: 2rem;">Has aplicado correctamente el método. Ahora evaluemos lo aprendido.</p>
+        <button id="btn-start-quiz" class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg" style="pointer-events: auto;">Ir al Cuestionario <i class="bi bi-card-checklist"></i></button>
+    </div>
+</div>
+
+<svg id="crosshair" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4"/>
+    <line x1="50" y1="0" x2="50" y2="30" stroke="white" stroke-width="4"/><line x1="50" y1="100" x2="50" y2="70" stroke="white" stroke-width="4"/>
+    <line x1="0" y1="50" x2="30" y2="50" stroke="white" stroke-width="4"/><line x1="100" y1="50" x2="70" y2="50" stroke="white" stroke-width="4"/>
+    <circle cx="50" cy="50" r="4" fill="red"/>
+</svg>
+
+<div id="quiz-overlay">
+    <div class="glass-panel p-5" style="border-radius: 1rem; max-width: 600px; width: 90%;">
+        <div class="d-flex justify-content-between mb-4">
+            <h3 class="text-white fw-bold m-0"><i class="bi bi-card-text text-primary"></i> Evaluación: Módulo 1</h3>
+            <span class="badge bg-primary rounded-pill d-flex align-items-center" id="quiz-counter">Pregunta 1 de 5</span>
+        </div>
+        
+        <h4 id="question-text" class="text-white mb-4" style="line-height: 1.4;">Cargando pregunta...</h4>
+        
+        <div id="options-container" class="d-flex flex-column gap-2"></div>
+
+        <div id="quiz-results" style="display: none; text-align: center;">
+            <h2 class="text-success fw-bold mb-2" style="font-size: 3rem;" id="final-score">100%</h2>
+            <p class="text-white mb-4">¡Has completado el escenario y la evaluación!</p>
+            <button onclick="saveAndReturn()" class="btn btn-success btn-lg w-100 fw-bold rounded-pill">Guardar y volver al Dashboard</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/ejemplo.js"></script>
 </body>
 </html>

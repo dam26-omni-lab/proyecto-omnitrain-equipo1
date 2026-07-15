@@ -8,7 +8,6 @@
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/styles.css" rel="stylesheet">
     <style>
-        /* Estilo rápido para centrar el lienzo de Phaser */
         #game-container {
             display: flex;
             justify-content: center;
@@ -24,47 +23,36 @@
 <body>
 <div class="wrapper">
 <aside class="sidebar" id="sidebar">
-
         <div class="brand-logo">
-
             <a href="../../index.html"><div class="logo-icon">
                 <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
             </div></a>
-
             <div class="brand-text">
                 <h1>OmniTrain</h1>
                 <span>Brigada de Emergencia</span>
             </div>
-
         </div>
-
         <nav class="sidebar-nav">
-
             <a href="../../index.html" class="sidebar-nav-item">
                 <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
                 <span>Inicio</span>
             </a>
-
             <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
                 <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
                 <span>Capacitaciones</span>
             </a>
-
             <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item active">
                 <i class="bi bi-controller" style="font-size: 24px;"></i>
                 <span>Simulador 2D</span>
             </a>
-
             <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
                 <i class="bi bi-box-fill" style="font-size: 24px;"></i>
                 <span>Entorno 3D</span>
             </a>
-
             <a href="#" class="sidebar-nav-item">
                 <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
                 <span>Evaluaciones</span>
             </a>
-
             <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
                 <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
                 <span>Métricas & KPIs</span>
@@ -91,8 +79,8 @@
 
     <div class="content-padding">
         <div class="global-progress">
-            <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
-            <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
+            <div class="d-flex justify-content-between"><span>Progreso Global</span><span id="global-progress-text" class="text-success fw-bold" style="color: #2e7d32!important;">0%</span></div>
+            <div class="progress"><div id="global-progress-bar" class="progress-bar" style="width: 0%"></div></div>
         </div>
         
         <div class="back-btn-row mt-3 d-flex flex-column flex-md-row justify-content-between gap-2">
@@ -100,7 +88,7 @@
             <div class="d-flex flex-column flex-sm-row gap-2">
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
-                <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/simulador-2d/pygame.html'">Entrar al Simulador</button>
+                <button class="btn btn-outline-custom" onclick="window.open('pygame.html', '_blank')">Entrar al Simulador</button>
             </div>
         </div>
 
@@ -112,19 +100,22 @@
                 <div><h3>Simulador 2D — Escenarios de Emergencia</h3><p>Practica protocolos de extinción en entornos seguros y controlados</p></div>
             </div>
             <div class="hero-stats-row d-flex flex-wrap gap-2 mt-3">
-                <div class="hero-stat-card flex-fill"><h4>1/3</h4><span>Escenarios completados</span></div>
-                <div class="hero-stat-card flex-fill"><h4>60%</h4><span>Progreso del módulo</span></div>
-                <div class="hero-stat-card flex-fill"><h4>92</h4><span>Mejor puntuación</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-scenarios">0/3</h4><span>Escenarios completados</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-progress">0%</h4><span>Progreso del módulo</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-score">0</h4><span>Mejor puntuación</span></div>
             </div>
         </div>
 
         <h4 class="card-title mb-3" style="font-size: 18px;">Escenarios de Entrenamiento</h4>
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 mb-3">
+            <div class="col-12 col-sm-6 col-md-4 mb-3" style="cursor: pointer;" onclick="window.open('pygame.html', '_blank')"></div>
                 <div class="scenario-card active h-100">
-                    <span class="scenario-badge bg-basic">Básico</span>
-                    <h5 style="font-size: 16px; font-weight: 700;">Incendio Simple- Cocina</h5>
-                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo PASS en entorno de cocina.</p>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <span class="scenario-badge bg-basic">Básico</span>
+                        <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 10px;"><i class="bi bi-play-circle-fill"></i> JUGAR</span>
+                    </div>
+                    <h5 style="font-size: 16px; font-weight: 700; margin-top: 8px;">Incendio Simple - Cocina</h5>
+                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo T.A.A.B en cocina.</p>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mb-3">
@@ -142,85 +133,55 @@
                 </div>
             </div>
         </div>
-
-        <h4 class="card-title mt-4 mb-3" style="font-size: 18px;">Prueba de Funcionamiento 2D</h4>
-        <div id="game-container" class="w-100"></div>
         </div>
 </main>
 </div>
 
 <script src="../../js/phaser.min.js"></script>
-<script>
-    class Example extends Phaser.Scene {
-        preload ()
-        {
-            // Carga de tu imagen local
-            this.load.image('card', '../../images/rat2.png'); 
-        }
 
-        create ()
-        {
-            const card = this.add.image(this.sys.scale.width / 2, this.sys.scale.height / 2, 'card');
 
-            // === AQUÍ SE COLOCÓ EL CAMBIO ===
-            // Definimos que no queremos que mida más de 200px de ancho o alto
-            const anchoMaximoDeseado = 200; 
-            const altoMaximoDeseado = 200;
-
-            // Phaser calcula la proporción ideal automáticamente
-            const escalaX = anchoMaximoDeseado / card.width;
-            const escalaY = altoMaximoDeseado / card.height;
-            const escalaFinal = Math.min(escalaX, escalaY);
-
-            // Se aplica la nueva escala controlada
-            card.setScale(escalaFinal);
-            // ================================
-
-            Phaser.Actions.AddEffectShine(card);
-        }
-    }
-
-    const config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        backgroundColor: '#2f3640',
-        parent: 'game-container',
-        scene: Example
-    };
-
-    const game = new Phaser.Game(config);
-</script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // === LÓGICA DE ACTUALIZACIÓN DE MÉTRICAS MEDIANTE LOCALSTORAGE ===
+        
+        // 1. Cargamos las métricas guardadas (o usamos valores por defecto si es la primera vez)
+        let metrics = JSON.parse(localStorage.getItem('omniTrainMetrics')) || {
+            scenariosCompleted: 0,
+            moduleProgress: 0,
+            bestScore: 0
+        };
 
+        // 2. Actualizamos el DOM con los valores
+        document.getElementById('stat-scenarios').innerText = `${metrics.scenariosCompleted}/3`;
+        document.getElementById('stat-progress').innerText = `${metrics.moduleProgress}%`;
+        document.getElementById('stat-score').innerText = metrics.bestScore;
+        
+        document.getElementById('global-progress-text').innerText = `${metrics.moduleProgress}%`;
+        document.getElementById('global-progress-bar').style.width = `${metrics.moduleProgress}%`;
+
+        // === LÓGICA DEL SIDEBAR ORIGINAL ===
         const menuToggle = document.getElementById("menuToggle");
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebarOverlay");
         const icon = menuToggle.querySelector("i");
 
         menuToggle.addEventListener("click", () => {
-
             sidebar.classList.toggle("active");
-            overlay.classList.toggle("active");
-
+            if(overlay) overlay.classList.toggle("active");
             if (sidebar.classList.contains("active")) {
                 icon.className = "bi bi-x-lg";
             } else {
                 icon.className = "bi bi-list";
             }
-
         });
 
-        overlay.addEventListener("click", () => {
-
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-
-            icon.className = "bi bi-list";
-
-        });
-
+        if(overlay){
+            overlay.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("active");
+                icon.className = "bi bi-list";
+            });
+        }
     });
 </script>
 </body>
