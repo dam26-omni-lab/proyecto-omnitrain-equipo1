@@ -7,127 +7,52 @@
     <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/styles.css" rel="stylesheet">
-    <script src="../../js/tailwind.js"></script>
     <style>
-        /* =====================================================================
-        ESTILOS ADICIONALES PARA EL SIMULADOR AVANZADO
-           ===================================================================== */
-        /* Estilos del panel de cristal del simulador */
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            pointer-events: auto;
-        }
-
-        .interactive-ui {
-            pointer-events: auto !important;
-        }
-
-        .step-active {
-            color: #10b981 !important;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
-        }
-
-        .step-active .step-num {
-            border-color: #10b981 !important;
-            background-color: rgba(16, 185, 129, 0.1);
-        }
-
-        .step-pending {
-            color: #64748b !important;
-        }
-
-        .step-pending .step-num {
-            border-color: #475569 !important;
-        }
-
-        .step-completed {
-            color: #34d399 !important;
-        }
-
-        .step-completed .step-num {
-            border-color: #34d399 !important;
-            background-color: rgba(52, 211, 153, 0.2);
-        }
-
-        .step-num {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 9999px;
-            border: 2px solid;
+        #game-container {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-weight: 800;
-            transition: all 0.3s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        /* Mirilla del simulador */
-        #crosshair {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            pointer-events: none;
-            z-index: 100000;
-            transform: translate(-50%, -50%);
-            display: none;
-            transition: transform 0.1s ease-out;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 <div class="wrapper">
 <aside class="sidebar" id="sidebar">
-
         <div class="brand-logo">
-
             <a href="../../index.html"><div class="logo-icon">
                 <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;"></i>
             </div></a>
-
             <div class="brand-text">
                 <h1>OmniTrain</h1>
                 <span>Brigada de Emergencia</span>
             </div>
-
         </div>
-
         <nav class="sidebar-nav">
-
             <a href="../../index.html" class="sidebar-nav-item">
                 <i class="bi bi-house-door-fill" style="font-size: 24px;"></i>
                 <span>Inicio</span>
             </a>
-
             <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
                 <i class="bi bi-journal-bookmark-fill" style="font-size: 24px;"></i>
                 <span>Capacitaciones</span>
             </a>
-
             <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item active">
                 <i class="bi bi-controller" style="font-size: 24px;"></i>
                 <span>Simulador 2D</span>
             </a>
-
             <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
                 <i class="bi bi-box-fill" style="font-size: 24px;"></i>
                 <span>Entorno 3D</span>
             </a>
-
             <a href="#" class="sidebar-nav-item">
                 <i class="bi bi-clipboard-check-fill" style="font-size: 24px;"></i>
                 <span>Evaluaciones</span>
             </a>
-
             <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
                 <i class="bi bi-bar-chart-fill" style="font-size: 24px;"></i>
                 <span>Métricas & KPIs</span>
@@ -154,8 +79,8 @@
 
     <div class="content-padding">
         <div class="global-progress">
-            <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="text-success fw-bold" style="color: #2e7d32!important;">75%</span></div>
-            <div class="progress"><div class="progress-bar" style="width: 75%"></div></div>
+            <div class="d-flex justify-content-between"><span>Progreso Global</span><span id="global-progress-text" class="text-success fw-bold" style="color: #2e7d32!important;">0%</span></div>
+            <div class="progress"><div id="global-progress-bar" class="progress-bar" style="width: 0%"></div></div>
         </div>
         
         <div class="back-btn-row mt-3 d-flex flex-column flex-md-row justify-content-between gap-2">
@@ -163,6 +88,7 @@
             <div class="d-flex flex-column flex-sm-row gap-2">
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
                 <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
+                <button class="btn btn-outline-custom" onclick="window.open('pygame.html', '_blank')">Entrar al Simulador</button>
             </div>
         </div>
 
@@ -173,30 +99,23 @@
                 </div>
                 <div><h3>Simulador 2D — Escenarios de Emergencia</h3><p>Practica protocolos de extinción en entornos seguros y controlados</p></div>
             </div>
-            
-            <div class="mt-3 text-center text-sm-start">
-                <button class="btn btn-light fw-bold px-4 py-2" id="btn-launch-sim" style="color: #c62828 !important; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                    <i class="bi bi-play-fill"></i> Iniciar Simulador Extintor 2D
-                </button>
-            </div>
-
             <div class="hero-stats-row d-flex flex-wrap gap-2 mt-3">
-                <div class="hero-stat-card flex-fill"><h4>1/3</h4><span>Escenarios completados</span></div>
-                <div class="hero-stat-card flex-fill"><h4>60%</h4><span>Progreso del módulo</span></div>
-                <div class="hero-stat-card flex-fill"><h4>92</h4><span>Mejor puntuación</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-scenarios">0/3</h4><span>Escenarios completados</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-progress">0%</h4><span>Progreso del módulo</span></div>
+                <div class="hero-stat-card flex-fill"><h4 id="stat-score">0</h4><span>Mejor puntuación</span></div>
             </div>
         </div>
 
         <h4 class="card-title mb-3" style="font-size: 18px;">Escenarios de Entrenamiento</h4>
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 mb-3" id="card-scenario-1" style="cursor: pointer;">
+            <div class="col-12 col-sm-6 col-md-4 mb-3" style="cursor: pointer;" onclick="window.open('pygame.html', '_blank')"></div>
                 <div class="scenario-card active h-100">
                     <div class="d-flex justify-content-between align-items-start">
                         <span class="scenario-badge bg-basic">Básico</span>
                         <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 10px;"><i class="bi bi-play-circle-fill"></i> JUGAR</span>
                     </div>
                     <h5 style="font-size: 16px; font-weight: 700; margin-top: 8px;">Incendio Simple - Cocina</h5>
-                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo PASS en entorno de cocina.</p>
+                    <p style="font-size: 13px; color: #6c757d; margin-bottom: 0;">Fuego clase F. Identificación de extintor y protocolo T.A.A.B en cocina.</p>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mb-3">
@@ -214,618 +133,33 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 </main>
 </div>
 
-<div id="simulator-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0f172a; z-index: 99999; overflow: hidden; font-family: 'Inter', sans-serif;">
-    <div id="sim-game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
-    
-    <div id="sim-ui-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;">
-        
-        <header style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-            <div class="glass-panel" style="border-radius: 1rem; padding: 1rem 1.5rem; max-width: 450px;">
-                <button id="btn-exit-simulator" class="btn btn-outline-light btn-sm mb-2 interactive-ui" style="border-radius: 6px;"><i class="bi bi-arrow-left"></i> Volver al Dashboard</button>
-                <h1 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #ef4444; text-transform: uppercase; letter-spacing: 1px;">Simulador Extintor</h1>
-                <p style="margin: 0; font-size: 0.8rem; color: #94a3b8;">Domina el método <strong style="color: #fff;">T.A.A.B.</strong> para apagar las llamas de forma segura.</p>
-            </div>
-
-            <div class="glass-panel" style="border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; align-items: center; width: 220px;">
-                <span style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 0.25rem;">Intensidad del Fuego</span>
-                <div style="width: 100%; height: 1rem; background-color: #1e293b; border-radius: 9999px; overflow: hidden; border: 1px solid #334155;">
-                    <div id="fire-hp-bar" style="height: 100%; width: 100%; background: linear-gradient(to right, #dc2626, #f97316, #eab308); transition: all 0.2s;"></div>
-                </div>
-                <span id="fire-hp-text" style="font-size: 1.25rem; font-weight: 700; margin-top: 0.5rem; color: #fb923c;">100%</span>
-            </div>
-        </header>
-
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 1rem; flex: 1; justify-content: center;">
-            <div class="glass-panel" id="steps-panel" style="border-radius: 1rem; padding: 1.5rem; width: 260px;">
-                <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid #475569; padding-bottom: 0.5rem; color: #fff; margin-top: 0;">MÉTODO T.A.A.B.</h2>
-                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
-                    <li id="step-1" class="step-active" style="display: flex; align-items: center; gap: 0.75rem;">
-                        <div class="step-num">T</div>
-                        <div>
-                            <span style="display: block; font-weight: 700; font-size: 0.9rem;">TIRAR</span>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">Quita el seguro amarillo</span>
-                        </div>
-                    </li>
-                    <li id="step-2" class="step-pending" style="display: flex; align-items: center; gap: 0.75rem;">
-                        <div class="step-num">A</div>
-                        <div>
-                            <span style="display: block; font-weight: 700; font-size: 0.9rem;">APUNTAR</span>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">A la base del fuego</span>
-                        </div>
-                    </li>
-                    <li id="step-3" class="step-pending" style="display: flex; align-items: center; gap: 0.75rem;">
-                        <div class="step-num">A</div>
-                        <div>
-                            <span style="display: block; font-weight: 700; font-size: 0.9rem;">APRETAR</span>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">Mantén presionado el clic</span>
-                        </div>
-                    </li>
-                    <li id="step-4" class="step-pending" style="display: flex; align-items: center; gap: 0.75rem;">
-                        <div class="step-num">B</div>
-                        <div>
-                            <span style="display: block; font-weight: 700; font-size: 0.9rem;">BARRER</span>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">Mueve de lado a lado</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-            <div id="action-tooltip" class="glass-panel" style="border-radius: 9999px; padding: 0.5rem 2rem; font-size: 1.1rem; font-weight: 600; color: #facc15; text-align: center; animation: bounce 2s infinite;">
-                👆 Haz clic en el SEGURO AMARILLO del extintor
-            </div>
-        </div>
-        
-        <div id="victory-screen" style="position: absolute; inset: 0; background-color: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 1s; z-index: 50;">
-            <h1 style="font-size: 3.5rem; font-weight: 900; color: #34d399; margin-bottom: 1rem; text-shadow: 0 0 15px rgba(52, 211, 153, 0.6);">¡FUEGO EXTINGUIDO!</h1>
-            <p style="font-size: 1.2rem; color: #e2e8f0; margin-bottom: 2rem; max-width: 500px; text-align: center;">Has aplicado correctamente el método T.A.A.B. y controlado la emergencia de forma sobresaliente.</p>
-            <button id="btn-restart-sim" class="btn btn-success btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg interactive-ui">Reiniciar Simulación</button>
-        </div>
-    </div>
-</div>
-
-<svg id="crosshair" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4"/>
-    <line x1="50" y1="0" x2="50" y2="30" stroke="white" stroke-width="4"/>
-    <line x1="50" y1="100" x2="50" y2="70" stroke="white" stroke-width="4"/>
-    <line x1="0" y1="50" x2="30" y2="50" stroke="white" stroke-width="4"/>
-    <line x1="100" y1="50" x2="70" y2="50" stroke="white" stroke-width="4"/>
-    <circle cx="50" cy="50" r="4" fill="red"/>
-</svg>
-
 <script src="../../js/phaser.min.js"></script>
 
+
 <script>
-    // =====================================================================
-    // LÓGICA DE CONTROL Y CÓDIGO DEL SIMULADOR 2D AVANZADO DEL EXTINTOR
-    // =====================================================================
-    class SimulatorScene extends Phaser.Scene {
-        constructor() {
-            super('SimulatorScene');
-            this.fuegoSaludMaxima = 1000;
-            this.fuegoSalud = this.fuegoSaludMaxima;
-            this.estadoPaso = 1; // 1: Tirar, 2: Apuntar, 3: Apretar, 4: Barrer
-            this.isShooting = false;
-            this.lastMouseX = 0;
-            this.sweepVelocity = 0;
-        }
-
-        preload() {
-            this.generateProceduralAssets();
-        }
-
-        create() {
-            const width = this.cameras.main.width;
-            const height = this.cameras.main.height;
-
-            // 1. Dibujar fondo industrial
-            this.createEnvironment(width, height);
-
-            // 2. Sistema de fuego y humo
-            this.createFireSystem();
-
-            // 3. Sistema del extintor
-            this.extintorX = width * 0.8;
-            this.extintorY = height - 150;
-            this.createExtinguisher();
-
-            // 4. Sistema de espuma
-            this.foamGroup = this.physics.add.group();
-            this.physics.add.overlap(this.foamGroup, this.fuegoBaseHitbox, this.handleFireHit, null, this);
-
-            // 5. Interacciones
-            this.input.on('pointerdown', this.startShooting, this);
-            this.input.on('pointerup', this.stopShooting, this);
-            this.input.on('pointermove', this.updatePointer, this);
-
-            this.crosshair = document.getElementById('crosshair');
-        }
-
-        generateProceduralAssets() {
-            let g = this.add.graphics();
-
-            // Partícula de Fuego Suave (Núcleo)
-            g.fillGradientStyle(0xffffff, 0xffeebb, 0xffdd88, 0xffcc00, 1);
-            g.fillCircle(16, 16, 16);
-            g.generateTexture('fireCore', 32, 32);
-            g.clear();
-
-            // Partícula de Fuego Externa (Naranja/Roja)
-            g.fillStyle(0xff4400, 0.8);
-            g.fillCircle(24, 24, 24);
-            g.generateTexture('fireGlow', 48, 48);
-            g.clear();
-
-            // Humo
-            g.fillStyle(0x333333, 0.5);
-            g.fillCircle(32, 32, 32);
-            g.generateTexture('smoke', 64, 64);
-            g.clear();
-
-            // Espuma / Polvo
-            g.fillStyle(0xffffff, 0.9);
-            g.fillCircle(10, 10, 10);
-            g.fillStyle(0xdddddd, 0.6);
-            g.fillCircle(10, 10, 15);
-            g.generateTexture('foam', 30, 30);
-            g.clear();
-        }
-
-        createEnvironment(w, h) {
-            let bg = this.add.graphics();
-            bg.fillGradientStyle(0x1a202c, 0x1a202c, 0x0f172a, 0x0f172a, 1);
-            bg.fillRect(0, 0, w, h);
-
-            let floorHeight = 120;
-            bg.fillStyle(0x334155, 1);
-            bg.fillRect(0, h - floorHeight, w, floorHeight);
-            
-            bg.lineStyle(4, 0x475569);
-            bg.lineBetween(0, h - floorHeight, w, h - floorHeight);
-
-            bg.fillStyle(0xeab308, 0.15);
-            for(let i=0; i < w; i+= 60) {
-                bg.beginPath();
-                bg.moveTo(i, h - floorHeight);
-                bg.lineTo(i + 30, h - floorHeight);
-                bg.lineTo(i + 80, h - floorHeight - 80);
-                bg.lineTo(i + 50, h - floorHeight - 80);
-                bg.fillPath();
-            }
-        }
-
-        createFireSystem() {
-            this.fuegoX = this.cameras.main.width * 0.3;
-            this.fuegoY = this.cameras.main.height - 120;
-
-            this.fuegoBaseHitbox = this.physics.add.staticSprite(this.fuegoX, this.fuegoY, null);
-            this.fuegoBaseHitbox.setSize(240, 60);
-            this.fuegoBaseHitbox.setVisible(false);
-
-            this.fuegoTopHitbox = this.physics.add.staticSprite(this.fuegoX, this.fuegoY - 150, null);
-            this.fuegoTopHitbox.setSize(240, 150);
-            this.fuegoTopHitbox.setVisible(false);
-
-            this.smokeEmitter = this.add.particles(this.fuegoX, this.fuegoY - 50, 'smoke', {
-                speed: { min: 20, max: 100 },
-                angle: { min: 250, max: 290 },
-                scale: { start: 1, end: 4 },
-                alpha: { start: 0.5, end: 0 },
-                lifespan: 3000,
-                gravityY: -100
-            });
-
-            this.glowEmitter = this.add.particles(this.fuegoX, this.fuegoY, 'fireGlow', {
-                speed: { min: 50, max: 150 },
-                angle: { min: 240, max: 300 },
-                scale: { start: 1.5, end: 0 },
-                blendMode: 'ADD',
-                lifespan: 1000,
-                gravityY: -150
-            });
-
-            this.coreEmitter = this.add.particles(this.fuegoX, this.fuegoY + 20, 'fireCore', {
-                speed: { min: 10, max: 80 },
-                angle: { min: 250, max: 290 },
-                scale: { start: 1.2, end: 0 },
-                blendMode: 'ADD',
-                lifespan: 600,
-                gravityY: -50
-            });
-        }
-
-        createExtinguisher() {
-            let g = this.add.graphics();
-            let ex = this.extintorX;
-            let ey = this.extintorY;
-
-            g.fillStyle(0x000000, 0.5);
-            g.fillEllipse(ex, ey + 10, 140, 40);
-
-            let radius = 45;
-            let height = 220;
-            
-            g.fillStyle(0x990000);
-            g.fillRoundedRect(ex - radius, ey - height, radius * 2, height, 10);
-            g.fillStyle(0xff3333);
-            g.fillRoundedRect(ex - radius + 5, ey - height, 20, height, 5);
-            g.fillStyle(0x660000);
-            g.fillRoundedRect(ex + radius - 20, ey - height, 20, height, 5);
-
-            g.fillStyle(0x333333);
-            g.fillRect(ex - 15, ey - height - 30, 30, 30);
-            
-            // Manómetro arreglado para evitar problemas con la versión de Phaser
-            g.fillStyle(0xffffff);
-            g.fillCircle(ex, ey - height - 15, 12);
-            g.fillStyle(0x10b981); // Sector verde
-            g.beginPath();
-            g.moveTo(ex, ey - height - 15);
-            g.arc(ex, ey - height - 15, 10, Phaser.Math.DegToRad(180), Phaser.Math.DegToRad(270), false);
-            g.closePath();
-            g.fillPath();
-            g.lineStyle(2, 0x000000);
-            g.lineBetween(ex, ey - height - 15, ex - 6, ey - height - 20); // Aguja indicadora
-
-            g.fillStyle(0x222222);
-            g.fillRoundedRect(ex - 40, ey - height - 50, 40, 10, 4);
-            this.manijaSuperior = this.add.rectangle(ex - 40, ey - height - 65, 40, 10, 0x222222).setOrigin(0, 0);
-
-            g.fillStyle(0xf8fafc);
-            g.fillRect(ex - 25, ey - height + 40, 50, 80);
-            g.fillStyle(0xeab308);
-            g.fillRect(ex - 25, ey - height + 40, 50, 15);
-            g.fillStyle(0x333333);
-            g.fillRect(ex - 20, ey - height + 65, 40, 4);
-            g.fillRect(ex - 20, ey - height + 75, 30, 4);
-            g.fillRect(ex - 20, ey - height + 85, 35, 4);
-
-            this.pinX = ex - 10;
-            this.pinY = ey - height - 42;
-            
-            this.pinGlow = this.add.circle(this.pinX, this.pinY, 20, 0xeab308, 0.4);
-            this.tweens.add({
-                targets: this.pinGlow, scale: 1.5, alpha: 0,
-                duration: 800, repeat: -1, yoyo: false
-            });
-
-            this.pin = this.add.circle(this.pinX, this.pinY, 12, 0xeab308);
-            this.pin.setStrokeStyle(3, 0xb45309);
-            this.pin.setInteractive({ useHandCursor: true });
-            
-            this.pin.on('pointerdown', () => {
-                if(this.estadoPaso === 1) {
-                    this.pullPin();
-                }
-            });
-
-            this.hoseBaseX = ex + 20;
-            this.hoseBaseY = ey - height - 20;
-            this.hoseGraphics = this.add.graphics();
-            this.drawHose(this.hoseBaseX, this.hoseBaseY + 150);
-
-            this.shootEmitter = this.add.particles(0, 0, 'foam', {
-                speed: { min: 600, max: 900 },
-                angle: { min: -10, max: 10 },
-                scale: { start: 0.5, end: 4 },
-                alpha: { start: 1, end: 0 },
-                lifespan: 800,
-                blendMode: 'NORMAL',
-                gravityY: 150,
-                frequency: -1
-            });
-        }
-
-        pullPin() {
-            let text = this.add.text(this.pinX, this.pinY - 30, '¡SEGURO AFUERA!', { font: 'bold 20px Arial', fill: '#eab308' }).setOrigin(0.5);
-            this.tweens.add({ targets: text, y: text.y - 40, alpha: 0, duration: 1000, onComplete: () => text.destroy() });
-
-            this.pin.destroy();
-            this.pinGlow.destroy();
-            
-            this.estadoPaso = 2;
-            this.updateUI();
-
-            this.crosshair.style.display = 'block';
-            this.input.setDefaultCursor('none');
-        }
-
-        updatePointer(pointer) {
-            if(this.estadoPaso >= 2) {
-                this.crosshair.style.left = pointer.event.clientX + 'px';
-                this.crosshair.style.top = pointer.event.clientY + 'px';
-                
-                let aimingAtBase = (pointer.x > this.fuegoX - 120 && pointer.x < this.fuegoX + 120 && pointer.y > this.fuegoY - 50 && pointer.y < this.fuegoY + 50);
-                if(aimingAtBase && this.estadoPaso === 2) {
-                    this.crosshair.querySelector('circle:first-child').setAttribute('stroke', '#10b981');
-                } else {
-                    this.crosshair.querySelector('circle:first-child').setAttribute('stroke', 'rgba(255,255,255,0.5)');
-                }
-            }
-
-            if(this.isShooting) {
-                let deltaX = Math.abs(pointer.x - this.lastMouseX);
-                this.sweepVelocity = (this.sweepVelocity * 0.8) + (deltaX * 0.2);
-                
-                if(this.sweepVelocity > 5 && this.estadoPaso === 3) {
-                    this.estadoPaso = 4;
-                    this.updateUI();
-                }
-            }
-            this.lastMouseX = pointer.x;
-        }
-
-        drawHose(targetX, targetY) {
-            this.hoseGraphics.clear();
-            this.hoseGraphics.lineStyle(16, 0x111111);
-            
-            let controlPointX = this.hoseBaseX;
-            let controlPointY = this.hoseBaseY + 200; 
-
-            let curve = new Phaser.Curves.QuadraticBezier(
-                new Phaser.Math.Vector2(this.hoseBaseX, this.hoseBaseY),
-                new Phaser.Math.Vector2(controlPointX, controlPointY),
-                new Phaser.Math.Vector2(targetX, targetY)
-            );
-
-            curve.draw(this.hoseGraphics);
-
-            let angle = Phaser.Math.Angle.Between(controlPointX, controlPointY, targetX, targetY);
-            this.hoseGraphics.fillStyle(0x333333);
-            
-            let perp = angle + Math.PI/2;
-            let w = 12;
-            let l = 35;
-            
-            this.hoseGraphics.beginPath();
-            this.hoseGraphics.moveTo(targetX + Math.cos(perp)*w, targetY + Math.sin(perp)*w);
-            this.hoseGraphics.lineTo(targetX - Math.cos(perp)*w, targetY - Math.sin(perp)*w);
-            this.hoseGraphics.lineTo(targetX - Math.cos(perp)*w + Math.cos(angle)*l, targetY - Math.sin(perp)*w + Math.sin(angle)*l);
-            this.hoseGraphics.lineTo(targetX + Math.cos(perp)*w + Math.cos(angle)*l, targetY + Math.sin(perp)*w + Math.sin(angle)*l);
-            this.hoseGraphics.fillPath();
-
-            this.boquillaPuntaX = targetX + Math.cos(angle)*l;
-            this.boquillaPuntaY = targetY + Math.sin(angle)*l;
-            this.boquillaAngulo = angle;
-        }
-
-        startShooting(pointer) {
-            if (this.estadoPaso === 1) {
-                this.cameras.main.shake(100, 0.005);
-                document.getElementById('action-tooltip').classList.add('text-danger');
-                document.getElementById('action-tooltip').innerText = "⚠️ PRIMERO DEBES QUITAR EL SEGURO";
-                setTimeout(()=> {
-                    document.getElementById('action-tooltip').classList.remove('text-danger');
-                    document.getElementById('action-tooltip').innerText = "👆 Haz clic en el SEGURO AMARILLO del extintor";
-                }, 2000);
-                return;
-            }
-
-            if (this.fuegoSalud <= 0) return;
-
-            this.isShooting = true;
-            this.shootEmitter.start();
-
-            this.tweens.add({ targets: this.manijaSuperior, angle: 10, duration: 100 });
-
-            if(this.estadoPaso === 2) {
-                this.estadoPaso = 3;
-                this.updateUI();
-            }
-
-            this.crosshair.style.transform = 'translate(-50%, -50%) scale(1.25)';
-        }
-
-        stopShooting() {
-            this.isShooting = false;
-            this.shootEmitter.stop();
-            this.sweepVelocity = 0;
-
-            if(this.manijaSuperior) {
-                this.tweens.add({ targets: this.manijaSuperior, angle: 0, duration: 100 });
-            }
-
-            this.crosshair.style.transform = 'translate(-50%, -50%) scale(1)';
-        }
-
-        update(time, delta) {
-            let pointer = this.input.activePointer;
-
-            if (this.estadoPaso >= 2) {
-                let pX = Math.min(pointer.x, this.extintorX - 50);
-                let pY = pointer.y;
-                
-                this.drawHose(pX, pY);
-
-                if(this.isShooting) {
-                    this.shootEmitter.setPosition(this.boquillaPuntaX, this.boquillaPuntaY);
-                    let deg = Phaser.Math.RadToDeg(this.boquillaAngulo);
-                    this.shootEmitter.setAngle({ min: deg - 8, max: deg + 8 });
-
-                    if(time % 3 === 0) {
-                        let bullet = this.foamGroup.create(this.boquillaPuntaX, this.boquillaPuntaY, null);
-                        bullet.setVisible(false);
-                        bullet.setSize(30, 30);
-                        this.physics.velocityFromRotation(this.boquillaAngulo + Phaser.Math.FloatBetween(-0.1, 0.1), 800, bullet.body.velocity);
-                        bullet.body.setGravityY(200);
-                        
-                        this.time.delayedCall(800, () => {
-                            if(bullet && bullet.active) bullet.destroy();
-                        });
-                    }
-                }
-            }
-        }
-
-        handleFireHit(bullet, fireBase) {
-            bullet.destroy();
-
-            if (this.fuegoSalud <= 0) return;
-
-            // Mayor recompensa por realizar el barrido
-            let damage = (this.estadoPaso === 4 && this.sweepVelocity > 3) ? 5 : 0.6;
-            
-            this.fuegoSalud -= damage;
-            
-            let percentage = Math.max(0, (this.fuegoSalud / this.fuegoSaludMaxima) * 100);
-            document.getElementById('fire-hp-bar').style.width = percentage + '%';
-            document.getElementById('fire-hp-text').innerText = Math.floor(percentage) + '%';
-
-            if(percentage < 50) document.getElementById('fire-hp-bar').style.background = "linear-gradient(to right, #eab308, #fb923c)";
-            if(percentage < 20) document.getElementById('fire-hp-bar').style.background = "#10b981";
-
-            let scaleFactor = (this.fuegoSalud / this.fuegoSaludMaxima);
-            this.coreEmitter.setScale({ start: 1.2 * scaleFactor, end: 0 });
-            this.glowEmitter.setScale({ start: 1.5 * scaleFactor, end: 0 });
-            this.smokeEmitter.setScale({ start: scaleFactor, end: 4 * scaleFactor });
-            
-            let currentY = this.fuegoY + ((1 - scaleFactor) * 50);
-            this.coreEmitter.setPosition(this.fuegoX, currentY + 20);
-            this.glowEmitter.setPosition(this.fuegoX, currentY);
-
-            if (this.fuegoSalud <= 0) {
-                this.winGame();
-            }
-        }
-
-        updateUI() {
-            for(let i=1; i<=4; i++) {
-                let li = document.getElementById('step-' + i);
-                if(i === this.estadoPaso) {
-                    li.className = "step-active flex items-center gap-3 transition-all";
-                } else if (i < this.estadoPaso) {
-                    li.className = "step-completed flex items-center gap-3 transition-all";
-                    li.querySelector('.step-num').innerHTML = '✓';
-                } else {
-                    li.className = "step-pending flex items-center gap-3 transition-all";
-                }
-            }
-
-            let tooltip = document.getElementById('action-tooltip');
-            switch(this.estadoPaso) {
-                case 2:
-                    tooltip.innerText = "🎯 Apunta la manguera hacia la BASE de las llamas";
-                    tooltip.style.color = "#fb923c";
-                    break;
-                case 3:
-                    tooltip.innerText = "✊ Mantén presionado el clic para disparar el polvo";
-                    tooltip.style.color = "#38bdf8";
-                    break;
-                case 4:
-                    tooltip.innerText = "↔️ ¡Mueve el ratón de lado a lado (BARRER) para apagarlo eficazmente!";
-                    tooltip.style.color = "#34d399";
-                    break;
-            }
-        }
-
-        winGame() {
-            this.stopShooting();
-            this.coreEmitter.stop();
-            this.glowEmitter.stop();
-            
-            this.smokeEmitter.setTexture('smoke');
-            this.smokeEmitter.setTint(0xffffff); // Humo blanco de extinción
-            this.smokeEmitter.setAlpha({ start: 0.8, end: 0 });
-            
-            setTimeout(() => this.smokeEmitter.stop(), 3000);
-
-            this.crosshair.style.display = 'none';
-            this.input.setDefaultCursor('default');
-
-            document.getElementById('action-tooltip').style.display = 'none';
-            
-            let vicScreen = document.getElementById('victory-screen');
-            vicScreen.style.opacity = '1';
-            vicScreen.style.pointerEvents = 'auto';
-        }
-    }
-
-    // =====================================================================
-    // MANEJO DE VISTAS (DASHBOARD <-> SIMULADOR)
-    // =====================================================================
-    let simulatorGame = null;
-
-    function startSimulator() {
-        // Ocultar barras de desplazamiento para mantener la inmersión del simulador
-        document.body.style.overflow = "hidden";
-        document.getElementById('simulator-overlay').style.display = 'block';
-
-        if (!simulatorGame) {
-            const simConfig = {
-                type: Phaser.AUTO,
-                width: window.innerWidth,
-                height: window.innerHeight,
-                parent: 'sim-game-container',
-                transparent: true,
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        gravity: { y: 0 },
-                        debug: false
-                    }
-                },
-                scene: SimulatorScene
-            };
-            simulatorGame = new Phaser.Game(simConfig);
-        } else {
-            // Reiniciar estado si ya fue instanciado antes
-            let scene = simulatorGame.scene.scenes[0];
-            scene.fuegoSalud = scene.fuegoSaludMaxima;
-            scene.estadoPaso = 1;
-            scene.isShooting = false;
-            
-            // Restablecer interfaz visual
-            document.getElementById('fire-hp-bar').style.width = '100%';
-            document.getElementById('fire-hp-bar').style.background = "linear-gradient(to right, #dc2626, #f97316, #eab308)";
-            document.getElementById('fire-hp-text').innerText = '100%';
-            document.getElementById('victory-screen').style.opacity = '0';
-            document.getElementById('victory-screen').style.pointerEvents = 'none';
-            document.getElementById('action-tooltip').style.display = 'block';
-            document.getElementById('action-tooltip').innerText = "👆 Haz clic en el SEGURO AMARILLO del extintor";
-            document.getElementById('action-tooltip').style.color = "#facc15";
-
-            // Reiniciar la escena física
-            scene.scene.restart();
-        }
-    }
-
-    function exitSimulator() {
-        document.body.style.overflow = "";
-        document.getElementById('simulator-overlay').style.display = 'none';
-        
-        if (simulatorGame) {
-            let scene = simulatorGame.scene.scenes[0];
-            scene.stopShooting();
-            scene.input.setDefaultCursor('default');
-            document.getElementById('crosshair').style.display = 'none';
-        }
-    }
-
-    // Adaptar lienzo al redimensionar pantalla
-    window.addEventListener('resize', () => {
-        if (simulatorGame) {
-            simulatorGame.scale.resize(window.innerWidth, window.innerHeight);
-        }
-    });
-
-    // Enlazar los botones con las funciones del simulador
     document.addEventListener("DOMContentLoaded", () => {
-        // Enlace al hacer clic en el botón flotante del Hero Banner
-        document.getElementById('btn-launch-sim').addEventListener('click', startSimulator);
+        // === LÓGICA DE ACTUALIZACIÓN DE MÉTRICAS MEDIANTE LOCALSTORAGE ===
         
-        // Enlace al hacer clic en la tarjeta del Escenario de Cocina
-        document.getElementById('card-scenario-1').addEventListener('click', startSimulator);
+        // 1. Cargamos las métricas guardadas (o usamos valores por defecto si es la primera vez)
+        let metrics = JSON.parse(localStorage.getItem('omniTrainMetrics')) || {
+            scenariosCompleted: 0,
+            moduleProgress: 0,
+            bestScore: 0
+        };
 
-        // Enlaces de la interfaz del simulador
-        document.getElementById('btn-exit-simulator').addEventListener('click', exitSimulator);
-        document.getElementById('btn-restart-sim').addEventListener('click', startSimulator);
+        // 2. Actualizamos el DOM con los valores
+        document.getElementById('stat-scenarios').innerText = `${metrics.scenariosCompleted}/3`;
+        document.getElementById('stat-progress').innerText = `${metrics.moduleProgress}%`;
+        document.getElementById('stat-score').innerText = metrics.bestScore;
+        
+        document.getElementById('global-progress-text').innerText = `${metrics.moduleProgress}%`;
+        document.getElementById('global-progress-bar').style.width = `${metrics.moduleProgress}%`;
 
-        // Lógica de navegación lateral del panel original
+        // === LÓGICA DEL SIDEBAR ORIGINAL ===
         const menuToggle = document.getElementById("menuToggle");
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebarOverlay");
@@ -833,8 +167,7 @@
 
         menuToggle.addEventListener("click", () => {
             sidebar.classList.toggle("active");
-            if (overlay) overlay.classList.toggle("active");
-
+            if(overlay) overlay.classList.toggle("active");
             if (sidebar.classList.contains("active")) {
                 icon.className = "bi bi-x-lg";
             } else {
@@ -842,7 +175,7 @@
             }
         });
 
-        if (overlay) {
+        if(overlay){
             overlay.addEventListener("click", () => {
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
