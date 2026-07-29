@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTrain - Entorno 3D</title>
+
+    <!-- 1. Preload para recursos críticos (Ayuda con el Render-blocking y Network tree) -->
+    <link rel="preload" href="../../css/bootstrap.min.css" as="style">
+    <link rel="preload" href="../../css/styles.css" as="style">
+
+    <!-- 2. Carga normal de estilos críticos -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/styles.css" rel="stylesheet">
-    <link href="../../css/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- 3. Carga diferida (Defer) para Bootstrap Icons que son pesados (Soluciona Render-blocking) -->
+    <link rel="preload" href="../../css/bootstrap-icons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="../../css/bootstrap-icons.min.css" rel="stylesheet"></noscript>
 </head>
 <body>
 <div class="wrapper">
