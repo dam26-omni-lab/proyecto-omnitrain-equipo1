@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTrain - Entorno 3D</title>
 
-    <!-- 1. Preload para recursos críticos (Ayuda con el Render-blocking y Network tree) -->
-    <link rel="preload" href="../../css/bootstrap.min.css" as="style">
-    <link rel="preload" href="../../css/styles.css" as="style">
+    <!-- uguuuuuuntttttnnnt 1. Carga diferida para Bootstrap (Soluciona Render-blocking) -->
+    <link rel="preload" href="../../css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="../../css/bootstrap.min.css" rel="stylesheet"></noscript>
 
-    <!-- 2. Carga normal de estilos críticos -->
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/styles.css" rel="stylesheet">
+    <!-- 2. Carga diferida para estilos propios (Soluciona Render-blocking) -->
+    <link rel="preload" href="../../css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="../../css/styles.css" rel="stylesheet"></noscript>
 
-    <!-- 3. Carga diferida (Defer) para Bootstrap Icons que son pesados (Soluciona Render-blocking) -->
+    <!-- 3. Carga diferida para Bootstrap Icons (¡Este ya lo tenías perfecto!) -->
     <link rel="preload" href="../../css/bootstrap-icons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="../../css/bootstrap-icons.min.css" rel="stylesheet"></noscript>
 </head>
@@ -150,37 +150,5 @@
         </div>
     </main>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-        const menuToggle = document.getElementById("menuToggle");
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        const icon = menuToggle.querySelector("i");
-
-        menuToggle.addEventListener("click", () => {
-
-            sidebar.classList.toggle("active");
-            overlay.classList.toggle("active");
-
-            if (sidebar.classList.contains("active")) {
-                icon.className = "bi bi-x-lg";
-            } else {
-                icon.className = "bi bi-list";
-            }
-
-        });
-
-        overlay.addEventListener("click", () => {
-
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-
-            icon.className = "bi bi-list";
-
-        });
-
-    });
-    </script>
 </body>
 </html>
