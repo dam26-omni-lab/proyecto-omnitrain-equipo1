@@ -3,129 +3,746 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniTrain - Simulador Extintor</title>
+    <title>OmniTrain - Simulador Extintor PQS</title>
+    
+    <!-- Archivos CSS Locales (100% Offline) -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../../css/styles.css" rel="stylesheet">
+    
+    <!-- Script de Phaser 3 Local -->
     <script src="../../js/phaser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
         
         .glass-panel {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             pointer-events: auto;
+            color: #fff;
         }
 
-        .step-active { color: #10b981 !important; font-weight: bold; }
-        .step-active .step-num { border-color: #10b981 !important; background-color: rgba(16, 185, 129, 0.1); }
-        .step-pending { color: #64748b !important; }
-        .step-pending .step-num { border-color: #475569 !important; }
-        .step-completed { color: #34d399 !important; }
-        .step-completed .step-num { border-color: #34d399 !important; background-color: rgba(52, 211, 153, 0.2); }
-
         .step-num {
-            width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid;
-            display: flex; align-items: center; justify-content: center; font-weight: 800; transition: all 0.3s;
+            width: 2.2rem;
+            height: 2.2rem;
+            min-width: 2.2rem;
+            border-radius: 50%;
+            border: 2px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .step-active {
+            color: #10b981 !important;
+            font-weight: bold;
+        }
+        .step-active .step-num {
+            border-color: #10b981 !important;
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .step-pending {
+            color: #64748b !important;
+        }
+
+        .step-completed {
+            color: #34d399 !important;
+        }
+        .step-completed .step-num {
+            border-color: #34d399 !important;
+            background-color: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+        }
+
+        /* Caja de Explicación Pedagógica "¿Por qué?" */
+        .why-box {
+            background: rgba(15, 23, 42, 0.9);
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 12px;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .why-box strong {
+            color: #fbbf24;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.85rem;
         }
 
         #crosshair {
-            position: absolute; width: 40px; height: 40px; pointer-events: none;
-            z-index: 10000; transform: translate(-50%, -50%); display: none;
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            display: none;
         }
 
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
 
-        /* Estilos del Cuestionario */
+        /* Overlay del Cuestionario */
         #quiz-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); z-index: 20000;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.5s ease;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 20000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding: 20px;
         }
         
         .quiz-option {
-            width: 100%; padding: 15px; margin-bottom: 10px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;
-            text-align: left; cursor: pointer; transition: all 0.2s;
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            background: #0f172a;
+            border: 3px solid #475569;
+            border-radius: 0 !important;
+            color: #e2e8f0;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 4px 4px 0 0 rgba(0,0,0,0.5);
         }
-        .quiz-option:hover { background: rgba(255,255,255,0.15); border-color: #38bdf8; }
-        .quiz-option.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; }
-        .quiz-option.incorrect { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; }
+        .quiz-option:hover {
+            background: #1e293b;
+            border-color: #38bdf8;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 0 rgba(0,0,0,0.5);
+        }
+        .quiz-option:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 0 rgba(0,0,0,0.5);
+        }
+        .quiz-option.correct {
+            background: #065f46 !important;
+            border-color: #10b981 !important;
+            color: #a7f3d0 !important;
+        }
+        .quiz-option.incorrect {
+            background: #7f1d1d !important;
+            border-color: #ef4444 !important;
+            color: #fecaca !important;
+        }
+
+        .feedback-explanation {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border: 3px solid;
+            border-radius: 0 !important;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            font-size: 0.82rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .feedback-explanation.correct-bg {
+            background: #065f46;
+            border-color: #10b981;
+            color: #a7f3d0;
+        }
+        .feedback-explanation.incorrect-bg {
+            background: #7f1d1d;
+            border-color: #ef4444;
+            color: #fecaca;
+        }
+
+        /* ============ ESTÉTICA PIXEL ART ============ */
+        #sim-game-container canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .pixel-font {
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Efecto de contorno "pixelado" sobre el texto, sin necesitar una
+           fuente pixel-art externa (el proyecto es 100% offline) */
+        .pixel-text-outline {
+            text-shadow:
+                2px 0 0 #0f172a, -2px 0 0 #0f172a,
+                0 2px 0 #0f172a, 0 -2px 0 #0f172a,
+                2px 2px 0 #0f172a, -2px -2px 0 #0f172a,
+                2px -2px 0 #0f172a, -2px 2px 0 #0f172a;
+        }
+
+        .pixel-border {
+            border: 3px solid #0f172a;
+            box-shadow:
+                0 0 0 2px #f8fafc,
+                0 0 0 5px #0f172a,
+                6px 6px 0 0 rgba(0,0,0,0.55);
+            image-rendering: pixelated;
+        }
+
+        .pixel-btn {
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 0 !important;
+            padding: 18px 36px;
+            cursor: pointer;
+            box-shadow: 5px 5px 0 0 #0f172a;
+            transition: transform 0.08s ease;
+        }
+        .pixel-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 0 #0f172a;
+        }
+        .pixel-btn-play {
+            background: #ef4444;
+            color: #fff;
+        }
+        .pixel-btn-exit {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        /* Botones de mismo tamaño para la pantalla de victoria (Cuestionario,
+           Reset, Salir), separados siempre a la misma distancia (gap-3) */
+        .pixel-btn-equal {
+            width: 190px;
+            text-align: center;
+            font-size: 0.85rem;
+            padding: 16px 10px;
+        }
+
+        /* Tarjetas de la pantalla previa: más grandes, esquinas "recortadas"
+           estilo cuadro de diálogo retro, franja de color superior */
+        .pixel-card {
+            background: #1e293b;
+            border-radius: 0 !important;
+            border: 3px solid #0f172a;
+            box-shadow:
+                0 0 0 2px #475569,
+                7px 7px 0 0 rgba(0,0,0,0.55);
+            padding: 26px 22px 22px;
+            width: 280px;
+            min-height: 210px;
+            position: relative;
+            clip-path: polygon(
+                0 14px, 14px 14px, 14px 0,
+                calc(100% - 14px) 0, calc(100% - 14px) 14px, 100% 14px,
+                100% calc(100% - 14px), calc(100% - 14px) calc(100% - 14px), calc(100% - 14px) 100%,
+                14px 100%, 14px calc(100% - 14px), 0 calc(100% - 14px)
+            );
+            transition: transform 0.15s ease;
+        }
+        .pixel-card:hover {
+            transform: translateY(-4px);
+        }
+        .pixel-card .pixel-icon {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .pixel-card h6 {
+            font-family: "Courier New", Courier, monospace;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #facc15;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed #475569;
+        }
+        .pixel-card p {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        #pre-game-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 25000;
+            background:
+                linear-gradient(rgba(15,23,42,0.94), rgba(15,23,42,0.94)),
+                repeating-linear-gradient(45deg, #1e293b 0px, #1e293b 2px, #0f172a 2px, #0f172a 4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        /* ============ GLOBO DE DIÁLOGO SOBRE EL EXTINTOR ============ */
+        #extinguisher-speech-bubble {
+            position: fixed;
+            z-index: 9000;
+            transform: translateX(-50%);
+            background: #f8fafc;
+            color: #0f172a;
+            border: 3px solid #0f172a;
+            box-shadow: 5px 5px 0 0 rgba(0,0,0,0.5);
+            padding: 12px 16px;
+            max-width: 230px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.35;
+            pointer-events: none;
+            display: none;
+            clip-path: polygon(
+                0 10px, 10px 10px, 10px 0,
+                calc(100% - 10px) 0, calc(100% - 10px) 10px, 100% 10px,
+                100% 100%, 10px 100%, 10px calc(100% - 10px), 0 calc(100% - 10px)
+            );
+        }
+        /* Cola del globo apuntando hacia abajo, hacia el extintor */
+        #extinguisher-speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -14px;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: #f8fafc;
+            border-right: 3px solid #0f172a;
+            border-bottom: 3px solid #0f172a;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        /* ============ BANNER SUPERIOR DE INSTRUCCIONES ============ */
+        #top-instruction-banner {
+            position: fixed;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9000;
+            background: #facc15;
+            color: #0f172a;
+            border: 3px solid #0f172a;
+            box-shadow: 5px 5px 0 0 rgba(0,0,0,0.5);
+            padding: 10px 22px;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+            pointer-events: none;
+            display: none;
+            clip-path: polygon(
+                0 10px, 10px 10px, 10px 0,
+                calc(100% - 10px) 0, calc(100% - 10px) 10px, 100% 10px,
+                100% calc(100% - 10px), calc(100% - 10px) calc(100% - 10px), calc(100% - 10px) 100%,
+                10px 100%, 10px calc(100% - 10px), 0 calc(100% - 10px)
+            );
+        }
+
+        /* ============ PANTALLA DE VICTORIA Y CUESTIONARIO — PIXEL ART ============ */
+
+        /* Toda la tipografía dentro de victoria/cuestionario hereda la fuente
+           monoespaciada retro, sin tener que taggear cada elemento por separado */
+        #victory-screen, #quiz-overlay {
+            font-family: "Courier New", Courier, monospace;
+        }
+        #victory-screen h1, #quiz-overlay h2, #quiz-overlay h3, #quiz-overlay h4 {
+            letter-spacing: 1.5px;
+        }
+
+        /* Panel contenedor estilo "cuadro de diálogo retro": esquinas recortadas,
+           sombra dura sin blur y doble contorno, igual que .pixel-card */
+        .pixel-panel {
+            background: #1e293b;
+            border: 3px solid #0f172a;
+            border-radius: 0 !important;
+            box-shadow: 0 0 0 2px #475569, 8px 8px 0 0 rgba(0,0,0,0.55);
+            clip-path: polygon(
+                0 14px, 14px 14px, 14px 0,
+                calc(100% - 14px) 0, calc(100% - 14px) 14px, 100% 14px,
+                100% calc(100% - 14px), calc(100% - 14px) calc(100% - 14px), calc(100% - 14px) 100%,
+                14px 100%, 14px calc(100% - 14px), 0 calc(100% - 14px)
+            );
+            color: #fff;
+            pointer-events: auto;
+        }
+
+        /* Marco cuadrado pixel-art para íconos grandes (trofeo, medalla) en vez
+           del ícono "suelto" con drop-shadow difuminado */
+        .pixel-icon-frame {
+            width: 92px;
+            height: 92px;
+            margin: 0 auto;
+            background: #0f172a;
+            border: 4px solid #0f172a;
+            box-shadow: 0 0 0 3px #f59e0b, 6px 6px 0 0 rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pixel-icon-frame i {
+            font-size: 2.6rem;
+            color: #facc15;
+        }
+
+        .pixel-badge {
+            display: inline-block;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: #2563eb;
+            color: #fff;
+            border: 2px solid #0f172a;
+            border-radius: 0 !important;
+            padding: 6px 14px;
+            box-shadow: 3px 3px 0 0 rgba(0,0,0,0.5);
+        }
+
+        /* Botón "Salir" flotando fuera de la tarjeta del cuestionario,
+           arriba a la izquierda de la pantalla (no dentro del panel, para
+           que no quede recortado por el clip-path del panel) */
+        .pixel-quiz-exit {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            padding: 10px 18px !important;
+            font-size: 0.78rem !important;
+            box-shadow: 4px 4px 0 0 #0f172a !important;
+            z-index: 20050;
+        }
+
+        /* Tooltip pixel-art (globo de diálogo pequeño) que aparece al pasar
+           el cursor sobre cualquier elemento con [data-tooltip] */
+        .pixel-tooltip {
+            position: relative;
+        }
+        .pixel-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.85);
+            background: #f8fafc;
+            color: #0f172a;
+            border: 3px solid #0f172a;
+            box-shadow: 4px 4px 0 0 rgba(0,0,0,0.5);
+            padding: 8px 12px;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: none;
+            letter-spacing: 0;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            z-index: 30000;
+        }
+        .pixel-tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
     </style>
 </head>
 <body>
 
+<!-- ===================== PANTALLA PREVIA: INFO + MENÚ ===================== -->
+<div id="pre-game-overlay">
+    <div class="mb-2">
+        <i class="bi bi-fire" style="font-size: 2.4rem; color: #ef4444;"></i>
+    </div>
+    <h1 class="pixel-font pixel-text-outline text-white fw-bold mb-1" style="font-size: 2.1rem; letter-spacing: 3px;">EXTINTOR PQS</h1>
+    <p class="text-light opacity-75 mb-4 pixel-font" style="max-width: 480px; font-size: 0.9rem;">
+        Polvo Químico Seco — Repasa lo esencial antes de entrar a la simulación
+    </p>
+
+    <div class="d-flex flex-wrap justify-content-center gap-4 mb-4">
+        <div class="pixel-card">
+            <span class="pixel-icon">🧯</span>
+            <h6 class="pixel-text-outline">¿Qué es?</h6>
+            <p>Agente extintor en polvo (fosfato monoamónico). De uso múltiple y muy común en hogares y oficinas.</p>
+        </div>
+        <div class="pixel-card">
+            <span class="pixel-icon">🔥</span>
+            <h6 class="pixel-text-outline">¿Para qué fuegos?</h6>
+            <p>Eficaz en fuegos Clase A (sólidos), Clase B (líquidos inflamables) y Clase C (eléctricos).</p>
+        </div>
+        <div class="pixel-card">
+            <span class="pixel-icon">⚠️</span>
+            <h6 class="pixel-text-outline">Antes de usar</h6>
+            <p>Agítalo antes de accionarlo para evitar que el polvo se compacte. Mantén 2-3 metros de distancia del fuego.</p>
+        </div>
+    </div>
+
+    <div class="d-flex gap-3">
+        <button id="btn-exit-pregame" class="pixel-btn pixel-btn-exit">
+            <i class="bi bi-box-arrow-left me-1"></i> Salir
+        </button>
+        <button id="btn-play-pregame" class="pixel-btn pixel-btn-play">
+            <i class="bi bi-play-fill me-1"></i> Jugar
+        </button>
+    </div>
+</div>
+
+<!-- Contenedor del Juego Phaser -->
 <div id="sim-game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
 
-<div id="sim-ui-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;">
-    <header style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-        <div class="glass-panel" style="border-radius: 1rem; padding: 1rem 1.5rem;">
-            <button onclick="window.location.href='index2d.html'" class="btn btn-outline-light btn-sm mb-2" style="pointer-events: auto;"><i class="bi bi-arrow-left"></i> Volver sin guardar</button>
-            <h1 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #ef4444;">SIMULADOR EXTINTOR</h1>
-        </div>
-        <div class="glass-panel" style="border-radius: 1rem; padding: 1rem; text-align: center; width: 220px;">
-            <span style="font-size: 0.7rem; color: #94a3b8;">INTENSIDAD DEL FUEGO</span>
-            <div style="width: 100%; height: 1rem; background-color: #1e293b; border-radius: 9999px; overflow: hidden; margin-top: 5px;">
-                <div id="fire-hp-bar" style="height: 100%; width: 100%; background: linear-gradient(to right, #dc2626, #f97316, #eab308); transition: all 0.2s;"></div>
+<!-- Capa de Interfaz UI -->
+<div id="sim-ui-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem;">
+    
+    <!-- Encabezado Superior -->
+    <header class="d-flex justify-content-between align-items-start w-100">
+        <div class="glass-panel p-3" style="border-radius: 1rem; max-width: 320px;">
+            <button onclick="window.location.href='index2d.html'" class="btn btn-outline-light btn-sm mb-2 d-inline-flex align-items-center gap-1" style="pointer-events: auto;">
+                <i class="bi bi-arrow-left"></i> Volver sin guardar
+            </button>
+            <h1 class="h5 m-0 fw-bold text-danger d-flex align-items-center gap-2">
+                <i class="bi bi-fire"></i> SIMULADOR EXTINTOR PQS
+            </h1>
+            <div class="small text-light opacity-75 mt-1 d-flex justify-content-between">
+                <span>Tiempo de Respuesta:</span>
+                <strong id="timer-display" class="text-warning">0.0s</strong>
             </div>
-            <span id="fire-hp-text" style="font-size: 1.25rem; font-weight: 700; color: #fb923c;">100%</span>
+        </div>
+
+        <!-- Barra de Salud del Fuego -->
+        <div class="glass-panel p-3 text-center" style="border-radius: 1rem; width: 240px;">
+            <span class="small text-uppercase tracking-wide text-light opacity-75 fw-bold" style="font-size: 0.7rem;">INTENSIDAD DEL FUEGO</span>
+            <div class="progress mt-2" style="height: 14px; background-color: #1e293b; border-radius: 10px; overflow: hidden;">
+                <div id="fire-hp-bar" class="progress-bar" style="width: 100%; background: linear-gradient(to right, #dc2626, #f97316, #eab308); transition: width 0.2s ease;"></div>
+            </div>
+            <span id="fire-hp-text" class="h4 fw-bold mt-1 d-block" style="color: #fb923c;">100%</span>
         </div>
     </header>
 
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 260px;">
-        <div class="glass-panel" id="steps-panel" style="border-radius: 1rem; padding: 1.5rem;">
-            <h2 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 1rem; border-bottom: 1px solid #475569; padding-bottom: 0.5rem;">MÉTODO T.A.A.B.</h2>
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
-                <li id="step-1" class="step-active flex items-center gap-3"><div class="step-num">T</div><div><span class="block font-bold">TIRAR</span><span class="text-xs">Quita el seguro</span></div></li>
-                <li id="step-2" class="step-pending flex items-center gap-3"><div class="step-num">A</div><div><span class="block font-bold">APUNTAR</span><span class="text-xs">A la base del fuego</span></div></li>
-                <li id="step-3" class="step-pending flex items-center gap-3"><div class="step-num">A</div><div><span class="block font-bold">APRETAR</span><span class="text-xs">Mantén el clic</span></div></li>
-                <li id="step-4" class="step-pending flex items-center gap-3"><div class="step-num">B</div><div><span class="block font-bold">BARRER</span><span class="text-xs">De lado a lado</span></div></li>
+    <!-- Panel Lateral del Método T.A.A.B. y Explicación del "Porqué" -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 340px;">
+        <div class="glass-panel p-3" id="steps-panel" style="border-radius: 1rem;">
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                <h2 class="h6 fw-bold text-white m-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-check text-warning"></i> MÉTODO T.A.A.B.
+                </h2>
+                <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 10px;">GUÍA INTERACTIVA</span>
+            </div>
+            
+            <ul class="list-unstyled m-0 d-flex flex-column gap-2">
+                <li id="step-1" class="step-active d-flex align-items-center gap-3">
+                    <div class="step-num">T</div>
+                    <div>
+                        <span class="d-block fw-bold">TIRAR</span>
+                        <span class="small opacity-75">Quita el seguro de seguridad</span>
+                    </div>
+                </li>
+                <li id="step-2" class="step-pending d-flex align-items-center gap-3">
+                    <div class="step-num">A</div>
+                    <div>
+                        <span class="d-block fw-bold">APUNTAR</span>
+                        <span class="small opacity-75">Apunta a la base del fuego</span>
+                    </div>
+                </li>
+                <li id="step-3" class="step-pending d-flex align-items-center gap-3">
+                    <div class="step-num">A</div>
+                    <div>
+                        <span class="d-block fw-bold">APRETAR</span>
+                        <span class="small opacity-75">Mantén presionada la palanca</span>
+                    </div>
+                </li>
+                <li id="step-4" class="step-pending d-flex align-items-center gap-3">
+                    <div class="step-num">B</div>
+                    <div>
+                        <span class="d-block fw-bold">BARRER</span>
+                        <span class="small opacity-75">Mueve de lado a lado</span>
+                    </div>
+                </li>
             </ul>
+
+            <!-- Caja Pedagogica del "¿Por qué?" -->
+            <div class="why-box" id="why-explanation-box">
+                <strong id="why-title">💡 ¿Por qué Tirar del seguro?</strong>
+                <span id="why-text">Rompe el sello de seguridad y desbloquea la palanca de percusión para permitir la descarga del extintor sin accionamientos accidentales.</span>
+            </div>
         </div>
     </div>
 
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <div id="action-tooltip" class="glass-panel d-inline-block px-4 py-2" style="border-radius: 9999px; font-weight: 600; color: #facc15; animation: bounce 2s infinite;">
-            👆 Haz clic en el SEGURO AMARILLO del extintor
-        </div>
-    </div>
+    <!-- Ya no hay indicador flotante inferior: las instrucciones ahora viven
+         en el globo sobre el extintor (pasos Tirar/Tomar manguera) y en el
+         banner superior (pasos Apuntar/Apretar/Barrer) -->
+</div>
 
-    <div id="victory-screen" style="position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 1s; z-index: 50;">
-        <h1 style="font-size: 3.5rem; font-weight: 900; color: #34d399; text-shadow: 0 0 15px rgba(52, 211, 153, 0.6);">¡FUEGO EXTINGUIDO!</h1>
-        <p style="font-size: 1.2rem; color: #e2e8f0; margin-bottom: 2rem;">Has aplicado correctamente el método. Ahora evaluemos lo aprendido.</p>
-        <button id="btn-start-quiz" class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg" style="pointer-events: auto;">Ir al Cuestionario <i class="bi bi-card-checklist"></i></button>
+<!-- Globo de diálogo pixel art, apunta hacia el extintor -->
+<div id="extinguisher-speech-bubble" class="pixel-font"></div>
+
+<!-- Banner de instrucciones cerca del borde superior -->
+<div id="top-instruction-banner" class="pixel-font"></div>
+
+<!-- Pantalla de Victoria independiente (Z-index superior fijo) -->
+<div id="victory-screen" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.93); display: none; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.6s ease; z-index: 15000;">
+    <div class="text-center p-4 pixel-panel" style="max-width: 560px;">
+        <div class="pixel-icon-frame mb-3">
+            <i class="bi bi-trophy-fill"></i>
+        </div>
+        <h1 class="fw-bold mb-2" style="font-size: 2rem; color: #34d399; text-transform: uppercase;">¡Fuego Extinguido!</h1>
+        <p class="mb-4" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Has aplicado correctamente los 4 pasos del método T.A.A.B. con el Extintor PQS. Ahora demostremos tu aprendizaje en la evaluación final.</p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <button id="btn-start-quiz" class="pixel-btn pixel-btn-play pixel-btn-equal" style="pointer-events: auto;">
+                <i class="bi bi-card-checklist me-1"></i> Cuestionario
+            </button>
+            <button id="btn-reset-victory" class="pixel-btn pixel-btn-exit pixel-btn-equal" style="pointer-events: auto;">
+                <i class="bi bi-arrow-clockwise me-1"></i> Reset
+            </button>
+            <button id="btn-exit-victory" class="pixel-btn pixel-btn-exit pixel-btn-equal pixel-tooltip" data-tooltip="se perderá tu progreso" style="pointer-events: auto;">
+                <i class="bi bi-box-arrow-left me-1"></i> Salir
+            </button>
+        </div>
     </div>
 </div>
 
+<!-- Cursor personalizado Crosshair -->
 <svg id="crosshair" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4"/>
-    <line x1="50" y1="0" x2="50" y2="30" stroke="white" stroke-width="4"/><line x1="50" y1="100" x2="50" y2="70" stroke="white" stroke-width="4"/>
-    <line x1="0" y1="50" x2="30" y2="50" stroke="white" stroke-width="4"/><line x1="100" y1="50" x2="70" y2="50" stroke="white" stroke-width="4"/>
-    <circle cx="50" cy="50" r="4" fill="red"/>
+    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
+    <line x1="50" y1="0" x2="50" y2="30" stroke="#38bdf8" stroke-width="4"/>
+    <line x1="50" y1="100" x2="50" y2="70" stroke="#38bdf8" stroke-width="4"/>
+    <line x1="0" y1="50" x2="30" y2="50" stroke="#38bdf8" stroke-width="4"/>
+    <line x1="100" y1="50" x2="70" y2="50" stroke="#38bdf8" stroke-width="4"/>
+    <circle cx="50" cy="50" r="5" fill="#ef4444"/>
 </svg>
 
+<!-- Overlay del Cuestionario -->
 <div id="quiz-overlay">
-    <div class="glass-panel p-5" style="border-radius: 1rem; max-width: 600px; width: 90%;">
-        <div class="d-flex justify-content-between mb-4">
-            <h3 class="text-white fw-bold m-0"><i class="bi bi-card-text text-primary"></i> Evaluación: Módulo 1</h3>
-            <span class="badge bg-primary rounded-pill d-flex align-items-center" id="quiz-counter">Pregunta 1 de 5</span>
+
+    <!-- Botón "Salir" flotando fuera de la tarjeta, arriba a la izquierda -->
+    <button id="btn-exit-quiz" class="pixel-btn pixel-btn-exit pixel-quiz-exit pixel-tooltip" data-tooltip="se perderá tu progreso" style="pointer-events: auto;">
+        <i class="bi bi-x-lg"></i> Salir
+    </button>
+
+    <div class="pixel-panel p-4 p-md-5 position-relative" style="max-width: 650px; width: 95%;">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+            <h3 class="fw-bold m-0 d-flex align-items-center gap-2" style="color: #fff; text-transform: uppercase; font-size: 1.05rem;">
+                <i class="bi bi-patch-question-fill text-warning"></i> Evaluación: Método T.A.A.B.
+            </h3>
+            <span class="pixel-badge" id="quiz-counter">Pregunta 1 de 5</span>
         </div>
         
-        <h4 id="question-text" class="text-white mb-4" style="line-height: 1.4;">Cargando pregunta...</h4>
+        <h4 id="question-text" class="mb-4" style="line-height: 1.5; font-size: 1.05rem; color: #e2e8f0;">Cargando pregunta...</h4>
         
         <div id="options-container" class="d-flex flex-column gap-2"></div>
 
-        <div id="quiz-results" style="display: none; text-align: center;">
-            <h2 class="text-success fw-bold mb-2" style="font-size: 3rem;" id="final-score">100%</h2>
-            <p class="text-white mb-4">¡Has completado el escenario y la evaluación!</p>
-            <button onclick="saveAndReturn()" class="btn btn-success btn-lg w-100 fw-bold rounded-pill">Guardar y volver al Dashboard</button>
+        <div id="feedback-box" class="feedback-explanation">
+            <strong id="feedback-title" class="d-block mb-1"></strong>
+            <span id="feedback-text"></span>
+        </div>
+
+        <!-- Botón "Siguiente": solo aparece tras responder, esquina inferior derecha -->
+        <div class="d-flex justify-content-end mt-3">
+            <button id="btn-next-question" class="pixel-btn pixel-btn-play" style="display: none; pointer-events: auto;">
+                Siguiente <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+        </div>
+
+        <div id="quiz-results" style="display: none; text-align: center;" class="py-3">
+            <div class="pixel-icon-frame mb-3">
+                <i class="bi bi-award-fill"></i>
+            </div>
+            <h2 class="fw-bold mb-2" id="final-score" style="font-size: 2.4rem; color: #34d399;">100%</h2>
+            <p class="mb-4" style="color: #cbd5e1; font-size: 0.9rem;">¡Has completado exitosamente la simulación 2D y la evaluación teórica!</p>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <button onclick="saveAndReturn('index2d.html')" class="pixel-btn pixel-btn-play" style="pointer-events: auto;">
+                    <i class="bi bi-controller me-2"></i> Volver a Simulador 2D
+                </button>
+                <button onclick="saveAndReturn(window.location.pathname)" class="pixel-btn pixel-btn-exit" style="pointer-events: auto;">
+                    <i class="bi bi-arrow-repeat me-2"></i> Repetir
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Lógica del juego Phaser y Cuestionario -->
 <script src="../../js/ejemplo.js"></script>
+
+<script>
+    // Botones de la pantalla previa (info + menú)
+    const btnExitPregame = document.getElementById('btn-exit-pregame');
+    const btnPlayPregame = document.getElementById('btn-play-pregame');
+    const preGameOverlay = document.getElementById('pre-game-overlay');
+
+    if (btnExitPregame) {
+        btnExitPregame.addEventListener('click', () => {
+            window.location.href = 'index2d.html';
+        });
+    }
+
+    if (btnPlayPregame) {
+        btnPlayPregame.addEventListener('click', () => {
+            if (preGameOverlay) preGameOverlay.style.display = 'none';
+            // El juego Phaser recién se inicializa acá (ver startPqsSimulator en ejemplo.js)
+            if (typeof startPqsSimulator === 'function') startPqsSimulator();
+        });
+    }
+
+    // Botón "Salir" de la pantalla de victoria: sale sin guardar el progreso
+    // de la simulación (igual que "Volver sin guardar" del encabezado)
+    const btnExitVictory = document.getElementById('btn-exit-victory');
+    if (btnExitVictory) {
+        btnExitVictory.addEventListener('click', () => {
+            window.location.href = 'index2d.html';
+        });
+    }
+
+    // Botón "Reset" de la pantalla de victoria: reinicia el simulador del
+    // extintor desde cero (recarga la página, vuelve a la pantalla previa)
+    const btnResetVictory = document.getElementById('btn-reset-victory');
+    if (btnResetVictory) {
+        btnResetVictory.addEventListener('click', () => {
+            window.location.reload();
+        });
+    }
+
+    // Botón "Salir" fijo en la esquina del cuestionario: mismo comportamiento
+    const btnExitQuiz = document.getElementById('btn-exit-quiz');
+    if (btnExitQuiz) {
+        btnExitQuiz.addEventListener('click', () => {
+            window.location.href = 'index2d.html';
+        });
+    }
+</script>
+
 </body>
 </html>
