@@ -1,0 +1,261 @@
+:root {
+  --safety-red: #b3251f;
+  --safety-yellow: #e8c400;
+  --panel-bg: rgba(18, 20, 24, 0.92);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #05070a;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+#scene-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  background: #05070a;
+}
+
+/* ---------- HUD superior ---------- */
+#hud-top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
+}
+
+#hud-top .brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#hud-top .brand .icon { color: var(--safety-yellow); }
+
+#part-counter {
+  color: #eaeaea;
+  font-size: 0.85rem;
+  background: rgba(0,0,0,0.4);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ---------- Icono genérico ---------- */
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+  fill: none;
+  stroke: currentColor;
+}
+
+/* ---------- Retícula central ---------- */
+#crosshair {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px; height: 8px;
+  border: 1.5px solid rgba(255,255,255,0.85);
+  border-radius: 50%;
+  z-index: 15;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+/* ---------- Prompt de interacción ---------- */
+#interact-prompt {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 12, 15, 0.88);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--safety-yellow);
+  font-size: 0.95rem;
+  z-index: 20;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+  animation: pulse-prompt 1.6s ease-in-out infinite;
+}
+#interact-prompt kbd {
+  background: var(--safety-yellow);
+  color: #111;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-weight: 700;
+  margin: 0 2px;
+}
+@keyframes pulse-prompt {
+  0%, 100% { box-shadow: 0 4px 18px rgba(232,196,0,0.15); }
+  50% { box-shadow: 0 4px 26px rgba(232,196,0,0.45); }
+}
+
+/* ---------- Controles / instrucciones inferiores ---------- */
+#hud-bottom {
+  position: fixed;
+  bottom: 16px;
+  left: 20px;
+  z-index: 20;
+  display: flex;
+  gap: 10px;
+  pointer-events: none;
+}
+.control-chip {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #ddd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- Overlay de inicio ---------- */
+#start-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: radial-gradient(circle at center, rgba(20,22,26,0.96), rgba(3,4,5,0.99));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+}
+#start-overlay .content { max-width: 560px; padding: 20px; }
+#start-overlay h1 {
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 6px;
+  color: #fff;
+}
+#start-overlay h1 .icon { color: var(--safety-red); width: 1.3em; height: 1.3em; }
+#start-overlay p.lead { color: #c9c9c9; }
+
+.start-tips {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 22px 0;
+}
+.start-tips .tip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: #ddd;
+  min-width: 130px;
+}
+.start-tips .tip .icon { display:block; margin: 0 auto 6px; width: 22px; height: 22px; color: var(--safety-yellow); }
+
+#btn-start {
+  background: var(--safety-red);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 34px;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 20px rgba(179,37,31,0.45);
+}
+#btn-start:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(179,37,31,0.6); }
+
+/* ---------- Panel de detalle ---------- */
+#detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(420px, 92vw);
+  background: var(--panel-bg);
+  border-left: 1px solid rgba(255,255,255,0.1);
+  z-index: 30;
+  color: #f2f2f2;
+  padding: 26px 24px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(.2,.9,.25,1);
+}
+#detail-panel.panel-in { transform: translateX(0); }
+
+#detail-panel .part-icon-badge {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: var(--safety-red);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+#detail-panel .part-icon-badge .icon { width: 28px; height: 28px; color: #fff; }
+
+#detail-title {
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+#detail-desc {
+  color: #cfcfcf;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.detail-hint {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.8rem;
+  color: #9a9a9a;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.detail-hint .row-hint { display: flex; align-items: center; gap: 8px; }
+
+#btn-back {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+#btn-back:hover { background: rgba(255,255,255,0.16); color: #fff; }
+
+/* ---------- Fundido de transición ---------- */
+#fade-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+  transition: opacity 0.38s ease;
+}
+#fade-overlay.fade-active { opacity: 1; }
+
+.d-none-force { display: none !important; }
