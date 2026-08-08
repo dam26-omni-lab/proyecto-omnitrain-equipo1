@@ -1,134 +1,150 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Simulador 3D de Extintor — Sala de Seguridad Industrial</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Showroom 3D · Anatomía del extintor — OmniTrain</title>
+  <meta name="description" content="Recorrido 3D por las ocho partes de un extintor portátil para brigadas de emergencia.">
 
-<!-- Bootstrap instalado localmente (sin CDN) -->
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<link rel="stylesheet" href="../../css/styles3d.css">
+  <!-- Todo local: sin CDNs -->
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../css/styles-3d.css">
 </head>
 <body>
 
-<!-- Sprite de iconos SVG local, incrustado en el documento (sin dependencias externas,
-     y evita problemas de CORS al abrir el archivo directamente con file://) -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="19" y1="12" x2="5" y2="12"></line>
-    <polyline points="12 19 5 12 12 5"></polyline>
-  </symbol>
-  <symbol id="icon-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="23 4 23 10 17 10"></polyline>
-    <polyline points="1 20 1 14 7 14"></polyline>
-    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-  </symbol>
-  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="10"></circle>
-    <line x1="12" y1="16" x2="12" y2="12"></line>
-    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-  </symbol>
-  <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"></circle>
-    <circle cx="12" cy="12" r="4"></circle>
-    <line x1="12" y1="1" x2="12" y2="4"></line>
-    <line x1="12" y1="20" x2="12" y2="23"></line>
-    <line x1="1" y1="12" x2="4" y2="12"></line>
-    <line x1="20" y1="12" x2="23" y2="12"></line>
-  </symbol>
-  <symbol id="icon-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 17a2.5 2.5 0 0 0 2.5-2.5c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7.5 7.5 0 1 1-15 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
-  </symbol>
-  <symbol id="icon-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-    <line x1="6" y1="10" x2="6" y2="10"></line>
-    <line x1="10" y1="10" x2="10" y2="10"></line>
-    <line x1="14" y1="10" x2="14" y2="10"></line>
-    <line x1="18" y1="10" x2="18" y2="10"></line>
-    <line x1="6" y1="14" x2="18" y2="14"></line>
-  </symbol>
-  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </symbol>
-  <symbol id="icon-mouse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6" y="2" width="12" height="20" rx="6"></rect>
-    <line x1="12" y1="6" x2="12" y2="10"></line>
-  </symbol>
-</svg>
+  <!-- Lienzo del entorno 3D (Three.js) -->
+  <canvas id="lienzo-3d"></canvas>
 
-<!-- Canvas WebGL a pantalla completa -->
-<canvas id="scene-canvas"></canvas>
+  <!-- Viñeta de la vista de detalle -->
+  <div id="velo"></div>
 
-<!-- Retícula central (solo visible en exploración) -->
-<div id="crosshair"></div>
+  <!-- Capa del HUD (Phaser) -->
+  <div id="capa-hud"></div>
 
-<!-- HUD superior -->
-<div id="hud-top">
-  <div class="brand">
-    <svg class="icon"><use href="#icon-fire"></use></svg>
-    Simulador de Extintor 3D
-  </div>
-  <div id="part-counter">0 / 8 partes exploradas</div>
-</div>
+  <!-- Capa que captura el arrastre para girar la pieza -->
+  <div id="capa-orbita"></div>
 
-<!-- Chips de controles inferiores -->
-<div id="hud-bottom">
-  <div class="control-chip"><svg class="icon"><use href="#icon-keyboard"></use></svg> WASD moverse</div>
-  <div class="control-chip"><svg class="icon"><use href="#icon-mouse"></use></svg> Ratón mirar</div>
-  <div class="control-chip"><svg class="icon"><use href="#icon-target"></use></svg> E interactuar</div>
-</div>
-
-<!-- Prompt de interacción (aparece al acercarse a una mesa) -->
-<div id="interact-prompt" class="d-none"></div>
-
-<!-- Panel lateral de detalle -->
-<aside id="detail-panel" class="d-none">
-  <button id="btn-back" type="button">
-    <svg class="icon"><use href="#icon-back"></use></svg>
-    Volver a la sala
-  </button>
-
-  <div class="part-icon-badge">
-    <svg class="icon"><use href="#icon-info"></use></svg>
-  </div>
-
-  <h2 id="detail-title">Nombre de la parte</h2>
-  <p id="detail-desc">Descripción de la parte.</p>
-
-  <div class="detail-hint">
-    <div class="row-hint"><svg class="icon"><use href="#icon-rotate"></use></svg> Arrastra con el ratón para rotar 360°</div>
-    <div class="row-hint"><svg class="icon"><use href="#icon-target"></use></svg> Usa la rueda del ratón para acercar / alejar</div>
-  </div>
-</aside>
-
-<!-- Overlay inicial -->
-<div id="start-overlay">
-  <div class="content">
-    <h1><svg class="icon"><use href="#icon-fire"></use></svg> Sala de Seguridad Industrial</h1>
-    <p class="lead">Explora la sala en primera persona, acércate a cada mesa y descubre las partes de un extintor.</p>
-    <div class="start-tips">
-      <div class="tip"><svg class="icon"><use href="#icon-keyboard"></use></svg>WASD para caminar</div>
-      <div class="tip"><svg class="icon"><use href="#icon-mouse"></use></svg>Ratón para mirar</div>
-      <div class="tip"><svg class="icon"><use href="#icon-target"></use></svg>E para interactuar</div>
-      <div class="tip"><svg class="icon"><use href="#icon-rotate"></use></svg>Arrastra para rotar 360°</div>
+  <!-- Placa de avance -->
+  <section id="placa-avance">
+    <div class="placa-cabecera">
+      <i class="bi bi-fire"></i>
+      <h1 class="placa-titulo">Anatomía del extintor</h1>
     </div>
-    <button id="btn-start" type="button">Comenzar simulación</button>
+    <div class="placa-cuerpo">
+      <p class="placa-etiqueta">
+        <span>Piezas inspeccionadas</span>
+        <span id="placa-contador">0 / 8</span>
+      </p>
+      <div id="placa-marcas"></div>
+      <a class="btn-omni ancho placa-boton" href="../../modules/showroom-3d/index3d.html">
+        <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Aviso al acercarse a una mesa -->
+  <div id="aviso-proximidad">
+    <div id="aviso-texto"></div>
   </div>
-</div>
 
-<!-- Fundido para transiciones -->
-<div id="fade-overlay"></div>
+  <!-- Recordatorio de teclas -->
+  <div id="barra-teclas">
+    <span><b>W A S D</b>Caminar</span>
+    <span><b>Ratón</b>Mirar</span>
+    <span><b>E</b>Inspeccionar</span>
+    <span><b>H</b>Ocultar interfaz</span>
+  </div>
 
-<!-- Bootstrap JS local (sin CDN) -->
-<script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Panel de detalle de la pieza -->
+  <aside id="panel-detalle" aria-hidden="true" aria-label="Ficha de la pieza">
+    <div id="panel-cuerpo"></div>
+    <div class="panel-pie">
+      <button id="btn-girar-auto" class="btn-omni activo" type="button">
+        <i class="bi bi-arrow-repeat"></i><span>Giro automático</span>
+      </button>
+      <button id="btn-reset-vista" class="btn-omni" type="button" title="Centrar la pieza (tecla R)">
+        <i class="bi bi-crosshair"></i>
+      </button>
+      <button id="btn-cerrar-panel" class="btn-omni primario ancho" type="button">
+        <i class="bi bi-box-arrow-left"></i><span>Volver a la sala</span>
+      </button>
+    </div>
+  </aside>
 
-<!-- Motor 3D vanilla y lógica de la aplicación -->
-<script src="../../js/mat4.js"></script>
-<script src="../../js/meshes.js"></script>
-<script src="../../js/engine.js"></script>
-<script src="../../js/parts-data.js"></script>
-<script src="../../js/scene-room.js"></script>
-<script src="../../js/main.js"></script>
+  <!-- Avisos emergentes -->
+  <div id="zona-avisos"></div>
+
+  <!-- Modal de cierre del recorrido -->
+  <div id="modal-final">
+    <div class="tarjeta-final">
+      <p class="final-sello">Recorrido completo</p>
+      <h2 class="final-titulo">Las 8 piezas quedaron registradas</h2>
+      <p class="final-texto">
+        Ya revisaste el cilindro, el manómetro, la válvula, la manguera, el gatillo, el perno de
+        seguridad, la etiqueta y la base. En campo, esa misma secuencia es la revisión visual que
+        hace un brigadista antes de firmar la bitácora mensual del equipo.
+      </p>
+      <div class="final-acciones">
+        <button id="btn-cerrar-final" class="btn-omni" type="button">
+          <i class="bi bi-arrow-left"></i><span>Seguir en la sala</span>
+        </button>
+        <button id="btn-repasar" class="btn-omni" type="button">
+          <i class="bi bi-arrow-clockwise"></i><span>Repasar desde cero</span>
+        </button>
+        <a class="btn-omni primario" href="../../modules/showroom-3d/index3d.html">
+          <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portada / pausa -->
+  <div id="capa-inicio" class="visible" data-estado="inicio">
+    <div class="tarjeta-inicio">
+      <p class="inicio-eyebrow">OmniTrain · Módulo entorno 3D</p>
+      <h2 id="inicio-titulo" class="inicio-titulo">Sala de inspección<br>de extintores</h2>
+      <p id="inicio-texto" class="inicio-texto">
+        Camina por el almacén, acércate a cada mesa y revisa las ocho partes de un extintor
+        portátil de polvo químico seco. Cada pieza se puede girar 360° para verla por todos lados.
+      </p>
+
+      <div class="rejilla-teclas">
+        <div class="tecla-item"><span class="tecla-simbolo">W A S D</span><span class="tecla-desc">Caminar por la sala</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Ratón</span><span class="tecla-desc">Mirar alrededor</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Shift</span><span class="tecla-desc">Avanzar más rápido</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">E</span><span class="tecla-desc">Inspeccionar la pieza</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Arrastrar</span><span class="tecla-desc">Girar la pieza 360°</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Esc</span><span class="tecla-desc">Volver a la sala</span></div>
+      </div>
+
+      <div class="acciones-inicio">
+        <button id="btn-entrar" class="btn-omni primario" type="button">
+          <i class="bi bi-door-open-fill"></i><span>Entrar a la sala</span>
+        </button>
+        <button id="btn-reiniciar" class="btn-omni" type="button">
+          <i class="bi bi-arrow-counterclockwise"></i><span>Reiniciar avance</span>
+        </button>
+        <a class="btn-omni"  href="../../modules/showroom-3d/index3d.html">
+          <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías locales -->
+  <script src="../../js/three.min.js"></script>
+  <script src="../../js/phaser.min.js"></script>
+
+  <!-- Módulos del simulador (el orden importa) -->
+  <script src="../../js/datos-partes.js"></script>
+  <script src="../../js/texturas.js"></script>
+  <script src="../../js/piezas.js"></script>
+  <script src="../../js/sala.js"></script>
+  <script src="../../js/escena3d.js"></script>
+  <script src="../../js/controles.js"></script>
+  <script src="../../js/hud-phaser.js"></script>
+  <script src="../../js/panel-info.js"></script>
+  <script src="../../js/app.js"></script>
 </body>
 </html>
