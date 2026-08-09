@@ -1,5 +1,5 @@
 // =====================================================================
-// LÓGICA DE PHASER Y UI/UX - SIMULADOR EXTINTOR PQS (T.A.A.B.) - PIXEL ART
+// LÓGICA DE PHASER Y UI/UX - SIMULADOR EXTINTOR DE AGUA (T.A.A.B.) - PIXEL ART
 // =====================================================================
 
 // Dibuja un círculo "pixelado" (grilla de bloques) en vez de un círculo suave,
@@ -20,13 +20,20 @@ function drawPixelCircle(g, cx, cy, radius, color, alpha, pixelSize) {
     }
 }
 
-class SimulatorScene extends Phaser.Scene {
+class SimulatorSceneAgua extends Phaser.Scene {
     constructor() {
-        super('SimulatorScene');
-        this.fuegoSaludMaxima = 250; // Total de impactos de partículas necesarios para apagar el fuego
+        super('SimulatorSceneAgua');
+        // ================= DIFICULTAD: NIVEL 3 (ALTA) =================
+        // Mismo enfoque que de PQS a CO₂: solo se ajustan los números. Más
+        // salud, regeneración más rápida y daño por segundo más bajo que el
+        // CO₂ (Escenario 2). El alcance del chorro es más largo que el del
+        // CO₂ -a propósito, porque un chorro de agua real llega más lejos
+        // que un gas que se dispersa en el aire- así que la dificultad extra
+        // viene de la salud/regeneración/daño, no del alcance.
+        this.fuegoSaludMaxima = 460; // Antes 340 en el CO₂
         this.fuegoSalud = this.fuegoSaludMaxima;
-        this.fuegoRegenPorSegundo = 45; // Velocidad a la que el fuego "vuelve a crecer" si se deja de rociar
-        this.sprayRayLength = 1200; // Alcance efectivo del chorro de partículas (más allá de la boquilla)
+        this.fuegoRegenPorSegundo = 100; // Antes 70 en el CO₂
+        this.sprayRayLength = 900; // Antes 480 en el CO₂: el agua sí llega lejos
         this.estadoPaso = 1; // 1: Tirar, 1.5: Tomar manguera, 2: Apuntar, 3: Apretar, 4: Barrer
         this.isShooting = false;
         this.lastMouseX = 0;
@@ -62,19 +69,21 @@ class SimulatorScene extends Phaser.Scene {
         g.generateTexture('smoke', 64, 64);
         g.clear();
 
-        // Vapor Blanco de Sofocación
-        drawPixelCircle(g, 24, 24, 24, 0xf8fafc, 0.8, 6);
+        // Vapor Blanco: aquí representa el vapor de agua real que se genera
+        // al enfriar el material ardiendo (efecto muy visible con agua)
+        drawPixelCircle(g, 24, 24, 24, 0xf0f9ff, 0.8, 6);
         g.generateTexture('steam', 48, 48);
         g.clear();
         
-        // Espuma / Polvo Químico Seco (PQS)
-        drawPixelCircle(g, 18, 18, 18, 0xe2e8f0, 0.8, 4);
-        drawPixelCircle(g, 18, 18, 12, 0xffffff, 0.95, 4);
-        g.generateTexture('foam', 36, 36);
+        // Gotas de agua: azul saturado, bien distinguible del celeste pálido
+        // del gas de CO₂ y del blanco del polvo (PQS)
+        drawPixelCircle(g, 18, 18, 18, 0x0ea5e9, 0.85, 4);
+        drawPixelCircle(g, 18, 18, 12, 0x7dd3fc, 0.95, 4);
+        g.generateTexture('waterdrop', 36, 36);
         g.clear();
 
-        // Chispas de Sofocación
-        g.fillStyle(0xfacc15, 1);
+        // Chispas/salpicaduras de impacto, en tono azul más intenso
+        g.fillStyle(0x38bdf8, 1);
         g.fillRect(0, 0, 8, 8);
         g.generateTexture('spark', 8, 8);
         g.clear();
@@ -108,8 +117,13 @@ class SimulatorScene extends Phaser.Scene {
         // y dependiente de la velocidad/tamaño de cada partícula), usamos un
         // rectángulo simple: mientras el chorro apunte dentro de esta zona,
         // el fuego recibe daño de forma continua y confiable.
+        //
+        // Igual de angosto que en el Escenario 2 (CO₂): la dificultad extra
+        // de este nivel no viene de que sea más difícil apuntar, sino de la
+        // salud más alta, la regeneración más rápida y el menor daño por
+        // segundo.
         this.fuegoHitRect = new Phaser.Geom.Rectangle(
-            this.fuegoX - 180, (this.fuegoY - 20) - 80, 360, 160
+            this.fuegoX - 150, (this.fuegoY - 20) - 65, 300, 130
         );
         
         // Emisores de Partículas para el Fuego
@@ -168,6 +182,9 @@ class SimulatorScene extends Phaser.Scene {
         this.sparkEmitter.setDepth(7);
 
         // Extintor en Pantalla (Lado derecho) - ESTILO PIXEL ART
+        // Cuerpo plateado/metálico (distinto del rojo del PQS y el negro del
+        // CO₂) y etiqueta con una sola clase de fuego (A): el agua NO se
+        // recomienda para B, C, D ni K, así que esos bloques se omiten.
         this.extintorX = width * 0.82;
         this.extintorY = height - 140;
         let ex = this.extintorX;
@@ -178,15 +195,15 @@ class SimulatorScene extends Phaser.Scene {
         g.fillStyle(0x000000, 0.45);
         g.fillRect(ex - 60, ey + 6, 120, 18);
         
-        // Cuerpo del Extintor (Cilindro Rojo, esquinas rectas)
-        g.fillStyle(0xd32f2f);
+        // Cuerpo del Extintor (Cilindro plateado/metálico, esquinas rectas)
+        g.fillStyle(0x94a3b8);
         g.fillRect(ex - 48, ey - 230, 96, 230);
         // Contorno grueso tipo sprite
         g.lineStyle(4, 0x1e293b, 1);
         g.strokeRect(ex - 48, ey - 230, 96, 230);
         
         // Detalle brillante en el cilindro (franja plana, sin degradado)
-        g.fillStyle(0xffffff, 0.25);
+        g.fillStyle(0xffffff, 0.35);
         g.fillRect(ex - 36, ey - 220, 12, 210);
 
         // Etiqueta del Extintor
@@ -196,15 +213,12 @@ class SimulatorScene extends Phaser.Scene {
         g.strokeRect(ex - 42, ey - 170, 84, 80);
         g.fillStyle(0x1e293b);
         g.fillRect(ex - 36, ey - 160, 72, 10);
-        g.fillStyle(0xd32f2f);
-        g.fillRect(ex - 36, ey - 142, 20, 20);
-        g.fillStyle(0x2563eb);
+        // Un solo ícono de clase (A: sólidos), centrado
+        g.fillStyle(0xef4444);
         g.fillRect(ex - 10, ey - 142, 20, 20);
-        g.fillStyle(0x10b981);
-        g.fillRect(ex + 16, ey - 142, 20, 20);
 
         // Cuello y Válvula
-        g.fillStyle(0x334155);
+        g.fillStyle(0x64748b);
         g.fillRect(ex - 16, ey - 260, 32, 30);
         g.fillStyle(0x1e293b);
         g.fillRect(ex - 30, ey - 275, 60, 15);
@@ -239,7 +253,9 @@ class SimulatorScene extends Phaser.Scene {
 
         this.hoseThickness = 16;      // Antes 18 (grosor del tubo)
         this.hoseDropSegment = 200;   // Antes 210 (tramo fijo antes de flexionar)
-        this.hoseNozzleOffset = 10;  // Antes 38 (distancia de la punta/boquilla)
+        // Boquilla compacta (como la del PQS en tamaño), pero de color ROJO
+        // bien visible: es la característica distintiva de este extintor.
+        this.hoseNozzleOffset = 14;  // Antes 40 en el CO₂ (ahí era grande, aquí es compacta)
         this.hoseRestOffset = 190;    // Antes 160 (posición de reposo inicial)
 
         // Punto donde la manguera empieza a flexionar y su alcance máximo:
@@ -247,7 +263,7 @@ class SimulatorScene extends Phaser.Scene {
         // de un radio limitado alrededor de este punto (simula el largo real
         // de la manguera del extintor).
         this.hoseAnchor = { x: this.hoseBaseX, y: this.hoseBaseY + this.hoseDropSegment };
-        this.hoseMaxReach = Math.max(340, this.hoseAnchor.x - this.fuegoX + 220) * 0.4;
+        this.hoseMaxReach = Math.max(340, this.hoseAnchor.x - this.fuegoX + 220) * 0.5;
 
         this.drawHose(this.hoseBaseX, this.hoseBaseY + this.hoseRestOffset);
 
@@ -267,11 +283,11 @@ class SimulatorScene extends Phaser.Scene {
             this.boquillaPuntaX, this.boquillaPuntaY, 22, 22, 0x38bdf8
         ).setStrokeStyle(3, 0x0f172a).setVisible(false).setDepth(8);
 
-        // Grupo de partículas físicas de espuma (ahora es puramente visual;
-        // el daño al fuego ya NO depende de que estas partículas choquen con
-        // una zona física, sino de si el jugador apunta dentro de fuegoHitRect,
-        // ver damageFire() y update()).
-        this.foamGroup = this.physics.add.group();
+        // Grupo de partículas físicas del chorro de agua (ahora es puramente
+        // visual; el daño al fuego ya NO depende de que estas partículas
+        // choquen con una zona física, sino de si el jugador apunta dentro
+        // de fuegoHitRect, ver damageFire() y update()).
+        this.waterGroup = this.physics.add.group();
 
         // Handlers de entrada
         this.input.on('pointerdown', this.startShooting, this);
@@ -368,14 +384,18 @@ class SimulatorScene extends Phaser.Scene {
         this.boquillaPuntaY = targetY + Math.sin(angle) * this.hoseNozzleOffset;
         this.boquillaAngulo = angle; // Ángulo directo de salida de partículas
 
-        // Pequeña boquilla pixel art en la punta de la manguera
+        // Boquilla compacta (tamaño similar a la del PQS), pero de color
+        // ROJO bien saturado — es la característica visual distintiva de
+        // este extintor, a diferencia del difusor grande y oscuro del CO₂.
         this.hoseGraphics.save();
         this.hoseGraphics.translateCanvas(targetX, targetY);
         this.hoseGraphics.rotateCanvas(angle);
         this.hoseGraphics.fillStyle(0x334155, 1);
-        this.hoseGraphics.fillRect(-3, -6, 16, 12);
-        this.hoseGraphics.fillStyle(0x1e293b, 1);
-        this.hoseGraphics.fillRect(11, -4, 7, 8);
+        this.hoseGraphics.fillRect(-3, -6, 12, 12);
+        this.hoseGraphics.fillStyle(0xdc2626, 1);
+        this.hoseGraphics.fillRect(8, -5, 9, 10);
+        this.hoseGraphics.fillStyle(0xef4444, 1);
+        this.hoseGraphics.fillRect(15, -3, 4, 6);
         this.hoseGraphics.restore();
     }
 
@@ -436,29 +456,32 @@ class SimulatorScene extends Phaser.Scene {
             this.drawHose(targetX, targetY);
             
             if (this.isShooting) {
-                // Generar partículas visuales de espuma desde la boquilla hacia la dirección del apuntado
+                // Generar partículas visuales de agua desde la boquilla hacia
+                // la dirección del apuntado. Velocidad más alta que el CO₂
+                // (chorro de agua real, viaja más lejos), con más gravedad
+                // para que se vea la curva natural del chorro.
                 for (let i = 0; i < 3; i++) {
-                    let speed = Phaser.Math.FloatBetween(750, 1150);
-                    let spreadAngle = this.boquillaAngulo + Phaser.Math.FloatBetween(-0.16, 0.16);
+                    let speed = Phaser.Math.FloatBetween(900, 1300);
+                    let spreadAngle = this.boquillaAngulo + Phaser.Math.FloatBetween(-0.1, 0.1);
                     let vx = Math.cos(spreadAngle) * speed;
                     let vy = Math.sin(spreadAngle) * speed;
                     
-                    let p = this.foamGroup.create(this.boquillaPuntaX, this.boquillaPuntaY, 'foam')
+                    let p = this.waterGroup.create(this.boquillaPuntaX, this.boquillaPuntaY, 'waterdrop')
                         .setVisible(true)
-                        .setScale(Phaser.Math.FloatBetween(0.5, 0.9))
-                        .setAlpha(Phaser.Math.FloatBetween(0.85, 1))
+                        .setScale(Phaser.Math.FloatBetween(0.4, 0.75))
+                        .setAlpha(Phaser.Math.FloatBetween(0.8, 1))
                         .setDepth(3); // Detrás del resplandor/núcleo del fuego (depth 4-5)
                     
                     p.body.setSize(40, 40);
                     p.body.setVelocity(vx, vy);
-                    p.body.setGravityY(220);
+                    p.body.setGravityY(280);
                     
                     // Animación visual de expansión y desvanecimiento durante el vuelo
                     this.tweens.add({
                         targets: p,
-                        scale: 2.8,
+                        scale: 2.2,
                         alpha: 0,
-                        duration: 700,
+                        duration: 650,
                         onComplete: () => { if (p && p.active) p.destroy(); }
                     });
                 }
@@ -523,8 +546,11 @@ class SimulatorScene extends Phaser.Scene {
     damageFire(delta, impactX, impactY) {
         if (this.fuegoSalud <= 0 || this.isExtinguishing) return;
 
-        // Daño por segundo (con fuegoSaludMaxima=250, ~2.5s de rociado directo apaga el fuego)
-        const dañoPorSegundo = 100;
+        // Daño por segundo: el más bajo de los 3 escenarios. Con
+        // fuegoSaludMaxima=460, hace falta rociar sostenido y con buena
+        // puntería bastante más tiempo que en el CO₂ para apagarlo (~7.9s
+        // de impacto directo continuo, frente a ~4.9s en el CO₂).
+        const dañoPorSegundo = 58;
         this.fuegoSalud -= dañoPorSegundo * (delta / 1000);
         if (this.fuegoSalud < 0) this.fuegoSalud = 0;
 
@@ -625,32 +651,32 @@ class SimulatorScene extends Phaser.Scene {
         const stepExpl = {
             1: {
                 title: "💡 ¿Por qué Tirar del seguro?",
-                text: "En el Extintor PQS, el seguro bloquea la palanca de percusión. Al quitarlo, se rompe el precinto y se habilita la descarga del polvo químico.",
+                text: "El seguro bloquea la palanca de descarga. Al quitarlo, se rompe el precinto y se habilita la salida del agua a presión en su interior.",
                 tooltip: "👆 Haz clic en el SEGURO AMARILLO",
                 target: "bubble"
             },
             1.5: {
                 title: "💡 ¿Por qué tomar la manguera?",
-                text: "Sujetar firmemente la boquilla permite dirigir el chorro de polvo con precisión hacia la base del fuego.",
+                text: "Sujetar firmemente la boquilla permite dirigir el chorro de agua con precisión hacia la base del fuego.",
                 tooltip: "🖐️ Haz clic en la MANGUERA para tomarla",
                 target: "bubble"
             },
             2: {
                 title: "💡 ¿Por qué Apuntar a la base del fuego?",
-                text: "La base es la raíz química de la combustión. El polvo químico seco debe cubrir el combustible directamente, no las llamas superiores.",
+                text: "El agua actúa por enfriamiento. Apuntar a la base moja directamente el material que arde, bajando su temperatura por debajo del punto de ignición.",
                 tooltip: "🎯 Apunta el cursor a la BASE del fuego",
                 target: "banner"
             },
             3: {
                 title: "💡 ¿Por qué Apretar la palanca?",
-                text: "Mantiene abierta la válvula para expulsar el polvo químico seco (PQS) con flujo continuo, impulsado por el gas presurizado interno.",
-                tooltip: "🖐️ MANTÉN PRESIONADO EL CLIC para liberar el polvo",
+                text: "Mantiene abierta la válvula para liberar el agua a presión con flujo continuo, impulsada por el gas propulsor interno.",
+                tooltip: "🖐️ MANTÉN PRESIONADO EL CLIC para liberar el agua",
                 target: "banner"
             },
             4: {
                 title: "💡 ¿Por qué Barrer de lado a lado?",
-                text: "Crea un manto de polvo uniforme sobre toda la superficie del combustible, interrumpiendo la reacción química en cadena del fuego.",
-                tooltip: "↔️ BARRER de lado a lado manteniendo presionado el clic",
+                text: "Empapa toda la superficie del material sólido, no solo la llama visible. Es buena práctica seguir rociando unos segundos más después de que las llamas bajen, por si quedan brasas internas.",
+                tooltip: "↔️ BARRER de lado a lado; no sueltes el clic aunque las llamas bajen",
                 target: "banner"
             }
         };
@@ -707,6 +733,11 @@ class SimulatorScene extends Phaser.Scene {
         // el fuego, para que tanto esta pantalla como la de resultados del
         // cuestionario (que lee el mismo registro) puedan mostrarlos. Menor
         // tiempo = mejor desempeño.
+        //
+        // Se guarda con una clave propia de este escenario (...Agua) en vez
+        // de una genérica: cada escenario tiene su propia dificultad (salud
+        // del fuego, daño por segundo, etc.), así que su mejor tiempo no
+        // debe mezclarse ni compararse entre escenarios.
         const tiempoActual = this.elapsedTime;
         let metrics;
         try {
@@ -715,13 +746,13 @@ class SimulatorScene extends Phaser.Scene {
             metrics = {};
         }
 
-        const mejorPrevio = Number(metrics.bestExtinguishTimePQS);
+        const mejorPrevio = Number(metrics.bestExtinguishTimeAgua);
         const hayMejorPrevio = !isNaN(mejorPrevio) && mejorPrevio > 0;
         const esNuevoRecord = !hayMejorPrevio || tiempoActual < mejorPrevio;
         const mejorTiempo = esNuevoRecord ? tiempoActual : mejorPrevio;
 
-        metrics.lastExtinguishTimePQS = tiempoActual;
-        metrics.bestExtinguishTimePQS = mejorTiempo;
+        metrics.lastExtinguishTimeAgua = tiempoActual;
+        metrics.bestExtinguishTimeAgua = mejorTiempo;
         try {
             localStorage.setItem('omniTrainMetrics', JSON.stringify(metrics));
         } catch (e) { /* sin almacenamiento no persiste */ }
@@ -747,10 +778,10 @@ class SimulatorScene extends Phaser.Scene {
 
 // Inicialización de la escena Phaser: ya NO se ejecuta automáticamente al
 // cargar el script. Se dispara desde el botón "Jugar" de la pantalla previa
-// (ver pygame.html), llamando a startPqsSimulator().
+// (ver pygame3.html), llamando a startAguaSimulator().
 let game = null;
 
-function startPqsSimulator() {
+function startAguaSimulator() {
     if (game) return; // Evita reinicializar si ya se creó
 
     const config = {
@@ -769,7 +800,7 @@ function startPqsSimulator() {
             default: 'arcade',
             arcade: { gravity: { y: 0 } }
         },
-        scene: SimulatorScene
+        scene: SimulatorSceneAgua
     };
 
     game = new Phaser.Game(config);
@@ -785,58 +816,109 @@ function startPqsSimulator() {
 
 const questions = [
     {
-        q: "1. ¿Qué significa PQS y de qué está compuesto principalmente el agente extintor?",
+        q: "1. ¿Cómo actúa principalmente un extintor de agua para apagar el fuego?",
         options: [
-            "Polvo Químico Seco, a base de fosfato monoamónico u otros compuestos químicos",
-            "Presión Química Sintética, a base de agua carbonatada",
-            "Producto Químico Sólido, a base de espuma mecánica"
+            "Enfriando el material por debajo de su punto de ignición",
+            "Desplazando el oxígeno alrededor del fuego (sofocación)",
+            "Formando una capa de espuma sobre el combustible"
         ],
         answer: 0,
-        explanation: "Correcto: PQS es Polvo Químico Seco, un agente en polvo (frecuentemente fosfato monoamónico) de uso múltiple."
+        explanation: "Correcto: el agua absorbe calor y enfría el material hasta bajar su temperatura por debajo del punto de ignición."
     },
     {
-        q: "2. ¿Para qué clases de fuego es eficaz el Extintor PQS?",
+        q: "2. ¿Para qué clase de fuego está diseñado principalmente el extintor de agua?",
         options: [
-            "Solo fuegos de origen eléctrico (Clase C)",
-            "Únicamente fuegos de metales (Clase D)",
-            "Fuegos Clase A (sólidos), B (líquidos inflamables) y C (eléctricos)"
-        ],
-        answer: 2,
-        explanation: "Correcto: El PQS es un agente multipropósito, eficaz en fuegos Clase A, B y C."
-    },
-    {
-        q: "3. Antes de accionar el Extintor PQS, ¿por qué es recomendable agitarlo?",
-        options: [
-            "Para evitar que el polvo se compacte y asegurar una descarga uniforme",
-            "Para enfriar el gas propulsor interno",
-            "Para verificar el color de la etiqueta"
-        ],
-        answer: 0,
-        explanation: "Correcto: Agitarlo evita que el polvo se asiente y compacte, garantizando un flujo parejo al descargarlo."
-    },
-    {
-        q: "4. ¿Por qué es fundamental Tirar (T) del seguro antes de intentar accionar el extintor PQS?",
-        options: [
-            "Para permitir la salida del gas propulsor del tanque",
-            "Para verificar la fecha de vencimiento del extintor",
-            "Porque desengancha la palanca de percusión y rompe el precinto de seguridad"
-        ],
-        answer: 2,
-        explanation: "Correcto: El seguro bloquea mecánicamente la palanca para evitar descargas accidentales durante el transporte o almacenamiento."
-    },
-    {
-        q: "5. En el paso final 'B' (Barrer), ¿por qué es necesario mover la manguera del PQS horizontalmente?",
-        options: [
-            "Para evitar que el operador se fatigue",
-            "Para crear una capa uniforme de polvo que cubra todo el frente del fuego y prevenga la reignición",
-            "Para despejar el humo del camino de evacuación"
+            "Clase B (líquidos inflamables)",
+            "Clase A (sólidos como madera, papel, tela)",
+            "Clase C (equipos eléctricos)"
         ],
         answer: 1,
-        explanation: "Correcto: El movimiento de barrido extiende la cobertura del polvo químico sobre toda la superficie del fuego."
+        explanation: "Correcto: el agua es el agente clásico para fuegos Clase A, materiales sólidos comunes."
+    },
+    {
+        q: "3. ¿Por qué NUNCA se debe usar un extintor de agua en un fuego Clase C (equipos eléctricos energizados)?",
+        options: [
+            "Porque el agua apaga el fuego demasiado rápido y puede dañar el equipo",
+            "Porque el agua no tiene suficiente presión para llegar al equipo",
+            "Porque el agua conduce electricidad y existe riesgo de electrocución"
+        ],
+        answer: 2,
+        explanation: "Correcto: el agua conduce electricidad, así que usarla sobre un equipo energizado puede electrocutar al operador."
+    },
+    {
+        q: "4. ¿Qué puede ocurrir si se usa agua sobre un fuego Clase B (líquido inflamable)?",
+        options: [
+            "El líquido en llamas puede esparcirse y agrandar el incendio",
+            "El fuego se apaga instantáneamente sin ningún riesgo",
+            "El agua se evapora sin ningún efecto sobre el fuego"
+        ],
+        answer: 0,
+        explanation: "Correcto: como muchos líquidos inflamables flotan sobre el agua, el chorro puede esparcir el líquido ardiendo en vez de apagarlo."
+    },
+    {
+        q: "5. ¿Por qué no se recomienda el agua en fuegos Clase K (aceites de cocina)?",
+        options: [
+            "Porque el aceite flota sobre el agua y sigue ardiendo sin problema",
+            "Porque puede provocar salpicaduras explosivas de aceite hirviendo",
+            "Porque el aceite apaga el agua antes de hacer contacto"
+        ],
+        answer: 1,
+        explanation: "Correcto: el agua se hunde bajo el aceite caliente, se evapora de golpe y provoca salpicaduras violentas de aceite ardiendo."
+    },
+    {
+        q: "6. ¿Qué riesgo existe al usar agua sobre un fuego Clase D (metales combustibles)?",
+        options: [
+            "El metal se oxida instantáneamente sin generar calor",
+            "El agua no logra mojar la superficie del metal",
+            "El agua puede reaccionar violentamente con el metal"
+        ],
+        answer: 2,
+        explanation: "Correcto: algunos metales combustibles reaccionan violentamente con el agua, pudiendo generar gases explosivos o proyecciones."
+    },
+    {
+        q: "7. Después de que las llamas visibles desaparecen, ¿por qué es importante seguir rociando unos segundos más?",
+        options: [
+            "Porque pueden quedar brasas ocultas dentro del material que reaviven el fuego",
+            "Para enfriar el extintor y evitar que se dañe",
+            "Porque el manómetro tarda en bajar a cero"
+        ],
+        answer: 0,
+        explanation: "Correcto: los materiales sólidos pueden esconder brasas internas que reavivan el fuego si no se enfrían por completo."
+    },
+    {
+        q: "8. Además de enfriar, ¿de qué otra forma ayuda el agua a apagar materiales porosos como la madera o el papel?",
+        options: [
+            "Desplazando el oxígeno del aire alrededor del fuego",
+            "Por sofocación superficial: el agua penetra y humedece el combustible",
+            "Formando una capa de espuma aislante sobre el material"
+        ],
+        answer: 1,
+        explanation: "Correcto: además de enfriar, el agua penetra materiales porosos y los humedece, lo que ayuda a sofocar la combustión en la superficie."
+    },
+    {
+        q: "9. ¿Por qué el extintor de agua suele tener mayor alcance de chorro que uno de CO₂?",
+        options: [
+            "Porque el agua pesa menos que el CO₂",
+            "Porque el extintor de agua tiene más presión interna en todos los casos",
+            "Porque el agua es un líquido, no un gas, y se dispersa mucho menos en el aire"
+        ],
+        answer: 2,
+        explanation: "Correcto: al ser líquida y no gaseosa, el agua mantiene su trayectoria en un chorro compacto y llega más lejos que un gas que se dispersa."
+    },
+    {
+        q: "10. Antes de usar un extintor de agua, ¿qué debes confirmar sobre el origen del fuego?",
+        options: [
+            "Que el fuego lleve al menos 5 minutos activo",
+            "Que se trate de un material sólido (Clase A) y que no haya riesgo eléctrico ni líquidos inflamables cerca",
+            "Que haya suficiente ventilación en el lugar"
+        ],
+        answer: 1,
+        explanation: "Correcto: hay que confirmar que es un fuego Clase A y descartar riesgo eléctrico o de líquidos inflamables antes de usar agua."
     }
 ];
 
 let currentQ = 0;
+let correctCount = 0;
 let score = 0;
 
 const btnStartQuiz = document.getElementById('btn-start-quiz');
@@ -855,6 +937,7 @@ if (btnStartQuiz) {
         }
         
         currentQ = 0;
+        correctCount = 0;
         score = 0;
         // Al (re)iniciar el cuestionario, el botón "Salir" de la esquina
         // vuelve a mostrarse (showResults() lo oculta al llegar al final)
@@ -907,7 +990,10 @@ function selectAnswer(selectedIndex, btnElement) {
 
     if (selectedIndex === correctIndex) {
         btnElement.classList.add('correct');
-        score += 20; // 20 puntos por respuesta correcta (5 preguntas = 100 pts)
+        // Con 8 preguntas, el porcentaje final se calcula al terminar (ver
+        // showResults) a partir de los aciertos, en vez de sumar puntos fijos
+        // por pregunta (100/8 no es un entero).
+        correctCount++;
         if (feedbackBox) {
             feedbackBox.className = 'feedback-explanation correct-bg';
             if (feedbackTitle) feedbackTitle.innerText = "¡Respuesta Correcta!";
@@ -971,19 +1057,27 @@ function showResults() {
     if (quizExitBtn) quizExitBtn.style.display = 'none';
     
     if (resultsDiv) resultsDiv.style.display = 'block';
+
+    // Puntaje final como porcentaje de aciertos sobre las 10 preguntas (en
+    // vez de sumar puntos fijos por pregunta, para ser consistente con los
+    // demás escenarios).
+    score = Math.round((correctCount / questions.length) * 100);
     if (finalScoreEl) finalScoreEl.innerText = `${score}%`;
 
     // Tiempo de apagado y mejor tiempo: ya se guardaron en localStorage al
-    // extinguir el fuego (ver winGame() en la clase SimulatorScene), así que
-    // aquí simplemente se leen y se muestran junto con el resultado.
+    // extinguir el fuego (ver winGame() en la clase SimulatorSceneAgua), así
+    // que aquí simplemente se leen y se muestran junto con el resultado.
+    // Se usan las claves propias de este escenario (...Agua), separadas de
+    // las de PQS y CO₂, porque la dificultad -y por lo tanto los tiempos- no
+    // son comparables entre escenarios.
     let metricsActuales;
     try {
         metricsActuales = JSON.parse(localStorage.getItem('omniTrainMetrics')) || {};
     } catch (e) {
         metricsActuales = {};
     }
-    const tiempoUltimo = Number(metricsActuales.lastExtinguishTimePQS);
-    const tiempoMejor = Number(metricsActuales.bestExtinguishTimePQS);
+    const tiempoUltimo = Number(metricsActuales.lastExtinguishTimeAgua);
+    const tiempoMejor = Number(metricsActuales.bestExtinguishTimeAgua);
     const resultsTimeEl = document.getElementById('results-time');
     const resultsBestEl = document.getElementById('results-best-time');
     const resultsBestStat = document.getElementById('results-best-stat');
@@ -994,9 +1088,9 @@ function showResults() {
         resultsBestStat.classList.toggle('is-record', !isNaN(tiempoUltimo) && !isNaN(tiempoMejor) && tiempoUltimo <= tiempoMejor);
     }
 
-    // Mensaje de desbloqueo según el puntaje: el Escenario 2 (Extintor CO₂)
-    // solo se desbloquea con 100% en este cuestionario (ver SCENARIOS en
-    // index2d.html), así que el mensaje aquí refleja ese mismo umbral.
+    // Mensaje según el puntaje. Este es, por ahora, el último escenario del
+    // simulador 2D, así que en vez de nombrar un "siguiente escenario" que
+    // todavía no existe, el mensaje de éxito celebra haber completado los 3.
     const logrado = score >= 100;
     const eyebrow = document.getElementById('results-eyebrow');
     const iconFrame = document.getElementById('results-icon-frame');
@@ -1016,7 +1110,7 @@ function showResults() {
     if (unlockMsg) {
         unlockMsg.className = 'unlock-message ' + (logrado ? 'is-success' : 'is-retry');
         unlockMsg.innerHTML = logrado
-            ? '<i class="bi bi-unlock-fill" aria-hidden="true"></i> ¡Felicidades! Superaste el Extintor PQS. Ya puedes pasar al Escenario 2: Extintor CO₂.'
+            ? '<i class="bi bi-trophy-fill" aria-hidden="true"></i> ¡Felicidades! Dominaste el manejo del extintor de Agua y completaste los 3 escenarios del simulador 2D.'
             : '<i class="bi bi-arrow-repeat" aria-hidden="true"></i> ¡Inténtalo de nuevo para desbloquear el siguiente nivel!';
     }
 }
@@ -1026,7 +1120,7 @@ function saveAndReturn(targetUrl) {
         scenariosCompleted: 0,
         moduleProgress: 0,
         bestScore: 0,
-        quiz1Score: 0,
+        quiz3Score: 0,
         lastReactionTime: 12,
         efficiencyScore: 85,
         totalAttempts: 0
@@ -1044,10 +1138,11 @@ function saveAndReturn(targetUrl) {
         metrics.bestScore = score;
     }
 
-    // Puntaje específico de este cuestionario (Extintor PQS), usado para
-    // decidir si se desbloquea el siguiente escenario (Extintor CO₂)
-    if (score > (metrics.quiz1Score || 0)) {
-        metrics.quiz1Score = score;
+    // Puntaje específico de este cuestionario (Extintor de Agua). No hay un
+    // Escenario 4 todavía, pero se guarda con su propia clave (igual que
+    // quiz1Score y quiz2Score) por si se agrega más adelante.
+    if (score > (metrics.quiz3Score || 0)) {
+        metrics.quiz3Score = score;
     }
 
     // Actualizar tiempo de reacción y eficiencia simulados con base en el juego

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniTrain - Simulador Extintor PQS</title>
+    <title>OmniTrain - Simulador Extintor de Agua</title>
     
     <!-- Archivos CSS Locales (100% Offline) -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
@@ -228,7 +228,7 @@
             box-shadow: 1px 1px 0 0 #0f172a;
         }
         .pixel-btn-play {
-            background: #ef4444;
+            background: #2563eb;
             color: #fff;
         }
         .pixel-btn-exit {
@@ -685,11 +685,11 @@
 <!-- ===================== PANTALLA PREVIA: INFO + MENÚ ===================== -->
 <div id="pre-game-overlay">
     <div class="mb-2">
-        <i class="bi bi-fire" style="font-size: 2.4rem; color: #ef4444;"></i>
+        <i class="bi bi-droplet-fill" style="font-size: 2.4rem; color: #2563eb;"></i>
     </div>
-    <h1 class="pixel-font pixel-text-outline text-white fw-bold mb-1" style="font-size: 2.1rem; letter-spacing: 3px;">EXTINTOR PQS</h1>
+    <h1 class="pixel-font pixel-text-outline text-white fw-bold mb-1" style="font-size: 2.1rem; letter-spacing: 3px;">EXTINTOR DE AGUA</h1>
     <p class="text-light opacity-75 mb-4 pixel-font" style="max-width: 480px; font-size: 0.9rem;">
-        Polvo Químico Seco — Repasa lo esencial antes de entrar a la simulación
+        Agua a presión — Repasa lo esencial antes de entrar a la simulación
     </p>
 
     <div class="d-flex flex-wrap justify-content-center gap-4 mb-2">
@@ -698,11 +698,11 @@
                 <i class="bi bi-plus-lg" aria-hidden="true"></i>
             </button>
             <div class="pixel-card">
-                <span class="pixel-icon">🧯</span>
+                <span class="pixel-icon">💧</span>
                 <h6 class="pixel-text-outline">¿Qué es?</h6>
-                <p>Agente extintor en polvo (fosfato monoamónico). De uso múltiple y muy común en hogares y oficinas.</p>
+                <p>Extintor a base de agua a presión. Actúa principalmente por enfriamiento: reduce la temperatura del material por debajo de su punto de ignición.</p>
                 <div class="pixel-card-detail" id="card-detail-1">
-                    <p>Actúa por sofocación química: interrumpe la reacción en cadena de la combustión y forma una capa que separa el combustible del oxígeno. No conduce electricidad en el momento de la descarga, pero deja un residuo corrosivo que debe limpiarse del equipo después de usarlo.</p>
+                    <p>También actúa por sofocación superficial en materiales porosos, ya que el agua penetra y humedece el combustible. A diferencia del CO₂ o el PQS, no dispersa un gas ni deja residuo en polvo, pero moja por completo la zona afectada.</p>
                 </div>
             </div>
         </div>
@@ -713,9 +713,9 @@
             <div class="pixel-card">
                 <span class="pixel-icon">🔥</span>
                 <h6 class="pixel-text-outline">¿Para qué fuegos?</h6>
-                <p>Eficaz en fuegos Clase A (sólidos), Clase B (líquidos inflamables) y Clase C (eléctricos).</p>
+                <p>Recomendado únicamente para fuegos Clase A: materiales sólidos comunes como madera, papel, tela y cartón.</p>
                 <div class="pixel-card-detail" id="card-detail-2">
-                    <p>No se recomienda para fuegos Clase D (metales combustibles) ni Clase K (aceites de cocina), donde resulta insuficiente o inadecuado. En equipos electrónicos sensibles, ten en cuenta que el polvo puede dañar los circuitos aunque no sea conductor.</p>
+                    <p>NUNCA debe usarse en fuegos Clase B (líquidos inflamables: puede esparcir el líquido en llamas), Clase C (equipos eléctricos: el agua conduce electricidad y hay riesgo de electrocución), Clase D (metales combustibles: puede reaccionar violentamente) ni Clase K (aceites de cocina: provoca salpicaduras explosivas de aceite hirviendo).</p>
                 </div>
             </div>
         </div>
@@ -726,9 +726,9 @@
             <div class="pixel-card">
                 <span class="pixel-icon">⚠️</span>
                 <h6 class="pixel-text-outline">Antes de usar</h6>
-                <p>Agítalo antes de accionarlo para evitar que el polvo se compacte. Mantén 2-3 metros de distancia del fuego.</p>
+                <p>Confirma que el origen del fuego es un material sólido (Clase A) y que no hay riesgo eléctrico ni líquidos inflamables cerca.</p>
                 <div class="pixel-card-detail" id="card-detail-3">
-                    <p>Revisa el manómetro: la aguja debe estar en la zona verde (presión correcta) y el precinto de seguridad debe estar intacto. Nunca ataques el fuego dando la espalda a una salida: mantén siempre una vía de escape libre detrás de ti.</p>
+                    <p>Aunque ya no veas llamas, sigue rociando unos segundos más: los materiales sólidos pueden esconder brasas internas que reavivan el fuego si no se enfrían por completo. Es uno de los errores más comunes al usar este tipo de extintor.</p>
                 </div>
             </div>
         </div>
@@ -760,8 +760,8 @@
             <button onclick="window.location.href='index2d.html'" class="btn btn-outline-light btn-sm mb-2 d-inline-flex align-items-center gap-1" style="pointer-events: auto;">
                 <i class="bi bi-arrow-left"></i> Volver sin guardar
             </button>
-            <h1 class="h5 m-0 fw-bold text-danger d-flex align-items-center gap-2">
-                <i class="bi bi-fire"></i> SIMULADOR EXTINTOR PQS
+            <h1 class="h5 m-0 fw-bold d-flex align-items-center gap-2" style="color: #2563eb;">
+                <i class="bi bi-fire"></i> SIMULADOR EXTINTOR DE AGUA
             </h1>
             <div class="small text-light opacity-75 mt-1 d-flex justify-content-between">
                 <span>Tiempo de Respuesta:</span>
@@ -786,7 +786,7 @@
                 <h2 class="h6 fw-bold text-white m-0 d-flex align-items-center gap-2">
                     <i class="bi bi-shield-check text-warning"></i> MÉTODO T.A.A.B.
                 </h2>
-                <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 10px;">GUÍA INTERACTIVA</span>
+                <span class="badge rounded-pill px-2 py-1" style="font-size: 10px; background: #2563eb;">GUÍA INTERACTIVA</span>
             </div>
             
             <ul class="list-unstyled m-0 d-flex flex-column gap-2">
@@ -815,7 +815,7 @@
                     <div class="step-num">B</div>
                     <div>
                         <span class="d-block fw-bold">BARRER</span>
-                        <span class="small opacity-75">Mueve de lado a lado</span>
+                        <span class="small opacity-75">Mueve de lado a lado; no sueltes aunque baje el fuego</span>
                     </div>
                 </li>
             </ul>
@@ -847,7 +847,7 @@
             <i class="bi bi-trophy-fill"></i>
         </div>
         <h1 class="fw-bold mb-2" style="font-size: 2rem; color: #34d399; text-transform: uppercase;">¡Fuego Extinguido!</h1>
-        <p class="mb-3" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Has aplicado correctamente los 4 pasos del método T.A.A.B. con el Extintor PQS. Ahora demostremos tu aprendizaje en la evaluación final.</p>
+        <p class="mb-3" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Has aplicado correctamente los 4 pasos del método T.A.A.B. con el Extintor de Agua. Ahora demostremos tu aprendizaje en la evaluación final.</p>
 
         <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
             <div class="pixel-stat">
@@ -896,9 +896,9 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
             <h3 class="fw-bold m-0 d-flex align-items-center gap-2" style="color: #fff; text-transform: uppercase; font-size: 1.05rem;">
-                <i class="bi bi-patch-question-fill text-warning"></i> Evaluación: Método T.A.A.B.
+                <i class="bi bi-patch-question-fill text-warning"></i> Evaluación: Extintor de Agua
             </h3>
-            <span class="pixel-badge" id="quiz-counter">Pregunta 1 de 5</span>
+            <span class="pixel-badge" id="quiz-counter">Pregunta 1 de 10</span>
         </div>
         
         <h4 id="question-text" class="mb-4" style="line-height: 1.5; font-size: 1.05rem; color: #e2e8f0;">Cargando pregunta...</h4>
@@ -950,7 +950,7 @@
 </div>
 
 <!-- Lógica del juego Phaser y Cuestionario -->
-<script src="../../js/ejemplo.js"></script>
+<script src="../../js/ejemplo3.js"></script>
 
 <script>
     // Botones de la pantalla previa (info + menú)
@@ -968,9 +968,17 @@
         btnPlayPregame.addEventListener('click', () => {
             // Con el botón bloqueado (disabled) hasta abrir las 3 tarjetas,
             // este handler solo llega a ejecutarse cuando ya está desbloqueado.
-            if (preGameOverlay) preGameOverlay.style.display = 'none';
-            // El juego Phaser recién se inicializa acá (ver startPqsSimulator en ejemplo.js)
-            if (typeof startPqsSimulator === 'function') startPqsSimulator();
+            // El juego Phaser recién se inicializa acá (ver startAguaSimulator en ejemplo3.js)
+            if (typeof startAguaSimulator === 'function') {
+                if (preGameOverlay) preGameOverlay.style.display = 'none';
+                startAguaSimulator();
+            } else {
+                // Si ejemplo3.js no cargó (ruta incorrecta, archivo faltante, etc.)
+                // esto se habría quedado en un lienzo en blanco sin explicación.
+                // En vez de eso, se avisa claramente qué revisar.
+                console.error('OmniTrain: no se encontró startAguaSimulator(). ¿Está "ejemplo3.js" en la carpeta /js/ del sitio (junto a phaser.min.js, ejemplo.js y ejemplo2.js), y no junto a pygame3.html?');
+                alert('No se pudo cargar el simulador.\n\nRevisa que el archivo "ejemplo3.js" esté en la carpeta /js/ del sitio (la misma donde están phaser.min.js, ejemplo.js y ejemplo2.js), no en la misma carpeta que pygame3.html.\n\nAbre la consola del navegador (F12) para más detalles.');
+            }
         });
     }
 
