@@ -249,8 +249,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <div class="metric-big-card h-100">
-                            <span class="indicator-badge badge-red">-2s</span>
-                            <h2>12s</h2>
+                            <h2 id="kpi-reaction-time">12s</h2>
                             <span>Tiempo de Reacción</span>
                         </div>
                     </div>
@@ -277,8 +276,8 @@
 
                             <div class="chart-row">
                                 <span class="chart-row-label">Simulador 2D</span>
-                                <div class="chart-track"><div class="chart-fill chart-fill-red" style="width:60%"></div></div>
-                                <span class="chart-row-value">60%</span>
+                                <div class="chart-track"><div id="module-progress-fill" class="chart-fill chart-fill-red" style="width:60%"></div></div>
+                                <span id="module-progress-value" class="chart-row-value">60%</span>
                             </div>
 
                             <div class="chart-row">
@@ -454,6 +453,73 @@
 
     <!-- Script principal de la aplicación -->
     <script type="module" src="../../js/login.js"></script>
+
+    <!-- ==========================================================
+    Vínculo con el Simulador 2D: SOLO "Tiempo de Reacción" y la fila
+    "Simulador 2D" de "Progreso por Módulo" se leen del registro real
+    (localStorage "omniTrainMetrics", el mismo que usa index2d.html). El
+    resto de los indicadores de esta página se mantiene con datos de
+    ejemplo, tal como ya estaban.
+    ========================================================== -->
+    <script>
+        (function () {
+            'use strict';
+
+            var STORAGE_KEY = 'omniTrainMetrics';
+
+            function leerMetricasSimulador() {
+                try {
+                    var guardado = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                    if (guardado && typeof guardado === 'object') return guardado;
+                } catch (e) { /* registro ausente o corrupto: se usan los valores de ejemplo */ }
+                return null;
+            }
+
+            function pintarVinculos() {
+                var registro = leerMetricasSimulador();
+                if (!registro) return; // Sin datos del simulador todavía: se dejan los valores de ejemplo
+
+                // --- Tiempo de Reacción ---
+                // Guardado por cada escenario en "lastReactionTime" (el más
+                // reciente entre los tres, ya que comparten la misma clave).
+                var reactionEl = document.getElementById('kpi-reaction-time');
+                var reactionTime = Number(registro.lastReactionTime);
+                if (reactionEl && !isNaN(reactionTime) && reactionTime > 0) {
+                    reactionEl.textContent = reactionTime + 's';
+                }
+
+                // --- Progreso por Módulo: Simulador 2D ---
+                // Promedio de los 3 cuestionarios (quiz1/2/3Score), igual que
+                // el cálculo ya usado en index2d.html, para que ambas
+                // pantallas muestren siempre el mismo número.
+                var quiz1 = Number(registro.quiz1Score) || 0;
+                var quiz2 = Number(registro.quiz2Score) || 0;
+                var quiz3 = Number(registro.quiz3Score) || 0;
+                var huboIntento = (registro.quiz1Score !== undefined) || (registro.quiz2Score !== undefined) || (registro.quiz3Score !== undefined);
+
+                if (huboIntento) {
+                    var progreso = Math.round((quiz1 + quiz2 + quiz3) / 3);
+                    var fill = document.getElementById('module-progress-fill');
+                    var value = document.getElementById('module-progress-value');
+                    if (fill) {
+                        fill.style.width = progreso + '%';
+                        if (fill.parentElement) {
+                            fill.parentElement.setAttribute('aria-valuenow', String(progreso));
+                        }
+                    }
+                    if (value) value.textContent = progreso + '%';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', pintarVinculos);
+
+            // Si el simulador se jugó en otra pestaña, el avance se refleja aquí
+            window.addEventListener('storage', function (e) {
+                if (e.key === STORAGE_KEY) pintarVinculos();
+            });
+            window.addEventListener('pageshow', pintarVinculos);
+        })();
+    </script>
 
     <!-- Script de soporte: menú lateral y modo oscuro -->
     <script>

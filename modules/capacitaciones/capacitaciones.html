@@ -17,6 +17,92 @@
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
+    <!-- ==========================================================
+    "Obra en proceso": el contenido del módulo se ve borroso y con cintas
+    de advertencia superpuestas. Solo afecta a esta página (capacitaciones);
+    la barra superior (login) y el menú lateral quedan intactos porque el
+    blur se aplica a un contenedor interno de .content-padding, no a ellos.
+    ========================================================== -->
+    <style>
+        #capacitaciones-blur-wrapper {
+            filter: blur(6px);
+            -webkit-filter: blur(6px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .under-construction-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .uc-tint {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(245, 158, 11, 0.10) 0px,
+                rgba(245, 158, 11, 0.10) 36px,
+                rgba(15, 23, 42, 0.06) 36px,
+                rgba(15, 23, 42, 0.06) 72px
+            );
+        }
+
+        .uc-ribbon {
+            position: absolute;
+            left: -8%;
+            width: 116%;
+            padding: 12px 0;
+            background: #f59e0b;
+            color: #0f172a;
+            text-align: center;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 0 0 4px rgba(15,23,42,0.85);
+        }
+
+        .uc-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f172a;
+            color: #fde68a;
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 18px 28px;
+            text-align: center;
+            font-family: "Courier New", Courier, monospace;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 90vw;
+        }
+        .uc-card .uc-card-icon {
+            font-size: 2rem;
+        }
+        .uc-card h3 {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin: 6px 0 4px;
+        }
+        .uc-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 576px) {
+            .uc-ribbon { font-size: 0.85rem; letter-spacing: 1.5px; padding: 9px 0; }
+        }
+    </style>
 </head>
 
 <body>
@@ -194,7 +280,22 @@
                 </div>
             </header>
 
-            <div class="content-padding">
+            <div class="content-padding" style="position: relative;">
+                <!-- Cintas de advertencia + tarjeta central: fuera del
+                     contenedor con blur, por eso se ven nítidas -->
+                <div class="under-construction-layer" aria-hidden="true">
+                    <div class="uc-tint"></div>
+                    <div class="uc-ribbon" style="top: 20%; transform: rotate(-6deg);">🚧 Obra en Proceso 🚧</div>
+                    <div class="uc-ribbon" style="top: 50%; transform: rotate(5deg);">🚧 Obra en Proceso 🚧</div>
+                    <div class="uc-ribbon" style="top: 80%; transform: rotate(-4deg);">🚧 Obra en Proceso 🚧</div>
+                    <div class="uc-card">
+                        <div class="uc-card-icon">🚧</div>
+                        <h3>Módulo en construcción</h3>
+                        <p>Estamos trabajando en esta sección.<br>Vuelve pronto para verla completa.</p>
+                    </div>
+                </div>
+
+                <div id="capacitaciones-blur-wrapper">
                 <div class="global-progress">
                     <div class="d-flex justify-content-between">
                         <span>Ruta de Aprendizaje</span>
@@ -374,6 +475,7 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
                 </div>
             </div>
         </main>

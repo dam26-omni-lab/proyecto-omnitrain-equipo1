@@ -227,9 +227,27 @@
                     </div>
 
                     <div class="hero-stats-row d-flex flex-wrap gap-2 mt-3">
-                        <div class="hero-stat-card flex-fill"><h4 id="stat-scenarios">0/3</h4><span>Escenarios completados</span></div>
-                        <div class="hero-stat-card flex-fill"><h4 id="stat-progress">0%</h4><span>Progreso del módulo</span></div>
-                        <div class="hero-stat-card flex-fill"><h4 id="stat-score">0</h4><span>Mejor puntuación</span></div>
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-scenarios">0/3</h4>
+                            <span>Escenarios completados</span>
+                            <div class="progress mt-2" style="height: 6px; background-color: rgba(255,255,255,0.25);" role="progressbar" aria-label="Escenarios completados" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div id="stat-scenarios-bar" class="progress-bar bg-white" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-progress">0%</h4>
+                            <span>Progreso del módulo</span>
+                            <div class="progress mt-2" style="height: 6px; background-color: rgba(255,255,255,0.25);" role="progressbar" aria-label="Progreso del módulo" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div id="stat-progress-bar" class="progress-bar bg-white" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-score">0</h4>
+                            <span>Mejor puntuación</span>
+                            <div class="small mt-2 d-flex align-items-center justify-content-center gap-1">
+                                <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="stat-best-time">--</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -246,6 +264,19 @@
                                 </div>
                                 <h5>Extintor PQS</h5>
                                 <p>Extintor de Polvo Químico Seco (PQS). Identificación del equipo y protocolo T.A.A.B. de uso.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-1-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 1" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-1-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-1-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="scenario-footer" id="scenario-1-footer">
@@ -266,6 +297,19 @@
                                 </div>
                                 <h5>Extintor CO₂</h5>
                                 <p>Manejo del extintor de Dióxido de Carbono (CO₂) e identificación del equipo según protocolo T.A.A.B.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-2-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 2" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-2-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-2-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="scenario-footer" id="scenario-2-footer">
@@ -287,6 +331,19 @@
                                 </div>
                                 <h5>Extintor de Agua</h5>
                                 <p>Manejo del extintor a base de Agua e identificación del equipo según protocolo T.A.A.B.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-3-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 3" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-3-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-3-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="scenario-footer" id="scenario-3-footer">
@@ -397,11 +454,13 @@
             var TOTAL_SCENARIOS = 3;
             var APROBACION = 100; // puntaje requerido en el cuestionario para desbloquear
 
-            // Cada escenario y el cuestionario del que depende su desbloqueo
+            // Cada escenario, el cuestionario del que depende su desbloqueo,
+            // y los campos donde su propio juego (ejemplo.js/ejemplo2.js/ejemplo3.js)
+            // guarda el puntaje del cuestionario y el mejor tiempo de apagado.
             var SCENARIOS = [
-                { id: 1, url: 'pygame.html', requiere: null, requisitoTexto: '' },
-                { id: 2, url: 'pygame-co2.html', requiere: 'quiz1Score', requisitoTexto: 'Requiere 100% en el primer cuestionario' },
-                { id: 3, url: 'pygame-agua.html', requiere: 'quiz2Score', requisitoTexto: 'Requiere 100% en el segundo cuestionario' }
+                { id: 1, url: 'pygame.html', requiere: null, requisitoTexto: '', quizField: 'quiz1Score', timeField: 'bestExtinguishTimePQS' },
+                { id: 2, url: 'pygame2.html', requiere: 'quiz1Score', requisitoTexto: 'Requiere 100% en el primer cuestionario', quizField: 'quiz2Score', timeField: 'bestExtinguishTimeCO2' },
+                { id: 3, url: 'pygame3.html', requiere: 'quiz2Score', requisitoTexto: 'Requiere 100% en el segundo cuestionario', quizField: 'quiz3Score', timeField: 'bestExtinguishTimeAgua' }
             ];
 
             // ======================================================
@@ -414,6 +473,10 @@
                     bestScore: 0,
                     quiz1Score: 0,
                     quiz2Score: 0,
+                    quiz3Score: 0,
+                    bestExtinguishTimePQS: 0,
+                    bestExtinguishTimeCO2: 0,
+                    bestExtinguishTimeAgua: 0,
                     scores: {}
                 };
             }
@@ -429,6 +492,13 @@
                         base.bestScore = Number(guardado.bestScore) || 0;
                         base.quiz1Score = Number(guardado.quiz1Score) || 0;
                         base.quiz2Score = Number(guardado.quiz2Score) || 0;
+                        base.quiz3Score = Number(guardado.quiz3Score) || 0;
+                        // Compatibilidad: versiones previas de ejemplo.js guardaban el
+                        // tiempo del Escenario 1 bajo "bestExtinguishTime" (sin sufijo).
+                        // Si no hay valor con el nombre nuevo, se usa ese como respaldo.
+                        base.bestExtinguishTimePQS = Number(guardado.bestExtinguishTimePQS) || Number(guardado.bestExtinguishTime) || 0;
+                        base.bestExtinguishTimeCO2 = Number(guardado.bestExtinguishTimeCO2) || 0;
+                        base.bestExtinguishTimeAgua = Number(guardado.bestExtinguishTimeAgua) || 0;
                         if (guardado.scores && typeof guardado.scores === 'object') {
                             base.scores = guardado.scores;
                         }
@@ -464,6 +534,25 @@
                 return registro;
             }
 
+            // Avance real del módulo, calculado a partir del puntaje de cada
+            // cuestionario (quiz1Score/quiz2Score/quiz3Score), que es lo que
+            // cada juego realmente guarda por intento:
+            //   - "Escenarios completados" solo cuenta los que llegaron a 100%.
+            //   - "Progreso del módulo" es el PROMEDIO de los 3 puntajes, así
+            //     que un avance parcial (ej. 80% en el Escenario 1) ya se ve
+            //     reflejado ahí sin necesidad de completar nada al 100%.
+            function calcularAvance(registro) {
+                var puntajes = SCENARIOS.map(function (config) {
+                    return Number(registro[config.quizField]) || 0;
+                });
+
+                var completados = puntajes.filter(function (p) { return p >= APROBACION; }).length;
+                var promedio = Math.round(puntajes.reduce(function (a, b) { return a + b; }, 0) / TOTAL_SCENARIOS);
+                var mejor = Math.max.apply(null, puntajes);
+
+                return { completados: completados, progreso: promedio, mejorPuntaje: mejor };
+            }
+
             // ======================================================
             // 2. PINTADO DE LAS MÉTRICAS SUPERIORES
             // ======================================================
@@ -473,17 +562,37 @@
                 var score = document.getElementById('stat-score');
                 var globalText = document.getElementById('global-progress-text');
                 var globalBar = document.getElementById('global-progress-bar');
+                var scenariosBar = document.getElementById('stat-scenarios-bar');
+                var progressBar = document.getElementById('stat-progress-bar');
+                var bestTimeEl = document.getElementById('stat-best-time');
+                var avance = calcularAvance(registro);
 
-                if (scenarios) scenarios.textContent = registro.scenariosCompleted + '/' + TOTAL_SCENARIOS;
-                if (progress) progress.textContent = registro.moduleProgress + '%';
-                if (score) score.textContent = registro.bestScore > 0 ? registro.bestScore + '%' : '0';
-                if (globalText) globalText.textContent = registro.moduleProgress + '%';
+                if (scenarios) scenarios.textContent = avance.completados + '/' + TOTAL_SCENARIOS;
+                if (progress) progress.textContent = avance.progreso + '%';
+                if (score) score.textContent = avance.mejorPuntaje > 0 ? avance.mejorPuntaje + '%' : '0';
+                if (globalText) globalText.textContent = avance.progreso + '%';
+
+                var scenariosPct = Math.round((avance.completados / TOTAL_SCENARIOS) * 100);
+                if (scenariosBar) scenariosBar.style.width = scenariosPct + '%';
+                if (progressBar) progressBar.style.width = avance.progreso + '%';
 
                 if (globalBar) {
-                    globalBar.style.width = registro.moduleProgress + '%';
+                    globalBar.style.width = avance.progreso + '%';
                     if (globalBar.parentElement) {
-                        globalBar.parentElement.setAttribute('aria-valuenow', String(registro.moduleProgress));
+                        globalBar.parentElement.setAttribute('aria-valuenow', String(avance.progreso));
                     }
+                }
+
+                // Mejor tiempo de apagado entre los 3 escenarios, sin importar
+                // cuál: cada uno guarda su propio récord (no son comparables
+                // en dificultad entre sí), así que aquí solo se toma el más
+                // rápido de los que sí se hayan jugado al menos una vez.
+                var tiempos = [registro.bestExtinguishTimePQS, registro.bestExtinguishTimeCO2, registro.bestExtinguishTimeAgua]
+                    .map(Number)
+                    .filter(function (t) { return !isNaN(t) && t > 0; });
+                var mejorTiempo = tiempos.length ? Math.min.apply(null, tiempos) : null;
+                if (bestTimeEl) {
+                    bestTimeEl.textContent = mejorTiempo !== null ? mejorTiempo.toFixed(1) + 's' : '--';
                 }
             }
 
@@ -517,8 +626,31 @@
                 if (!card) return;
 
                 var desbloqueado = !config.requiere || (Number(registro[config.requiere]) || 0) >= APROBACION;
-                var puntaje = registro.scores[config.id];
-                var completado = puntaje !== undefined && puntaje !== null;
+
+                // El puntaje/progreso de CADA tarjeta viene de su propio
+                // cuestionario (quiz1Score/quiz2Score/quiz3Score), que es lo
+                // que ejemplo.js/ejemplo2.js/ejemplo3.js realmente guardan
+                // -no de un "scores[id]" que ningún juego llega a escribir.
+                var puntaje = Number(registro[config.quizField]) || 0;
+                var intentado = puntaje > 0;
+                var completado = puntaje >= APROBACION;
+                var tiempo = Number(registro[config.timeField]) || 0;
+
+                // Progreso y récord de tiempo se pintan siempre, esté o no
+                // desbloqueado el escenario, para que el jugador vea de un
+                // vistazo su mejor intento en cada uno.
+                var progressText = document.getElementById('scenario-' + config.id + '-progress-text');
+                var progressFill = document.getElementById('scenario-' + config.id + '-progress-fill');
+                var recordTime = document.getElementById('scenario-' + config.id + '-time');
+
+                if (progressText) progressText.textContent = puntaje + '%';
+                if (progressFill) {
+                    progressFill.style.width = puntaje + '%';
+                    if (progressFill.parentElement) {
+                        progressFill.parentElement.setAttribute('aria-valuenow', String(puntaje));
+                    }
+                }
+                if (recordTime) recordTime.textContent = tiempo > 0 ? tiempo.toFixed(1) + 's' : '--';
 
                 // --- Estado bloqueado ---
                 if (!desbloqueado) {
@@ -568,12 +700,15 @@
                     footer.textContent = '';
 
                     var estado = document.createElement('span');
-                    estado.className = 'scenario-state';
-                    estado.textContent = completado ? 'Estado: Completado' : 'Estado: Pendiente';
+                    estado.className = 'scenario-state d-flex align-items-center gap-1';
+                    if (completado) estado.appendChild(crearIcono('bi bi-check-circle-fill text-success'));
+                    estado.appendChild(document.createTextNode(
+                        completado ? 'Estado: Completado' : (intentado ? 'Estado: En progreso' : 'Estado: Pendiente')
+                    ));
 
                     var marcador = document.createElement('span');
                     marcador.className = 'status-badge ' + (completado ? 'status-success' : 'status-neutral');
-                    marcador.textContent = completado ? 'Puntaje: ' + puntaje + '%' : 'Puntaje: --';
+                    marcador.textContent = intentado ? 'Puntaje: ' + puntaje + '%' : 'Puntaje: --';
 
                     footer.appendChild(estado);
                     footer.appendChild(marcador);

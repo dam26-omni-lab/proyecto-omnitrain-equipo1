@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniTrain - Simulador Extintor PQS</title>
+    <title>OmniTrain - Simulador Extintor CO₂</title>
     
     <!-- Archivos CSS Locales (100% Offline) -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
@@ -685,11 +685,11 @@
 <!-- ===================== PANTALLA PREVIA: INFO + MENÚ ===================== -->
 <div id="pre-game-overlay">
     <div class="mb-2">
-        <i class="bi bi-fire" style="font-size: 2.4rem; color: #ef4444;"></i>
+        <i class="bi bi-snow2" style="font-size: 2.4rem; color: #38bdf8;"></i>
     </div>
-    <h1 class="pixel-font pixel-text-outline text-white fw-bold mb-1" style="font-size: 2.1rem; letter-spacing: 3px;">EXTINTOR PQS</h1>
+    <h1 class="pixel-font pixel-text-outline text-white fw-bold mb-1" style="font-size: 2.1rem; letter-spacing: 3px;">EXTINTOR CO₂</h1>
     <p class="text-light opacity-75 mb-4 pixel-font" style="max-width: 480px; font-size: 0.9rem;">
-        Polvo Químico Seco — Repasa lo esencial antes de entrar a la simulación
+        Dióxido de Carbono — Repasa lo esencial antes de entrar a la simulación
     </p>
 
     <div class="d-flex flex-wrap justify-content-center gap-4 mb-2">
@@ -698,11 +698,11 @@
                 <i class="bi bi-plus-lg" aria-hidden="true"></i>
             </button>
             <div class="pixel-card">
-                <span class="pixel-icon">🧯</span>
+                <span class="pixel-icon">❄️</span>
                 <h6 class="pixel-text-outline">¿Qué es?</h6>
-                <p>Agente extintor en polvo (fosfato monoamónico). De uso múltiple y muy común en hogares y oficinas.</p>
+                <p>Extintor a base de Dióxido de Carbono (CO₂), almacenado como gas licuado a alta presión. Actúa por sofocación: desplaza el oxígeno alrededor del fuego.</p>
                 <div class="pixel-card-detail" id="card-detail-1">
-                    <p>Actúa por sofocación química: interrumpe la reacción en cadena de la combustión y forma una capa que separa el combustible del oxígeno. No conduce electricidad en el momento de la descarga, pero deja un residuo corrosivo que debe limpiarse del equipo después de usarlo.</p>
+                    <p>No conduce electricidad y no deja residuo alguno sobre el equipo, por lo que es ideal en salas de cómputo o paneles eléctricos. Su descarga sale a temperatura extremadamente baja (puede formar "nieve carbónica"), por eso su boquilla (difusor) es mucho más grande que la de un extintor de polvo: dirige el gas frío de forma segura, lejos de la mano del operador.</p>
                 </div>
             </div>
         </div>
@@ -713,9 +713,9 @@
             <div class="pixel-card">
                 <span class="pixel-icon">🔥</span>
                 <h6 class="pixel-text-outline">¿Para qué fuegos?</h6>
-                <p>Eficaz en fuegos Clase A (sólidos), Clase B (líquidos inflamables) y Clase C (eléctricos).</p>
+                <p>Eficaz en fuegos Clase B (líquidos inflamables) y Clase C (equipos eléctricos energizados).</p>
                 <div class="pixel-card-detail" id="card-detail-2">
-                    <p>No se recomienda para fuegos Clase D (metales combustibles) ni Clase K (aceites de cocina), donde resulta insuficiente o inadecuado. En equipos electrónicos sensibles, ten en cuenta que el polvo puede dañar los circuitos aunque no sea conductor.</p>
+                    <p>No se recomienda para fuegos Clase A (madera, papel, tela): el CO₂ se disipa demasiado rápido para penetrar en las brasas, y el fuego puede reavivarse. Tampoco es adecuado en exteriores con viento ni en espacios muy abiertos, porque el gas se dispersa antes de concentrarse sobre el fuego.</p>
                 </div>
             </div>
         </div>
@@ -726,9 +726,9 @@
             <div class="pixel-card">
                 <span class="pixel-icon">⚠️</span>
                 <h6 class="pixel-text-outline">Antes de usar</h6>
-                <p>Agítalo antes de accionarlo para evitar que el polvo se compacte. Mantén 2-3 metros de distancia del fuego.</p>
+                <p>Sujeta siempre el difusor por su mango aislante, nunca por el cono metálico. Acércate más de lo habitual: su alcance efectivo es más corto que el de un extintor de polvo.</p>
                 <div class="pixel-card-detail" id="card-detail-3">
-                    <p>Revisa el manómetro: la aguja debe estar en la zona verde (presión correcta) y el precinto de seguridad debe estar intacto. Nunca ataques el fuego dando la espalda a una salida: mantén siempre una vía de escape libre detrás de ti.</p>
+                    <p>En espacios cerrados y muy pequeños, ventila el área después de usarlo: al desplazar el oxígeno, una descarga prolongada en un cuarto sin ventilación puede representar riesgo de asfixia para las personas presentes.</p>
                 </div>
             </div>
         </div>
@@ -760,8 +760,8 @@
             <button onclick="window.location.href='index2d.html'" class="btn btn-outline-light btn-sm mb-2 d-inline-flex align-items-center gap-1" style="pointer-events: auto;">
                 <i class="bi bi-arrow-left"></i> Volver sin guardar
             </button>
-            <h1 class="h5 m-0 fw-bold text-danger d-flex align-items-center gap-2">
-                <i class="bi bi-fire"></i> SIMULADOR EXTINTOR PQS
+            <h1 class="h5 m-0 fw-bold d-flex align-items-center gap-2" style="color: #38bdf8;">
+                <i class="bi bi-fire"></i> SIMULADOR EXTINTOR CO₂
             </h1>
             <div class="small text-light opacity-75 mt-1 d-flex justify-content-between">
                 <span>Tiempo de Respuesta:</span>
@@ -786,7 +786,7 @@
                 <h2 class="h6 fw-bold text-white m-0 d-flex align-items-center gap-2">
                     <i class="bi bi-shield-check text-warning"></i> MÉTODO T.A.A.B.
                 </h2>
-                <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 10px;">GUÍA INTERACTIVA</span>
+                <span class="badge rounded-pill px-2 py-1" style="font-size: 10px; background: #0ea5e9;">GUÍA INTERACTIVA</span>
             </div>
             
             <ul class="list-unstyled m-0 d-flex flex-column gap-2">
@@ -801,7 +801,7 @@
                     <div class="step-num">A</div>
                     <div>
                         <span class="d-block fw-bold">APUNTAR</span>
-                        <span class="small opacity-75">Apunta a la base del fuego</span>
+                        <span class="small opacity-75">Apunta el difusor a la base del fuego</span>
                     </div>
                 </li>
                 <li id="step-3" class="step-pending d-flex align-items-center gap-3">
@@ -815,7 +815,7 @@
                     <div class="step-num">B</div>
                     <div>
                         <span class="d-block fw-bold">BARRER</span>
-                        <span class="small opacity-75">Mueve de lado a lado</span>
+                        <span class="small opacity-75">Mueve de lado a lado, cerca del fuego</span>
                     </div>
                 </li>
             </ul>
@@ -847,7 +847,7 @@
             <i class="bi bi-trophy-fill"></i>
         </div>
         <h1 class="fw-bold mb-2" style="font-size: 2rem; color: #34d399; text-transform: uppercase;">¡Fuego Extinguido!</h1>
-        <p class="mb-3" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Has aplicado correctamente los 4 pasos del método T.A.A.B. con el Extintor PQS. Ahora demostremos tu aprendizaje en la evaluación final.</p>
+        <p class="mb-3" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Has aplicado correctamente los 4 pasos del método T.A.A.B. con el Extintor CO₂. Ahora demostremos tu aprendizaje en la evaluación final.</p>
 
         <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
             <div class="pixel-stat">
@@ -896,9 +896,9 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
             <h3 class="fw-bold m-0 d-flex align-items-center gap-2" style="color: #fff; text-transform: uppercase; font-size: 1.05rem;">
-                <i class="bi bi-patch-question-fill text-warning"></i> Evaluación: Método T.A.A.B.
+                <i class="bi bi-patch-question-fill text-warning"></i> Evaluación: Extintor CO₂
             </h3>
-            <span class="pixel-badge" id="quiz-counter">Pregunta 1 de 5</span>
+            <span class="pixel-badge" id="quiz-counter">Pregunta 1 de 8</span>
         </div>
         
         <h4 id="question-text" class="mb-4" style="line-height: 1.5; font-size: 1.05rem; color: #e2e8f0;">Cargando pregunta...</h4>
@@ -950,7 +950,7 @@
 </div>
 
 <!-- Lógica del juego Phaser y Cuestionario -->
-<script src="../../js/ejemplo.js"></script>
+<script src="../../js/ejemplo2.js"></script>
 
 <script>
     // Botones de la pantalla previa (info + menú)
@@ -969,8 +969,8 @@
             // Con el botón bloqueado (disabled) hasta abrir las 3 tarjetas,
             // este handler solo llega a ejecutarse cuando ya está desbloqueado.
             if (preGameOverlay) preGameOverlay.style.display = 'none';
-            // El juego Phaser recién se inicializa acá (ver startPqsSimulator en ejemplo.js)
-            if (typeof startPqsSimulator === 'function') startPqsSimulator();
+            // El juego Phaser recién se inicializa acá (ver startCo2Simulator en ejemplo2.js)
+            if (typeof startCo2Simulator === 'function') startCo2Simulator();
         });
     }
 
