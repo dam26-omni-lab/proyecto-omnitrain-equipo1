@@ -4,12 +4,7 @@ Este proyecto utiliza modelos 3D de terceros obtenidos de Sketchfab. Agradecemos
 
 ## Modelos utilizados
 
-### 1. Modern Kitchen
-- **Modelo:** Modern Kitchen
-- **Fuente:** Sketchfab
-- **Enlace:** https://sketchfab.com/3d-models/modern-kitchen-82c35500aec347d2938ff7943900486f
-
-### 2. Extinguisher
+### 1. Extinguisher
 - **Modelo:** Extinguisher
 - **Fuente:** Sketchfab
 - **Enlace:** https://sketchfab.com/3d-models/extinguisher-891fd0a4909a43b68f068fe4c872cdd3

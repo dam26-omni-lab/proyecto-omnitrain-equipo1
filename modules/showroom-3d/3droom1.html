@@ -48,12 +48,15 @@
     <div id="aviso-texto"></div>
   </div>
 
-  <!-- Recordatorio de teclas -->
+  <!-- Recordatorio de controles (se adapta a teclado o pantalla táctil) -->
   <div id="barra-teclas">
-    <span><b>W A S D</b>Caminar</span>
-    <span><b>Ratón</b>Mirar</span>
-    <span><b>E</b>Inspeccionar</span>
-    <span><b>H</b>Ocultar interfaz</span>
+    <span class="solo-teclado"><b>W A S D</b>Caminar</span>
+    <span class="solo-teclado"><b>Ratón</b>Mirar</span>
+    <span class="solo-teclado"><b>E</b>Inspeccionar</span>
+    <span class="solo-teclado"><b>H</b>Ocultar interfaz</span>
+    <span class="solo-tactil"><b>Palanca</b>Caminar</span>
+    <span class="solo-tactil"><b>Arrastra</b>Mirar</span>
+    <span class="solo-tactil"><b>Botón</b>Inspeccionar</span>
   </div>
 
   <!-- Panel de detalle de la pieza -->
@@ -109,13 +112,21 @@
         portátil de polvo químico seco. Cada pieza se puede girar 360° para verla por todos lados.
       </p>
 
-      <div class="rejilla-teclas">
+      <div class="rejilla-teclas solo-teclado">
         <div class="tecla-item"><span class="tecla-simbolo">W A S D</span><span class="tecla-desc">Caminar por la sala</span></div>
         <div class="tecla-item"><span class="tecla-simbolo">Ratón</span><span class="tecla-desc">Mirar alrededor</span></div>
         <div class="tecla-item"><span class="tecla-simbolo">Shift</span><span class="tecla-desc">Avanzar más rápido</span></div>
         <div class="tecla-item"><span class="tecla-simbolo">E</span><span class="tecla-desc">Inspeccionar la pieza</span></div>
         <div class="tecla-item"><span class="tecla-simbolo">Arrastrar</span><span class="tecla-desc">Girar la pieza 360°</span></div>
         <div class="tecla-item"><span class="tecla-simbolo">Esc</span><span class="tecla-desc">Volver a la sala</span></div>
+      </div>
+
+      <div class="rejilla-teclas solo-tactil">
+        <div class="tecla-item"><span class="tecla-simbolo">Palanca</span><span class="tecla-desc">Caminar por la sala</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Arrastrar</span><span class="tecla-desc">Mirar alrededor</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Inspeccionar</span><span class="tecla-desc">Abrir la ficha de la pieza</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Arrastrar</span><span class="tecla-desc">Girar la pieza 360°</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Volver</span><span class="tecla-desc">Regresar a la sala</span></div>
       </div>
 
       <div class="acciones-inicio">
@@ -136,6 +147,9 @@
   <script src="../../js/three.min.js"></script>
   <script src="../../js/phaser.min.js"></script>
 
+  <!-- Núcleo de KPIs y sesión: debe cargar antes que la aplicación -->
+  <script src="../../js/omni-kpi.js"></script>
+
   <!-- Módulos del simulador (el orden importa) -->
   <script src="../../js/datos-partes.js"></script>
   <script src="../../js/texturas.js"></script>
@@ -143,6 +157,7 @@
   <script src="../../js/sala.js"></script>
   <script src="../../js/escena3d.js"></script>
   <script src="../../js/controles.js"></script>
+  <script src="../../js/controles-tactil.js"></script>
   <script src="../../js/hud-phaser.js"></script>
   <script src="../../js/panel-info.js"></script>
   <script src="../../js/app.js"></script>

@@ -142,11 +142,6 @@
                     <span>Entorno 3D</span>
                 </a>
 
-                <a href="#" class="sidebar-nav-item">
-                    <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
-                    <span>Evaluaciones</span>
-                </a>
-
                 <a href="./modules/resultados/index-resultados.html" class="sidebar-nav-item">
                     <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
                     <span>Métricas & KPIs</span>
@@ -197,23 +192,22 @@
 
             <div class="content-padding">
                 <div class="global-progress">
-                    <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="fw-bold icon-success">75%</span></div>
-                    <div class="progress" role="progressbar" aria-label="Progreso global de capacitación" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 75%"></div>
+                    <div class="d-flex justify-content-between">
+                        <span>Progreso Global</span>
+                        <span id="kpi-global-text" class="fw-bold icon-success">0%</span>
                     </div>
+                    <div id="kpi-global-track" class="progress" role="progressbar" aria-label="Progreso global de capacitación" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div id="kpi-global-bar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <span id="kpi-global-hint" class="kpi-hint">Promedio de los módulos con seguimiento: Simulador 2D y Entorno 3D.</span>
                 </div>
-                <div class="alert-custom d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
 
+                <!-- Recomendación calculada a partir del avance real -->
+                <div id="kpi-next-step" class="alert-custom d-none flex-column flex-sm-row align-items-start align-items-sm-center gap-3" role="status">
+                    <i class="bi bi-signpost-split-fill" aria-hidden="true"></i>
                     <div>
-                        <h6>
-                            Capacitación Obligatoria:
-                            Protocolo de Respuesta ante Emergencias
-                        </h6>
-
-                        <span>
-                            Completa este módulo antes del 30 de junio de 2026
-                        </span>
+                        <h6 id="kpi-next-title">Siguiente paso</h6>
+                        <span id="kpi-next-text"></span>
                     </div>
                 </div>
 
@@ -222,45 +216,49 @@
                         <div class="card-custom">
                             <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 5px;" id="welcomeMessage">Bienvenido</h3>
                             <p class="text-muted-custom mb-0">Continúa tu formación en prevención de incendios y protocolos de emergencia.</p>
-                            <div class="summary-cards-row d-flex flex-wrap gap-3 mt-3">
-                                <div class="summary-card green flex-fill">
-                                    <i class="bi bi-shield-check" aria-hidden="true"></i>
-                                    <h3>12</h3>
-                                    <span>Cursos Completados</span>
-                                </div>
 
-                                <div class="summary-card yellow flex-fill">
-                                    <i class="bi bi-clock-history" aria-hidden="true"></i>
-                                    <h3>3</h3>
-                                    <span>Pendientes</span>
-                                </div>
+                            <div id="kpi-summary-host">
+                                <div class="summary-cards-row d-flex flex-wrap gap-3 mt-3">
+                                    <div class="summary-card green flex-fill">
+                                        <i class="bi bi-controller" aria-hidden="true"></i>
+                                        <h3 id="kpi-sum-2d">0/3</h3>
+                                        <span>Escenarios 2D aprobados</span>
+                                    </div>
 
-                                <div class="summary-card red flex-fill">
-                                    <i class="bi bi-bullseye" aria-hidden="true"></i>
-                                    <h3>75%</h3>
-                                    <span>Progreso Total</span>
+                                    <div class="summary-card yellow flex-fill">
+                                        <i class="bi bi-box-fill" aria-hidden="true"></i>
+                                        <h3 id="kpi-sum-3d">0/8</h3>
+                                        <span>Piezas 3D inspeccionadas</span>
+                                    </div>
+
+                                    <div class="summary-card red flex-fill">
+                                        <i class="bi bi-stopwatch-fill" aria-hidden="true"></i>
+                                        <h3 id="kpi-sum-time">0s</h3>
+                                        <span>Tiempo en el entorno 3D</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-12 col-lg-4 mb-4">
                         <div class="card-custom h-100">
                             <h4 class="card-title">Accesos Rápidos</h4>
                             <div class="d-grid gap-2">
-                                <a href="#" class="quick-access-btn">
-                                    <span><i class="bi bi-play-circle-fill me-2" aria-hidden="true"></i>Continuar Capacitación</span>
-                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
-                                </a>
                                 <a href="./modules/resultados/index-resultados.html" class="quick-access-btn">
-                                    <span><i class="bi bi-bar-chart-fill me-2" aria-hidden="true"></i>Ver Métricas & KPIs</span>
+                                    <span><i class="bi bi-bar-chart-fill me-2" aria-hidden="true"></i>Ver Métricas &amp; KPIs</span>
                                     <i class="bi bi-chevron-right" aria-hidden="true"></i>
                                 </a>
-                                <a href="./modules/simulador-2d/index2d.html" class="quick-access-btn red">
-                                    <span><i class="bi bi-controller me-2" aria-hidden="true"></i>Entrar al Simulador 2D</span>
+                                <a href="./modules/simulador-2d/index2d.html" class="quick-access-btn red" id="kpi-link-2d">
+                                    <span><i class="bi bi-controller me-2" aria-hidden="true"></i><span data-etiqueta>Entrar al Simulador 2D</span></span>
                                     <i class="bi bi-chevron-right" aria-hidden="true"></i>
                                 </a>
-                                <a href="./modules/showroom-3d/index3d.html" class="quick-access-btn dark">
-                                    <span><i class="bi bi-box-fill me-2" aria-hidden="true"></i>Entrar al Entorno 3D</span>
+                                <a href="./modules/showroom-3d/index3d.html" class="quick-access-btn dark" id="kpi-link-3d">
+                                    <span><i class="bi bi-box-fill me-2" aria-hidden="true"></i><span data-etiqueta>Entrar al Entorno 3D</span></span>
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </a>
+                                <a href="./modules/capacitaciones/capacitaciones.html" class="quick-access-btn">
+                                    <span><i class="bi bi-journal-bookmark-fill me-2" aria-hidden="true"></i>Capacitaciones (en obra)</span>
                                     <i class="bi bi-chevron-right" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -274,38 +272,46 @@
                         Ver detalle completo <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </a>
                 </div>
-                
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                        <div class="indicator-card accent-green">
-                            <i class="bi bi-patch-check-fill icon-success" style="font-size: 22px;" aria-hidden="true"></i>
-                            <span class="indicator-badge badge-green">+5%</span>
-                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">95%</h3>
-                            <span class="text-muted-custom" style="font-size: 13px;">Cumplimiento Normativo</span>
+
+                <!-- Indicadores: solo módulos con seguimiento funcional -->
+                <div id="kpi-indicators-host">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                            <div class="indicator-card accent-red">
+                                <i class="bi bi-controller icon-danger" style="font-size: 22px;" aria-hidden="true"></i>
+                                <span class="indicator-badge badge-red" id="kpi-ind-2d-badge">0/3</span>
+                                <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;" id="kpi-ind-2d">0%</h3>
+                                <span class="text-muted-custom" style="font-size: 13px;">Avance Simulador 2D</span>
+                                <span class="kpi-hint" id="kpi-ind-2d-hint">Promedio de los 3 cuestionarios</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                        <div class="indicator-card accent-red">
-                            <i class="bi bi-stopwatch-fill icon-danger" style="font-size: 22px;" aria-hidden="true"></i>
-                            <span class="indicator-badge badge-red">-2s</span>
-                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">12s</h3>
-                            <span class="text-muted-custom" style="font-size: 13px;">Tiempo de Reacción</span>
+
+                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                            <div class="indicator-card accent-amber">
+                                <i class="bi bi-stopwatch-fill icon-warning" style="font-size: 22px;" aria-hidden="true"></i>
+                                <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;" id="kpi-ind-time">--</h3>
+                                <span class="text-muted-custom" style="font-size: 13px;">Mejor tiempo de extinción</span>
+                                <span class="kpi-hint" id="kpi-ind-time-hint">Sin intentos registrados</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                        <div class="indicator-card accent-green">
-                            <i class="bi bi-graph-up-arrow icon-success" style="font-size: 22px;" aria-hidden="true"></i>
-                            <span class="indicator-badge badge-green">+8%</span>
-                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">91%</h3>
-                            <span class="text-muted-custom" style="font-size: 13px;">Eficiencia en Control</span>
+
+                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                            <div class="indicator-card accent-green">
+                                <i class="bi bi-box-fill icon-success" style="font-size: 22px;" aria-hidden="true"></i>
+                                <span class="indicator-badge badge-green" id="kpi-ind-3d-badge">0/8</span>
+                                <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;" id="kpi-ind-3d">0%</h3>
+                                <span class="text-muted-custom" style="font-size: 13px;">Avance Entorno 3D</span>
+                                <span class="kpi-hint" id="kpi-ind-3d-hint">Piezas del extintor inspeccionadas</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                        <div class="indicator-card accent-amber">
-                            <i class="bi bi-people-fill icon-warning" style="font-size: 22px;" aria-hidden="true"></i>
-                            <span class="indicator-badge badge-yellow">+12</span>
-                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">248</h3>
-                            <span class="text-muted-custom" style="font-size: 13px;">Usuarios Activos</span>
+
+                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                            <div class="indicator-card accent-green">
+                                <i class="bi bi-bullseye icon-success" style="font-size: 22px;" aria-hidden="true"></i>
+                                <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;" id="kpi-ind-tech">--</h3>
+                                <span class="text-muted-custom" style="font-size: 13px;">Técnica de inspección</span>
+                                <span class="kpi-hint" id="kpi-ind-tech-hint">Orden de revisión recomendado</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -313,8 +319,17 @@
         </main>
     </div>
 
+    <!-- Núcleo compartido de KPIs y sesión -->
+    <script src="./js/omni-kpi.js"></script>
+
     <!-- Script principal de la aplicación -->
-    <script type="module" src="./js/login.js"></script>
+    <script type="module" src="./js/login.js" onerror="window.__omniLoginFallo = true;"></script>
+
+    <!-- Respaldo: reconecta menú y acceso solo si login.js no pudo ejecutarse -->
+    <script src="./js/nav-respaldo.js"></script>
+
+    <!-- Pintado de los indicadores reales del dashboard -->
+    <script src="./js/kpi-dashboard.js"></script>
 
     <!-- Script de soporte: menú lateral y modo oscuro -->
     <script>

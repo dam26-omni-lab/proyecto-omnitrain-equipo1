@@ -141,11 +141,6 @@
                     <span>Entorno 3D</span>
                 </a>
 
-                <a href="#" class="sidebar-nav-item">
-                    <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
-                    <span>Evaluaciones</span>
-                </a>
-
                 <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item active" aria-current="page">
                     <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
                     <span>Métricas &amp; KPIs</span>
@@ -198,19 +193,22 @@
                 <div class="global-progress">
                     <div class="d-flex justify-content-between">
                         <span>Progreso Global</span>
-                        <span class="fw-bold icon-success">75%</span>
+                        <span id="km-global-text" class="fw-bold icon-success">0%</span>
                     </div>
-                    <div class="progress" role="progressbar" aria-label="Progreso global de capacitación" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 75%"></div>
+                    <div id="km-global-track" class="progress" role="progressbar" aria-label="Progreso global de capacitación" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div id="km-global-bar" class="progress-bar" style="width: 0%"></div>
                     </div>
+                    <span id="km-global-hint" class="kpi-hint">Promedio de los módulos con seguimiento activo.</span>
                 </div>
 
                 <div class="back-btn-row mt-3 d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                    <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Ver Capacitaciones</button>
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">
+                        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Dashboard
+                    </button>
+                    <div class="module-actions d-flex flex-wrap gap-2">
                         <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/simulador-2d/index2d.html'">Simulador 2D</button>
                         <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Entorno 3D</button>
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Capacitaciones</button>
                     </div>
                 </div>
 
@@ -222,304 +220,189 @@
                             </div>
                             <div>
                                 <h3>Métricas &amp; KPIs</h3>
-                                <p>Panel de desempeño y cumplimiento normativo</p>
+                                <p id="km-hero-sub">Desglose detallado de tu desempeño por módulo</p>
                             </div>
                         </div>
-                        <button class="pill-tab" type="button">
-                            <i class="bi bi-download me-1" aria-hidden="true"></i> Exportar reporte
+                        <button class="pill-tab" type="button" id="km-export">
+                            <i class="bi bi-download me-1" aria-hidden="true"></i> Exportar reporte (CSV)
                         </button>
                     </div>
-
-                    <div class="pill-tabs d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mt-3">
-                        <div class="pill-tab active">Mensual</div>
-                        <div class="pill-tab">Trimestral</div>
-                        <div class="pill-tab">Semestral</div>
-                        <div class="pill-tab">Anual</div>
-                    </div>
                 </div>
 
-                <h4 class="card-title mb-3 mt-4" style="font-size: 18px;">Indicadores del Período</h4>
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-3 mb-3">
-                        <div class="metric-big-card h-100">
-                            <span class="indicator-badge badge-green">+5%</span>
-                            <h2>95%</h2>
-                            <span>Cumplimiento Normativo</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 mb-3">
-                        <div class="metric-big-card h-100">
-                            <h2 id="kpi-reaction-time">12s</h2>
-                            <span>Tiempo de Reacción</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 mb-3">
-                        <div class="metric-big-card h-100">
-                            <span class="indicator-badge badge-green">+8%</span>
-                            <h2>91%</h2>
-                            <span>Eficiencia en Control</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 mb-3">
-                        <div class="metric-big-card h-100">
-                            <span class="indicator-badge badge-yellow">+12</span>
-                            <h2>248</h2>
-                            <span>Usuarios Activos</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Toda la analítica vive dentro de este contenedor:
+                     sin sesión iniciada se sustituye por la compuerta. -->
+                <div id="km-host">
 
-                <div class="row g-4 mb-4">
-                    <div class="col-12 col-lg-6">
-                        <div class="card-custom h-100">
-                            <h4 class="card-title">Progreso por Módulo</h4>
-
-                            <div class="chart-row">
-                                <span class="chart-row-label">Simulador 2D</span>
-                                <div class="chart-track"><div id="module-progress-fill" class="chart-fill chart-fill-red" style="width:60%"></div></div>
-                                <span id="module-progress-value" class="chart-row-value">60%</span>
+                    <h4 class="card-title mb-3 mt-4" style="font-size: 18px;">Indicadores generales</h4>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3 mb-3">
+                            <div class="metric-big-card h-100">
+                                <h2 id="km-kpi-global">0%</h2>
+                                <span>Progreso global</span>
+                                <span class="kpi-hint" id="km-kpi-global-hint">Simulador 2D y Entorno 3D</span>
                             </div>
-
-                            <div class="chart-row">
-                                <span class="chart-row-label">Entorno 3D</span>
-                                <div class="chart-track"><div class="chart-fill chart-fill-dark" style="width:67%"></div></div>
-                                <span class="chart-row-value">67%</span>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 mb-3">
+                            <div class="metric-big-card h-100">
+                                <h2 id="km-kpi-2d">0/3</h2>
+                                <span>Escenarios 2D aprobados</span>
+                                <span class="kpi-hint" id="km-kpi-2d-hint">Se aprueban con 100% en el cuestionario</span>
                             </div>
-
-                            <div class="chart-row">
-                                <span class="chart-row-label">Evaluaciones</span>
-                                <div class="chart-track"><div class="chart-fill chart-fill-green" style="width:88%"></div></div>
-                                <span class="chart-row-value">88%</span>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 mb-3">
+                            <div class="metric-big-card h-100">
+                                <h2 id="km-kpi-3d">0/8</h2>
+                                <span>Piezas 3D inspeccionadas</span>
+                                <span class="kpi-hint" id="km-kpi-3d-hint">Anatomía del extintor portátil</span>
                             </div>
-
-                            <div class="chart-row">
-                                <span class="chart-row-label">Capacitaciones</span>
-                                <div class="chart-track"><div class="chart-fill chart-fill-blue" style="width:75%"></div></div>
-                                <span class="chart-row-value">75%</span>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 mb-3">
+                            <div class="metric-big-card h-100">
+                                <h2 id="km-kpi-time">0s</h2>
+                                <span>Tiempo de práctica</span>
+                                <span class="kpi-hint" id="km-kpi-time-hint">Medido dentro del entorno 3D</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12 col-lg-6">
-                        <div class="card-custom h-100">
-                            <h4 class="card-title">Resumen del Período</h4>
+                    <div class="row g-4 mb-4">
+                        <div class="col-12 col-lg-6">
+                            <div class="card-custom h-100">
+                                <h4 class="card-title">Progreso por módulo</h4>
 
-                            <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-success">12</div>
-                                        <div class="summary-stat-label">Capacitaciones completadas</div>
-                                    </div>
+                                <div class="chart-row">
+                                    <span class="chart-row-label">Simulador 2D</span>
+                                    <div class="chart-track"><div id="km-bar-2d" class="chart-fill chart-fill-red" style="width:0%"></div></div>
+                                    <span id="km-val-2d" class="chart-row-value">0%</span>
                                 </div>
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-danger">3</div>
-                                        <div class="summary-stat-label">Pendientes vencidas</div>
-                                    </div>
+                                <div class="chart-row">
+                                    <span class="chart-row-label">Entorno 3D</span>
+                                    <div class="chart-track"><div id="km-bar-3d" class="chart-fill chart-fill-dark" style="width:0%"></div></div>
+                                    <span id="km-val-3d" class="chart-row-value">0%</span>
                                 </div>
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-warning">85%</div>
-                                        <div class="summary-stat-label">Tasa de aprobación</div>
-                                    </div>
-                                </div>
+                                <p class="text-muted-custom mb-0" style="font-size: 12.5px;">
+                                    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                                    El módulo de Capacitaciones sigue en construcción, por eso no aparece
+                                    aquí: solo se listan los módulos con seguimiento real.
+                                </p>
+                            </div>
+                        </div>
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-teal">4.2h</div>
-                                        <div class="summary-stat-label">Tiempo promedio / módulo</div>
-                                    </div>
-                                </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="card-custom h-100">
+                                <h4 class="card-title">Calidad del desempeño</h4>
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-success">95%</div>
-                                        <div class="summary-stat-label">Normativa cumplida</div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-success" id="km-q-best">--</div>
+                                            <div class="summary-stat-label">Mejor puntaje en cuestionarios</div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <div class="summary-stat h-100">
-                                        <div class="summary-stat-value icon-teal">248</div>
-                                        <div class="summary-stat-label">Usuarios activos</div>
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-teal" id="km-q-avg">--</div>
+                                            <div class="summary-stat-label">Promedio de intentos hechos</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-warning" id="km-q-react">--</div>
+                                            <div class="summary-stat-label">Último tiempo de reacción</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-success" id="km-q-fast">--</div>
+                                            <div class="summary-stat-label">Extinción más rápida</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-teal" id="km-q-order">--</div>
+                                            <div class="summary-stat-label">Técnica de inspección 3D</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="summary-stat h-100">
+                                            <div class="summary-stat-value icon-danger" id="km-q-precision">--</div>
+                                            <div class="summary-stat-label">Precisión del recorrido 3D</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-custom mb-4">
-                    <h4 class="card-title">Ranking de Brigadistas</h4>
+                    <div class="card-custom mb-4">
+                        <h4 class="card-title">Detalle · Simulador 2D</h4>
+                        <div class="table-responsive">
+                            <table class="table metrics-table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Escenario</th>
+                                        <th>Nivel</th>
+                                        <th>Cuestionario</th>
+                                        <th>Mejor tiempo</th>
+                                        <th>Último tiempo</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="km-tabla-2d"></tbody>
+                            </table>
+                        </div>
+                        <p class="text-muted-custom mb-0 mt-2" style="font-size: 12.5px;">
+                            El tiempo se mide desde que empieza el fuego hasta que queda extinguido: cifras menores indican mejor desempeño.
+                        </p>
+                    </div>
 
-                    <div class="table-responsive">
-                        <table class="table metrics-table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Brigadista</th>
-                                    <th>Módulos</th>
-                                    <th>Puntaje</th>
-                                    <th>Cumplimiento</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
+                    <div class="card-custom mb-4">
+                        <h4 class="card-title">Detalle · Entorno 3D</h4>
+                        <div class="table-responsive">
+                            <table class="table metrics-table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Pieza del extintor</th>
+                                        <th>Visitas</th>
+                                        <th>Tiempo de lectura</th>
+                                        <th>Orden de revisión</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="km-tabla-3d"></tbody>
+                            </table>
+                        </div>
+                        <p class="text-muted-custom mb-0 mt-2" style="font-size: 12.5px;" id="km-3d-nota">
+                            El orden recomendado va del cilindro a la base de apoyo, igual que la revisión visual mensual en campo.
+                        </p>
+                    </div>
 
-                            <tbody>
-                                <tr class="table-highlight">
-                                    <td><span class="rank-badge rank-gold">1</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar user-avatar-sm">JP</div>
-                                            <span class="text-nowrap">Juan Pérez</span>
-                                        </div>
-                                    </td>
-                                    <td>12/15</td>
-                                    <td><strong class="icon-success">2,480</strong></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="mini-bar"><div class="mini-bar-fill mini-bar-green" style="width:95%"></div></div>
-                                            <span>95%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="status-badge status-success">Certificado</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td><span class="rank-badge rank-silver">2</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar user-avatar-sm tone-dark">MA</div>
-                                            <span class="text-nowrap">María Álvarez</span>
-                                        </div>
-                                    </td>
-                                    <td>11/15</td>
-                                    <td><strong>2,210</strong></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="mini-bar"><div class="mini-bar-fill mini-bar-green" style="width:88%"></div></div>
-                                            <span>88%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="status-badge status-success">Certificado</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td><span class="rank-badge rank-bronze">3</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar user-avatar-sm tone-teal">CR</div>
-                                            <span class="text-nowrap">Carlos Ruiz</span>
-                                        </div>
-                                    </td>
-                                    <td>9/15</td>
-                                    <td><strong>1,890</strong></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="mini-bar"><div class="mini-bar-fill mini-bar-yellow" style="width:76%"></div></div>
-                                            <span>76%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="status-badge status-warning text-nowrap">En progreso</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td><span class="rank-badge">4</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar user-avatar-sm tone-muted">LM</div>
-                                            <span class="text-nowrap">Laura Mendoza</span>
-                                        </div>
-                                    </td>
-                                    <td>7/15</td>
-                                    <td><strong>1,540</strong></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="mini-bar"><div class="mini-bar-fill mini-bar-yellow" style="width:62%"></div></div>
-                                            <span>62%</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="status-badge status-danger">Pendiente</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="card-custom mb-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <h4 class="card-title mb-0">Bitácora de actividad</h4>
+                            <span class="text-muted-custom" style="font-size: 12.5px;">Últimos movimientos registrados</span>
+                        </div>
+                        <ul class="kpi-log" id="km-log"></ul>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Núcleo compartido de KPIs y sesión -->
+    <script src="../../js/omni-kpi.js"></script>
+
     <!-- Script principal de la aplicación -->
-    <script type="module" src="../../js/login.js"></script>
+    <script type="module" src="../../js/login.js" onerror="window.__omniLoginFallo = true;"></script>
 
-    <!-- ==========================================================
-    Vínculo con el Simulador 2D: SOLO "Tiempo de Reacción" y la fila
-    "Simulador 2D" de "Progreso por Módulo" se leen del registro real
-    (localStorage "omniTrainMetrics", el mismo que usa index2d.html). El
-    resto de los indicadores de esta página se mantiene con datos de
-    ejemplo, tal como ya estaban.
-    ========================================================== -->
-    <script>
-        (function () {
-            'use strict';
+    <!-- Respaldo: reconecta menú y acceso solo si login.js no pudo ejecutarse -->
+    <script src="../../js/nav-respaldo.js"></script>
 
-            var STORAGE_KEY = 'omniTrainMetrics';
-
-            function leerMetricasSimulador() {
-                try {
-                    var guardado = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                    if (guardado && typeof guardado === 'object') return guardado;
-                } catch (e) { /* registro ausente o corrupto: se usan los valores de ejemplo */ }
-                return null;
-            }
-
-            function pintarVinculos() {
-                var registro = leerMetricasSimulador();
-                if (!registro) return; // Sin datos del simulador todavía: se dejan los valores de ejemplo
-
-                // --- Tiempo de Reacción ---
-                // Guardado por cada escenario en "lastReactionTime" (el más
-                // reciente entre los tres, ya que comparten la misma clave).
-                var reactionEl = document.getElementById('kpi-reaction-time');
-                var reactionTime = Number(registro.lastReactionTime);
-                if (reactionEl && !isNaN(reactionTime) && reactionTime > 0) {
-                    reactionEl.textContent = reactionTime + 's';
-                }
-
-                // --- Progreso por Módulo: Simulador 2D ---
-                // Promedio de los 3 cuestionarios (quiz1/2/3Score), igual que
-                // el cálculo ya usado en index2d.html, para que ambas
-                // pantallas muestren siempre el mismo número.
-                var quiz1 = Number(registro.quiz1Score) || 0;
-                var quiz2 = Number(registro.quiz2Score) || 0;
-                var quiz3 = Number(registro.quiz3Score) || 0;
-                var huboIntento = (registro.quiz1Score !== undefined) || (registro.quiz2Score !== undefined) || (registro.quiz3Score !== undefined);
-
-                if (huboIntento) {
-                    var progreso = Math.round((quiz1 + quiz2 + quiz3) / 3);
-                    var fill = document.getElementById('module-progress-fill');
-                    var value = document.getElementById('module-progress-value');
-                    if (fill) {
-                        fill.style.width = progreso + '%';
-                        if (fill.parentElement) {
-                            fill.parentElement.setAttribute('aria-valuenow', String(progreso));
-                        }
-                    }
-                    if (value) value.textContent = progreso + '%';
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', pintarVinculos);
-
-            // Si el simulador se jugó en otra pestaña, el avance se refleja aquí
-            window.addEventListener('storage', function (e) {
-                if (e.key === STORAGE_KEY) pintarVinculos();
-            });
-            window.addEventListener('pageshow', pintarVinculos);
-        })();
-    </script>
+    <!-- Analítica detallada de KPIs -->
+    <script src="../../js/kpi-metricas.js"></script>
 
     <!-- Script de soporte: menú lateral y modo oscuro -->
     <script>

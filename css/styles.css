@@ -1094,3 +1094,217 @@
             border: 2px solid var(--main-bg);
         }
         body.dark-mode ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+        /* ==========================================================
+           SEGUIMIENTO DE KPIs REALES
+           ----------------------------------------------------------
+           Componentes que pintan los datos medidos en los módulos
+           con seguimiento (Simulador 2D y Entorno 3D).
+           ========================================================== */
+
+        /* --- Compuerta: bloque que sustituye a los KPIs sin sesión --- */
+        .kpi-locked {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            padding: 22px;
+            border: 1px dashed var(--border-subtle);
+            border-radius: 16px;
+            background: var(--surface-tint);
+        }
+
+        .kpi-locked > i {
+            font-size: 30px;
+            color: var(--muted);
+        }
+
+        .kpi-locked > div { flex: 1 1 240px; min-width: 0; }
+        .kpi-locked h5 { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--ink); }
+        .kpi-locked p { margin: 0; font-size: 13px; color: var(--muted); }
+        .kpi-locked-btn { flex-shrink: 0; }
+
+        @media (max-width: 575.98px) {
+            .kpi-locked { padding: 18px; text-align: center; justify-content: center; }
+            .kpi-locked-btn { width: 100%; }
+        }
+
+        /* --- Acción deshabilitada mientras no haya sesión --- */
+        .is-gated {
+            opacity: .5;
+            cursor: not-allowed !important;
+            pointer-events: none;
+            filter: grayscale(.4);
+        }
+
+        /* --- Aviso breve de compuerta sobre una tarjeta --- */
+        .kpi-gate-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--tone-warning-bg);
+            color: var(--tone-warning);
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        /* --- Estado vacío: hay sesión pero todavía no hay datos --- */
+        .kpi-empty {
+            padding: 26px 20px;
+            border: 1px dashed var(--border-subtle);
+            border-radius: 14px;
+            background: var(--surface-tint);
+            color: var(--muted);
+            font-size: 13.5px;
+            text-align: center;
+        }
+
+        .kpi-empty i { display: block; font-size: 26px; margin-bottom: 8px; opacity: .7; }
+
+        /* --- Píldora de contexto bajo un número grande --- */
+        .kpi-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .metric-big-card .kpi-hint { margin-top: 10px; }
+
+        /* --- Rejilla de las 8 piezas del entorno 3D --- */
+        .part-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 12px;
+        }
+
+        .part-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--border-subtle);
+            border-radius: 12px;
+            background: var(--surface-tint);
+            transition: border-color .2s var(--ease), transform .2s var(--ease);
+        }
+
+        .part-chip.is-done { border-left-color: var(--tone-success); }
+        .part-chip.is-pending { border-left-color: var(--muted); opacity: .8; }
+
+        .part-chip-num {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--muted);
+        }
+
+        .part-chip.is-done .part-chip-num {
+            background: var(--tone-success-bg);
+            border-color: var(--tone-success);
+            color: var(--tone-success);
+        }
+
+        .part-chip-body { min-width: 0; flex: 1; }
+        .part-chip-name {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .part-chip-meta { font-size: 11.5px; color: var(--muted); }
+
+        /* --- Bitácora de actividad (tendencias reales) --- */
+        .kpi-log { list-style: none; margin: 0; padding: 0; }
+
+        .kpi-log li {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 10px;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 13px;
+        }
+
+        .kpi-log li:last-child { border-bottom: none; }
+        .kpi-log-mod {
+            padding: 2px 9px;
+            border-radius: 20px;
+            background: var(--surface-tint);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .kpi-log-text { flex: 1 1 180px; color: var(--ink); min-width: 0; }
+        .kpi-log-val { font-weight: 700; color: var(--tone-success); white-space: nowrap; }
+        .kpi-log-date { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+
+        /* ==========================================================
+           AJUSTES RESPONSIVOS GENERALES
+           ========================================================== */
+
+        /* Las etiquetas de las barras dejan de tener ancho fijo en
+           pantallas chicas: así el porcentaje nunca se sale de la tarjeta. */
+        @media (max-width: 575.98px) {
+            .chart-row { flex-wrap: wrap; gap: 6px 10px; }
+            .chart-row-label { width: auto; min-width: 0; flex: 1 1 auto; }
+            .chart-row-value { width: auto; }
+            .chart-track { flex: 1 1 100%; order: 3; }
+
+            .content-padding { padding: 16px !important; }
+            .hero-stat-card { min-width: 0; }
+            .metric-big-card { padding: 18px; }
+            .metric-big-card h2 { font-size: 26px; }
+            .summary-card h3 { font-size: 22px; }
+            .part-grid { grid-template-columns: 1fr; }
+
+            .breadcrumb-title h2 { font-size: 17px; }
+            .breadcrumb-title .subtitle { font-size: 10px; }
+        }
+
+        /* Barra de acciones de los módulos: en móvil ocupa el ancho
+           completo y se apila, en vez de desbordarse hacia los lados. */
+        @media (max-width: 767.98px) {
+            .back-btn-row { flex-direction: column; align-items: stretch !important; }
+            .back-btn-row > .btn,
+            .back-btn-row > div { width: 100%; }
+            .back-btn-row .btn { width: 100%; }
+            .module-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+            .module-actions .btn { width: 100%; }
+        }
+
+        @media (max-width: 400px) {
+            .module-actions { grid-template-columns: 1fr; }
+        }
+
+        /* La tabla de detalle nunca empuja el ancho de la página */
+        .table-responsive { -webkit-overflow-scrolling: touch; }
+
+        /* Objetivo táctil mínimo cómodo en móvil */
+        @media (pointer: coarse) {
+            .btn, .pill-tab, .quick-access-btn, .sidebar-nav-item { min-height: 44px; }
+        }
+
+        /* --- Modo oscuro: componentes de KPI --- */
+        body.dark-mode .kpi-locked,
+        body.dark-mode .kpi-empty { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.10); }
+        body.dark-mode .part-chip { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.08); }
+        body.dark-mode .part-chip-num { background: var(--surface); border-color: rgba(255,255,255,.10); }
+        body.dark-mode .kpi-log li { border-bottom-color: rgba(255,255,255,.08); }
+        body.dark-mode .kpi-log-mod { background: rgba(255,255,255,.06); }
