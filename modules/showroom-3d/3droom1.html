@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Showroom 3D · Anatomía del extintor — OmniTrain</title>
+  <meta name="description" content="Recorrido 3D por las ocho partes de un extintor portátil para brigadas de emergencia.">
+
+  <!-- Todo local: sin CDNs -->
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../css/styles-3d.css">
+</head>
+<body>
+
+  <!-- Lienzo del entorno 3D (Three.js) -->
+  <canvas id="lienzo-3d"></canvas>
+
+  <!-- Viñeta de la vista de detalle -->
+  <div id="velo"></div>
+
+  <!-- Capa del HUD (Phaser) -->
+  <div id="capa-hud"></div>
+
+  <!-- Capa que captura el arrastre para girar la pieza -->
+  <div id="capa-orbita"></div>
+
+  <!-- Placa de avance -->
+  <section id="placa-avance">
+    <div class="placa-cabecera">
+      <i class="bi bi-fire"></i>
+      <h1 class="placa-titulo">Anatomía del extintor</h1>
+    </div>
+    <div class="placa-cuerpo">
+      <p class="placa-etiqueta">
+        <span>Piezas inspeccionadas</span>
+        <span id="placa-contador">0 / 8</span>
+      </p>
+      <div id="placa-marcas"></div>
+      <a class="btn-omni ancho placa-boton" href="../../modules/showroom-3d/index3d.html">
+        <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Aviso al acercarse a una mesa -->
+  <div id="aviso-proximidad">
+    <div id="aviso-texto"></div>
+  </div>
+
+  <!-- Recordatorio de teclas -->
+  <div id="barra-teclas">
+    <span><b>W A S D</b>Caminar</span>
+    <span><b>Ratón</b>Mirar</span>
+    <span><b>E</b>Inspeccionar</span>
+    <span><b>H</b>Ocultar interfaz</span>
+  </div>
+
+  <!-- Panel de detalle de la pieza -->
+  <aside id="panel-detalle" aria-hidden="true" aria-label="Ficha de la pieza">
+    <div id="panel-cuerpo"></div>
+    <div class="panel-pie">
+      <button id="btn-girar-auto" class="btn-omni activo" type="button">
+        <i class="bi bi-arrow-repeat"></i><span>Giro automático</span>
+      </button>
+      <button id="btn-reset-vista" class="btn-omni" type="button" title="Centrar la pieza (tecla R)">
+        <i class="bi bi-crosshair"></i>
+      </button>
+      <button id="btn-cerrar-panel" class="btn-omni primario ancho" type="button">
+        <i class="bi bi-box-arrow-left"></i><span>Volver a la sala</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Avisos emergentes -->
+  <div id="zona-avisos"></div>
+
+  <!-- Modal de cierre del recorrido -->
+  <div id="modal-final">
+    <div class="tarjeta-final">
+      <p class="final-sello">Recorrido completo</p>
+      <h2 class="final-titulo">Las 8 piezas quedaron registradas</h2>
+      <p class="final-texto">
+        Ya revisaste el cilindro, el manómetro, la válvula, la manguera, el gatillo, el perno de
+        seguridad, la etiqueta y la base. En campo, esa misma secuencia es la revisión visual que
+        hace un brigadista antes de firmar la bitácora mensual del equipo.
+      </p>
+      <div class="final-acciones">
+        <button id="btn-cerrar-final" class="btn-omni" type="button">
+          <i class="bi bi-arrow-left"></i><span>Seguir en la sala</span>
+        </button>
+        <button id="btn-repasar" class="btn-omni" type="button">
+          <i class="bi bi-arrow-clockwise"></i><span>Repasar desde cero</span>
+        </button>
+        <a class="btn-omni primario" href="../../modules/showroom-3d/index3d.html">
+          <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portada / pausa -->
+  <div id="capa-inicio" class="visible" data-estado="inicio">
+    <div class="tarjeta-inicio">
+      <p class="inicio-eyebrow">OmniTrain · Módulo entorno 3D</p>
+      <h2 id="inicio-titulo" class="inicio-titulo">Sala de inspección<br>de extintores</h2>
+      <p id="inicio-texto" class="inicio-texto">
+        Camina por el almacén, acércate a cada mesa y revisa las ocho partes de un extintor
+        portátil de polvo químico seco. Cada pieza se puede girar 360° para verla por todos lados.
+      </p>
+
+      <div class="rejilla-teclas">
+        <div class="tecla-item"><span class="tecla-simbolo">W A S D</span><span class="tecla-desc">Caminar por la sala</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Ratón</span><span class="tecla-desc">Mirar alrededor</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Shift</span><span class="tecla-desc">Avanzar más rápido</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">E</span><span class="tecla-desc">Inspeccionar la pieza</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Arrastrar</span><span class="tecla-desc">Girar la pieza 360°</span></div>
+        <div class="tecla-item"><span class="tecla-simbolo">Esc</span><span class="tecla-desc">Volver a la sala</span></div>
+      </div>
+
+      <div class="acciones-inicio">
+        <button id="btn-entrar" class="btn-omni primario" type="button">
+          <i class="bi bi-door-open-fill"></i><span>Entrar a la sala</span>
+        </button>
+        <button id="btn-reiniciar" class="btn-omni" type="button">
+          <i class="bi bi-arrow-counterclockwise"></i><span>Reiniciar avance</span>
+        </button>
+        <a class="btn-omni"  href="../../modules/showroom-3d/index3d.html">
+          <i class="bi bi-grid-1x2-fill"></i><span>Volver al dashboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías locales -->
+  <script src="../../js/three.min.js"></script>
+  <script src="../../js/phaser.min.js"></script>
+
+  <!-- Módulos del simulador (el orden importa) -->
+  <script src="../../js/datos-partes.js"></script>
+  <script src="../../js/texturas.js"></script>
+  <script src="../../js/piezas.js"></script>
+  <script src="../../js/sala.js"></script>
+  <script src="../../js/escena3d.js"></script>
+  <script src="../../js/controles.js"></script>
+  <script src="../../js/hud-phaser.js"></script>
+  <script src="../../js/panel-info.js"></script>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

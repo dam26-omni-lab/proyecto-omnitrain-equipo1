@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulador 2D de OmniTrain: practica protocolos de extinción de incendios en escenarios controlados.">
+    <meta name="theme-color" content="#d32f2f">
+
+    <title>Simulador 2D | OmniTrain</title>
+
+    <!-- Pre-carga de recursos críticos para mejorar LCP y FCP -->
+    <link rel="preload" href="../../css/bootstrap.min.css" as="style">
+    <link rel="preload" href="../../css/styles.css" as="style">
+
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+    <!-- Aplica el tema guardado lo antes posible para evitar parpadeos -->
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('omnitrain-theme') === 'dark') {
+                    document.body.classList.add('dark-mode');
+                }
+            } catch (e) { /* almacenamiento no disponible: se usa el tema claro por defecto */ }
+        })();
+    </script>
+
+    <!-- ==========================================
+    SECCIÓN DE LOGIN (Oculta por defecto)
+    ========================================== -->
+    <section id="login-section" class="d-none flex-column align-items-center justify-content-center vh-100 position-relative" aria-label="Sección de inicio de sesión">
+
+        <!-- Botón para regresar al Dashboard -->
+        <button id="backToDashboardBtn" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4" aria-label="Volver al dashboard principal">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Volver al Dashboard
+        </button>
+
+        <div class="login-card">
+            <div class="text-center mb-4">
+                <i class="bi bi-shield-fill" style="font-size: 40px; color: #d32f2f;" aria-hidden="true"></i>
+                <h2 class="mt-2" style="font-size: 24px; font-weight: 700;">OmniTrain</h2>
+                <p class="text-muted mb-0">Acceso a Brigada de Emergencia</p>
+            </div>
+
+            <form id="loginForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="role" class="form-label" style="font-weight: 600;">Tipo de Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+                        <select class="form-select border-start-0" id="role" required>
+                            <option selected disabled value="">Selecciona un rol...</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="colaborador">Colaborador</option>
+                            <option value="usuario">Usuario</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Debes seleccionar un tipo de usuario.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label" style="font-weight: 600;">Correo Electrónico</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope" aria-hidden="true"></i></span>
+                        <input type="email" class="form-control border-start-0" id="email" placeholder="usuario@omnitrain.com" required>
+                        <div class="invalid-feedback">
+                            Por favor ingresa un correo electrónico válido.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label" style="font-weight: 600;">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock" aria-hidden="true"></i></span>
+                        <input type="password" class="form-control border-start-0" id="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                        <div class="invalid-feedback">
+                            La contraseña debe tener al menos 8 caracteres.
+                        </div>
+                    </div>
+                </div>
+
+                <button id="loginButton" class="btn text-white w-100 mt-3 d-flex align-items-center justify-content-center gap-2" style="font-weight: 600;" type="submit">
+                    <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Ingresar al Sistema
+                </button>
+
+                <!-- Contenedor obligatorio para mostrar mensajes sin que el script falle -->
+                <div id="loginFeedback" class="text-center mt-3 fw-bold" style="font-size: 14px;" aria-live="polite"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    SECCIÓN DEL MÓDULO (Visible por defecto)
+    ========================================== -->
+    <div id="dashboard-section" class="wrapper">
+        <aside class="sidebar" id="sidebar" aria-label="Menú de navegación lateral">
+            <button id="closeSidebarBtn" class="sidebar-close-btn" aria-label="Cerrar menú de navegación">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+
+            <div class="brand-logo">
+                <a href="../../index.html" aria-label="Ir a la página de inicio">
+                    <div class="logo-icon">
+                        <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;" aria-hidden="true"></i>
+                    </div>
+                </a>
+
+                <div class="brand-text">
+                    <h1>OmniTrain</h1>
+                    <span>Brigada de Emergencia</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Navegación principal">
+                <a href="../../index.html" class="sidebar-nav-item">
+                    <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                    <span>Inicio</span>
+                </a>
+
+                <a href="../../modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+                    <i class="bi bi-journal-bookmark-fill" aria-hidden="true"></i>
+                    <span>Capacitaciones</span>
+                </a>
+
+                <a href="../../modules/simulador-2d/index2d.html" class="sidebar-nav-item active" aria-current="page">
+                    <i class="bi bi-controller" aria-hidden="true"></i>
+                    <span>Simulador 2D</span>
+                </a>
+
+                <a href="../../modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+                    <i class="bi bi-box-fill" aria-hidden="true"></i>
+                    <span>Entorno 3D</span>
+                </a>
+
+                <a href="#" class="sidebar-nav-item">
+                    <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
+                    <span>Evaluaciones</span>
+                </a>
+
+                <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
+                    <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+                    <span>Métricas &amp; KPIs</span>
+                </a>
+            </nav>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Alternar menú lateral" aria-expanded="false">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <div class="breadcrumb-title">
+                        <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                        <h2>Simulador 2D</h2>
+                    </div>
+                </div>
+
+                <div class="user-profile d-flex align-items-center">
+
+                    <!-- Botón de cambio de tema claro/oscuro -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Cambiar a modo oscuro" aria-pressed="false" type="button">
+                        <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- Botón de Inicio de sesión (Visible cuando no hay sesión) -->
+                    <button id="showLoginButton" class="btn btn-sm text-white ms-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Iniciar Sesión
+                    </button>
+
+                    <!-- Contenedor del usuario (Visible cuando SÍ hay sesión) -->
+                    <div id="loggedInContainer" class="d-none d-flex align-items-center">
+                        <div class="user-info d-none d-sm-block text-end">
+                            <h6 id="displayName" class="mb-0">Usuario</h6>
+                            <span id="displayRole" class="text-muted-custom" style="font-size: 0.85rem;">Brigadista Certificado</span>
+                        </div>
+                        <div class="user-avatar ms-3" id="displayAvatar" aria-hidden="true">U</div>
+
+                        <button id="logoutButton" class="btn btn-sm text-white ms-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Salir
+                        </button>
+                    </div>
+
+                </div>
+            </header>
+
+            <div class="content-padding">
+                <div class="global-progress">
+                    <div class="d-flex justify-content-between">
+                        <span>Progreso Global</span>
+                        <span id="global-progress-text" class="fw-bold icon-success">0%</span>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Progreso del módulo Simulador 2D" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div id="global-progress-bar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="back-btn-row mt-3 d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Ver Capacitaciones</button>
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
+                        <button class="btn btn-outline-custom" onclick="window.open('pygame.html', '_blank')">Entrar al Simulador</button>
+                    </div>
+                </div>
+
+                <div class="hero-banner red-bg mt-3">
+                    <div class="hero-title-row d-flex flex-column flex-sm-row align-items-center text-center text-sm-start gap-3">
+                        <div class="hero-icon">
+                            <i class="bi bi-fire" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3>Simulador 2D — Escenarios de Emergencia</h3>
+                            <p>Practica protocolos de extinción en entornos seguros y controlados</p>
+                        </div>
+                    </div>
+
+                    <div class="hero-stats-row d-flex flex-wrap gap-2 mt-3">
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-scenarios">0/3</h4>
+                            <span>Escenarios completados</span>
+                            <div class="progress mt-2" style="height: 6px; background-color: rgba(255,255,255,0.25);" role="progressbar" aria-label="Escenarios completados" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div id="stat-scenarios-bar" class="progress-bar bg-white" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-progress">0%</h4>
+                            <span>Progreso del módulo</span>
+                            <div class="progress mt-2" style="height: 6px; background-color: rgba(255,255,255,0.25);" role="progressbar" aria-label="Progreso del módulo" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div id="stat-progress-bar" class="progress-bar bg-white" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="hero-stat-card flex-fill">
+                            <h4 id="stat-score">0</h4>
+                            <span>Mejor puntuación</span>
+                            <div class="small mt-2 d-flex align-items-center justify-content-center gap-1">
+                                <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="stat-best-time">--</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="card-title mb-3 mt-4" style="font-size: 18px;">Escenarios de Entrenamiento</h4>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4 mb-3">
+                        <div class="scenario-card active h-100 d-flex flex-column" id="scenario-card-1">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <span class="scenario-badge bg-basic">Básico</span>
+                                    <span class="status-badge status-danger" id="scenario-1-badge">
+                                        <i class="bi bi-play-circle-fill" aria-hidden="true"></i> JUGAR
+                                    </span>
+                                </div>
+                                <h5>Extintor PQS</h5>
+                                <p>Extintor de Polvo Químico Seco (PQS). Identificación del equipo y protocolo T.A.A.B. de uso.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-1-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 1" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-1-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-1-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="scenario-footer" id="scenario-1-footer">
+                                <span class="scenario-state" id="scenario-1-status">Estado: Pendiente</span>
+                                <span class="status-badge status-neutral" id="scenario-1-score">Puntaje: --</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 mb-3">
+                        <div class="scenario-card is-locked h-100 d-flex flex-column" id="scenario-card-2" aria-disabled="true">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <span class="scenario-badge bg-intermediate">Intermedio</span>
+                                    <span class="status-badge status-neutral" id="scenario-2-badge">
+                                        <i class="bi bi-lock-fill" aria-hidden="true"></i> BLOQUEADO
+                                    </span>
+                                </div>
+                                <h5>Extintor CO₂</h5>
+                                <p>Manejo del extintor de Dióxido de Carbono (CO₂) e identificación del equipo según protocolo T.A.A.B.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-2-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 2" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-2-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-2-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="scenario-footer" id="scenario-2-footer">
+                                <span class="scenario-state">
+                                    <i class="bi bi-lock-fill" aria-hidden="true"></i> Requiere 100% en el primer cuestionario
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 mb-3">
+                        <div class="scenario-card is-locked h-100 d-flex flex-column" id="scenario-card-3" aria-disabled="true">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <span class="scenario-badge bg-advanced">Avanzado</span>
+                                    <span class="status-badge status-neutral" id="scenario-3-badge">
+                                        <i class="bi bi-lock-fill" aria-hidden="true"></i> BLOQUEADO
+                                    </span>
+                                </div>
+                                <h5>Extintor de Agua</h5>
+                                <p>Manejo del extintor a base de Agua e identificación del equipo según protocolo T.A.A.B.</p>
+
+                                <div class="mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small text-muted-custom">Tu progreso</span>
+                                        <span class="small fw-bold" id="scenario-3-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;" role="progressbar" aria-label="Progreso del Escenario 3" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        <div id="scenario-3-progress-fill" class="progress-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="small text-muted-custom mt-2 d-flex align-items-center gap-1">
+                                        <i class="bi bi-stopwatch" aria-hidden="true"></i> Mejor tiempo: <strong id="scenario-3-time" class="ms-1">--</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="scenario-footer" id="scenario-3-footer">
+                                <span class="scenario-state">
+                                    <i class="bi bi-lock-fill" aria-hidden="true"></i> Requiere 100% en el segundo cuestionario
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script principal de la aplicación -->
+    <script type="module" src="../../js/login.js"></script>
+
+    <!-- Script de soporte: menú lateral y modo oscuro -->
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebarOverlay');
+            var menuToggle = document.getElementById('menuToggle');
+            var closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            var themeToggle = document.getElementById('themeToggle');
+            var themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+
+            /* ---------- Cierre del menú lateral ---------- */
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function (e) {
+                    // Evita que el clic se propague a otros listeners globales
+                    // (por ejemplo, uno que vuelva a abrir el menú) y garantiza el cierre.
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            // Cierre al hacer clic fuera del menú (y fuera del botón que lo abre)
+            document.addEventListener('click', function (e) {
+                if (!sidebar || !sidebar.classList.contains('active')) return;
+                var clickedInsideSidebar = sidebar.contains(e.target);
+                var clickedToggle = menuToggle && menuToggle.contains(e.target);
+                if (!clickedInsideSidebar && !clickedToggle) {
+                    closeSidebar();
+                }
+            });
+
+            // Cierre con la tecla Escape
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
+                    closeSidebar();
+                }
+            });
+
+            /* ---------- Modo oscuro ---------- */
+            function applyThemeState(isDark) {
+                document.body.classList.toggle('dark-mode', isDark);
+                if (themeToggle) {
+                    themeToggle.setAttribute('aria-pressed', String(isDark));
+                    themeToggle.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+                }
+                if (themeIcon) {
+                    themeIcon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+                }
+            }
+
+            // Sincroniza el ícono/estado con la clase ya aplicada al cargar (evita parpadeo)
+            applyThemeState(document.body.classList.contains('dark-mode'));
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function () {
+                    var isDark = !document.body.classList.contains('dark-mode');
+                    applyThemeState(isDark);
+                    try {
+                        localStorage.setItem('omnitrain-theme', isDark ? 'dark' : 'light');
+                    } catch (e) { /* almacenamiento no disponible: la preferencia no persiste */ }
+                });
+            }
+        })();
+    </script>
+
+    <!-- ==========================================================
+    Script del módulo: registro de cuestionarios, puntajes y avance
+    ---------------------------------------------------------------
+    Todo el registro vive en localStorage bajo la clave "omniTrainMetrics".
+    Las páginas del simulador y de los cuestionarios guardan sus resultados
+    llamando a la API expuesta en window.OmniTrain2D (ver el final del
+    archivo), y esta pantalla se limita a leerlos y reflejarlos.
+    ========================================================== -->
+    <script>
+        (function () {
+            'use strict';
+
+            var STORAGE_KEY = 'omniTrainMetrics';
+            var TOTAL_SCENARIOS = 3;
+            var APROBACION = 100; // puntaje requerido en el cuestionario para desbloquear
+
+            // Cada escenario, el cuestionario del que depende su desbloqueo,
+            // y los campos donde su propio juego (ejemplo.js/ejemplo2.js/ejemplo3.js)
+            // guarda el puntaje del cuestionario y el mejor tiempo de apagado.
+            var SCENARIOS = [
+                { id: 1, url: 'pygame.html', requiere: null, requisitoTexto: '', quizField: 'quiz1Score', timeField: 'bestExtinguishTimePQS' },
+                { id: 2, url: 'pygame2.html', requiere: 'quiz1Score', requisitoTexto: 'Requiere 100% en el primer cuestionario', quizField: 'quiz2Score', timeField: 'bestExtinguishTimeCO2' },
+                { id: 3, url: 'pygame3.html', requiere: 'quiz2Score', requisitoTexto: 'Requiere 100% en el segundo cuestionario', quizField: 'quiz3Score', timeField: 'bestExtinguishTimeAgua' }
+            ];
+
+            // ======================================================
+            // 1. LECTURA Y ESCRITURA DEL REGISTRO
+            // ======================================================
+            function registroVacio() {
+                return {
+                    scenariosCompleted: 0,
+                    moduleProgress: 0,
+                    bestScore: 0,
+                    quiz1Score: 0,
+                    quiz2Score: 0,
+                    quiz3Score: 0,
+                    bestExtinguishTimePQS: 0,
+                    bestExtinguishTimeCO2: 0,
+                    bestExtinguishTimeAgua: 0,
+                    scores: {}
+                };
+            }
+
+            function leerRegistro() {
+                var base = registroVacio();
+
+                try {
+                    var guardado = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                    if (guardado && typeof guardado === 'object') {
+                        base.scenariosCompleted = Number(guardado.scenariosCompleted) || 0;
+                        base.moduleProgress = Number(guardado.moduleProgress) || 0;
+                        base.bestScore = Number(guardado.bestScore) || 0;
+                        base.quiz1Score = Number(guardado.quiz1Score) || 0;
+                        base.quiz2Score = Number(guardado.quiz2Score) || 0;
+                        base.quiz3Score = Number(guardado.quiz3Score) || 0;
+                        // Compatibilidad: versiones previas de ejemplo.js guardaban el
+                        // tiempo del Escenario 1 bajo "bestExtinguishTime" (sin sufijo).
+                        // Si no hay valor con el nombre nuevo, se usa ese como respaldo.
+                        base.bestExtinguishTimePQS = Number(guardado.bestExtinguishTimePQS) || Number(guardado.bestExtinguishTime) || 0;
+                        base.bestExtinguishTimeCO2 = Number(guardado.bestExtinguishTimeCO2) || 0;
+                        base.bestExtinguishTimeAgua = Number(guardado.bestExtinguishTimeAgua) || 0;
+                        if (guardado.scores && typeof guardado.scores === 'object') {
+                            base.scores = guardado.scores;
+                        }
+                    }
+                } catch (e) { /* registro ausente o corrupto: se parte de cero */ }
+
+                return base;
+            }
+
+            function guardarRegistro(registro) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(registro));
+                } catch (e) { /* sin almacenamiento el avance no persiste */ }
+                return registro;
+            }
+
+            // Recalcula los totales a partir de los puntajes por escenario
+            function recalcular(registro) {
+                var completados = 0;
+                var mejor = 0;
+
+                for (var i = 1; i <= TOTAL_SCENARIOS; i++) {
+                    var puntaje = Number(registro.scores[i]);
+                    if (!isNaN(puntaje) && registro.scores[i] !== undefined && registro.scores[i] !== null) {
+                        completados++;
+                        if (puntaje > mejor) mejor = puntaje;
+                    }
+                }
+
+                registro.scenariosCompleted = completados;
+                registro.bestScore = mejor;
+                registro.moduleProgress = Math.round((completados / TOTAL_SCENARIOS) * 100);
+                return registro;
+            }
+
+            // Avance real del módulo, calculado a partir del puntaje de cada
+            // cuestionario (quiz1Score/quiz2Score/quiz3Score), que es lo que
+            // cada juego realmente guarda por intento:
+            //   - "Escenarios completados" solo cuenta los que llegaron a 100%.
+            //   - "Progreso del módulo" es el PROMEDIO de los 3 puntajes, así
+            //     que un avance parcial (ej. 80% en el Escenario 1) ya se ve
+            //     reflejado ahí sin necesidad de completar nada al 100%.
+            function calcularAvance(registro) {
+                var puntajes = SCENARIOS.map(function (config) {
+                    return Number(registro[config.quizField]) || 0;
+                });
+
+                var completados = puntajes.filter(function (p) { return p >= APROBACION; }).length;
+                var promedio = Math.round(puntajes.reduce(function (a, b) { return a + b; }, 0) / TOTAL_SCENARIOS);
+                var mejor = Math.max.apply(null, puntajes);
+
+                return { completados: completados, progreso: promedio, mejorPuntaje: mejor };
+            }
+
+            // ======================================================
+            // 2. PINTADO DE LAS MÉTRICAS SUPERIORES
+            // ======================================================
+            function pintarMetricas(registro) {
+                var scenarios = document.getElementById('stat-scenarios');
+                var progress = document.getElementById('stat-progress');
+                var score = document.getElementById('stat-score');
+                var globalText = document.getElementById('global-progress-text');
+                var globalBar = document.getElementById('global-progress-bar');
+                var scenariosBar = document.getElementById('stat-scenarios-bar');
+                var progressBar = document.getElementById('stat-progress-bar');
+                var bestTimeEl = document.getElementById('stat-best-time');
+                var avance = calcularAvance(registro);
+
+                if (scenarios) scenarios.textContent = avance.completados + '/' + TOTAL_SCENARIOS;
+                if (progress) progress.textContent = avance.progreso + '%';
+                if (score) score.textContent = avance.mejorPuntaje > 0 ? avance.mejorPuntaje + '%' : '0';
+                if (globalText) globalText.textContent = avance.progreso + '%';
+
+                var scenariosPct = Math.round((avance.completados / TOTAL_SCENARIOS) * 100);
+                if (scenariosBar) scenariosBar.style.width = scenariosPct + '%';
+                if (progressBar) progressBar.style.width = avance.progreso + '%';
+
+                if (globalBar) {
+                    globalBar.style.width = avance.progreso + '%';
+                    if (globalBar.parentElement) {
+                        globalBar.parentElement.setAttribute('aria-valuenow', String(avance.progreso));
+                    }
+                }
+
+                // Mejor tiempo de apagado entre los 3 escenarios, sin importar
+                // cuál: cada uno guarda su propio récord (no son comparables
+                // en dificultad entre sí), así que aquí solo se toma el más
+                // rápido de los que sí se hayan jugado al menos una vez.
+                var tiempos = [registro.bestExtinguishTimePQS, registro.bestExtinguishTimeCO2, registro.bestExtinguishTimeAgua]
+                    .map(Number)
+                    .filter(function (t) { return !isNaN(t) && t > 0; });
+                var mejorTiempo = tiempos.length ? Math.min.apply(null, tiempos) : null;
+                if (bestTimeEl) {
+                    bestTimeEl.textContent = mejorTiempo !== null ? mejorTiempo.toFixed(1) + 's' : '--';
+                }
+            }
+
+            // ======================================================
+            // 3. PINTADO DE LAS TARJETAS DE ESCENARIO
+            // ======================================================
+            function crearIcono(clase) {
+                var icono = document.createElement('i');
+                icono.className = clase;
+                icono.setAttribute('aria-hidden', 'true');
+                return icono;
+            }
+
+            function ponerContenido(elemento, claseIcono, texto) {
+                elemento.textContent = '';
+                if (claseIcono) {
+                    elemento.appendChild(crearIcono(claseIcono));
+                    elemento.appendChild(document.createTextNode(' '));
+                }
+                elemento.appendChild(document.createTextNode(texto));
+            }
+
+            function abrirEscenario(url) {
+                window.location.href = url;
+            }
+
+            function pintarEscenario(config, registro) {
+                var card = document.getElementById('scenario-card-' + config.id);
+                var badge = document.getElementById('scenario-' + config.id + '-badge');
+                var footer = document.getElementById('scenario-' + config.id + '-footer');
+                if (!card) return;
+
+                var desbloqueado = !config.requiere || (Number(registro[config.requiere]) || 0) >= APROBACION;
+
+                // El puntaje/progreso de CADA tarjeta viene de su propio
+                // cuestionario (quiz1Score/quiz2Score/quiz3Score), que es lo
+                // que ejemplo.js/ejemplo2.js/ejemplo3.js realmente guardan
+                // -no de un "scores[id]" que ningún juego llega a escribir.
+                var puntaje = Number(registro[config.quizField]) || 0;
+                var intentado = puntaje > 0;
+                var completado = puntaje >= APROBACION;
+                var tiempo = Number(registro[config.timeField]) || 0;
+
+                // Progreso y récord de tiempo se pintan siempre, esté o no
+                // desbloqueado el escenario, para que el jugador vea de un
+                // vistazo su mejor intento en cada uno.
+                var progressText = document.getElementById('scenario-' + config.id + '-progress-text');
+                var progressFill = document.getElementById('scenario-' + config.id + '-progress-fill');
+                var recordTime = document.getElementById('scenario-' + config.id + '-time');
+
+                if (progressText) progressText.textContent = puntaje + '%';
+                if (progressFill) {
+                    progressFill.style.width = puntaje + '%';
+                    if (progressFill.parentElement) {
+                        progressFill.parentElement.setAttribute('aria-valuenow', String(puntaje));
+                    }
+                }
+                if (recordTime) recordTime.textContent = tiempo > 0 ? tiempo.toFixed(1) + 's' : '--';
+
+                // --- Estado bloqueado ---
+                if (!desbloqueado) {
+                    card.classList.add('is-locked');
+                    card.classList.remove('active');
+                    card.setAttribute('aria-disabled', 'true');
+                    card.removeAttribute('role');
+                    card.removeAttribute('tabindex');
+                    card.onclick = null;
+                    card.onkeydown = null;
+
+                    if (badge) {
+                        badge.className = 'status-badge status-neutral';
+                        ponerContenido(badge, 'bi bi-lock-fill', 'BLOQUEADO');
+                    }
+
+                    if (footer) {
+                        footer.textContent = '';
+                        var aviso = document.createElement('span');
+                        aviso.className = 'scenario-state';
+                        ponerContenido(aviso, 'bi bi-lock-fill', config.requisitoTexto);
+                        footer.appendChild(aviso);
+                    }
+                    return;
+                }
+
+                // --- Estado disponible ---
+                card.classList.remove('is-locked');
+                card.classList.add('active');
+                card.removeAttribute('aria-disabled');
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.onclick = function () { abrirEscenario(config.url); };
+                card.onkeydown = function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        abrirEscenario(config.url);
+                    }
+                };
+
+                if (badge) {
+                    badge.className = 'status-badge ' + (completado ? 'status-success' : 'status-danger');
+                    ponerContenido(badge, completado ? 'bi bi-arrow-repeat' : 'bi bi-play-circle-fill', completado ? 'REPETIR' : 'JUGAR');
+                }
+
+                if (footer) {
+                    footer.textContent = '';
+
+                    var estado = document.createElement('span');
+                    estado.className = 'scenario-state d-flex align-items-center gap-1';
+                    if (completado) estado.appendChild(crearIcono('bi bi-check-circle-fill text-success'));
+                    estado.appendChild(document.createTextNode(
+                        completado ? 'Estado: Completado' : (intentado ? 'Estado: En progreso' : 'Estado: Pendiente')
+                    ));
+
+                    var marcador = document.createElement('span');
+                    marcador.className = 'status-badge ' + (completado ? 'status-success' : 'status-neutral');
+                    marcador.textContent = intentado ? 'Puntaje: ' + puntaje + '%' : 'Puntaje: --';
+
+                    footer.appendChild(estado);
+                    footer.appendChild(marcador);
+                }
+            }
+
+            function pintarTodo() {
+                var registro = leerRegistro();
+                pintarMetricas(registro);
+                SCENARIOS.forEach(function (config) {
+                    pintarEscenario(config, registro);
+                });
+                return registro;
+            }
+
+            // ======================================================
+            // 4. API DE REGISTRO PARA CUESTIONARIOS Y SIMULADOR
+            // ======================================================
+            // Uso desde pygame.html, los cuestionarios o cualquier otra
+            // pantalla del módulo (mismo origen):
+            //
+            //   OmniTrain2D.registrarCuestionario(1, 100);  // desbloquea el escenario 2
+            //   OmniTrain2D.registrarEscenario(1, 87);      // guarda el puntaje del escenario 1
+            //   OmniTrain2D.obtenerRegistro();              // lee el avance completo
+            //
+            // Si la página del cuestionario no comparte este script, basta con
+            // escribir el mismo objeto en localStorage bajo "omniTrainMetrics".
+            function normalizarPuntaje(valor) {
+                var numero = Number(valor);
+                if (isNaN(numero)) return 0;
+                return Math.max(0, Math.min(100, Math.round(numero)));
+            }
+
+            window.OmniTrain2D = {
+                obtenerRegistro: leerRegistro,
+
+                registrarCuestionario: function (numero, puntaje) {
+                    var registro = leerRegistro();
+                    var clave = 'quiz' + numero + 'Score';
+                    var valor = normalizarPuntaje(puntaje);
+
+                    // Se conserva siempre el mejor intento
+                    if (valor > (Number(registro[clave]) || 0)) registro[clave] = valor;
+
+                    guardarRegistro(recalcular(registro));
+                    pintarTodo();
+                    return registro;
+                },
+
+                registrarEscenario: function (numero, puntaje) {
+                    var registro = leerRegistro();
+                    var valor = normalizarPuntaje(puntaje);
+                    var previo = Number(registro.scores[numero]);
+
+                    if (isNaN(previo) || valor > previo) registro.scores[numero] = valor;
+
+                    guardarRegistro(recalcular(registro));
+                    pintarTodo();
+                    return registro;
+                },
+
+                reiniciarRegistro: function () {
+                    guardarRegistro(registroVacio());
+                    pintarTodo();
+                }
+            };
+
+            // ======================================================
+            // 5. ARRANQUE Y SINCRONIZACIÓN ENTRE PESTAÑAS
+            // ======================================================
+            document.addEventListener('DOMContentLoaded', pintarTodo);
+
+            // Si el simulador se abrió en otra pestaña, el avance se refleja aquí
+            window.addEventListener('storage', function (e) {
+                if (e.key === STORAGE_KEY) pintarTodo();
+            });
+
+            // Al volver desde el simulador (incluida la caché de retroceso)
+            window.addEventListener('pageshow', pintarTodo);
+        })();
+    </script>
+</body>
+
+</html>

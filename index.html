@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard principal de OmniTrain: Sistema integral de capacitación para brigadas de emergencia y prevención de incendios.">
+    <meta name="theme-color" content="#d32f2f">
+    
+    <title>Capacitación en Prevención de Incendios | OmniTrain</title>
+
+    <!-- Pre-carga de recursos críticos para mejorar LCP y FCP -->
+    <link rel="preload" href="./css/bootstrap.min.css" as="style">
+    <link rel="preload" href="./css/styles.css" as="style">
+
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+    <!-- Aplica el tema guardado lo antes posible para evitar parpadeos -->
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('omnitrain-theme') === 'dark') {
+                    document.body.classList.add('dark-mode');
+                }
+            } catch (e) { /* almacenamiento no disponible: se usa el tema claro por defecto */ }
+        })();
+    </script>
+
+    <!-- ==========================================
+    SECCIÓN DE LOGIN (Oculta por defecto)
+    ========================================== -->
+    <section id="login-section" class="d-none flex-column align-items-center justify-content-center vh-100 position-relative" aria-label="Sección de inicio de sesión">
+        
+        <!-- Botón para regresar al Dashboard -->
+        <button id="backToDashboardBtn" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4" aria-label="Volver al dashboard principal">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Volver al Dashboard
+        </button>
+
+        <div class="login-card">
+            <div class="text-center mb-4">
+                <i class="bi bi-shield-fill" style="font-size: 40px; color: #d32f2f;" aria-hidden="true"></i>
+                <h2 class="mt-2" style="font-size: 24px; font-weight: 700;">OmniTrain</h2>
+                <p class="text-muted mb-0">Acceso a Brigada de Emergencia</p>
+            </div>
+            
+            <form id="loginForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="role" class="form-label" style="font-weight: 600;">Tipo de Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+                        <select class="form-select border-start-0" id="role" required>
+                            <option selected disabled value="">Selecciona un rol...</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="colaborador">Colaborador</option>
+                            <option value="usuario">Usuario</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Debes seleccionar un tipo de usuario.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label" style="font-weight: 600;">Correo Electrónico</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope" aria-hidden="true"></i></span>
+                        <input type="email" class="form-control border-start-0" id="email" placeholder="usuario@omnitrain.com" required>
+                        <div class="invalid-feedback">
+                            Por favor ingresa un correo electrónico válido.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label" style="font-weight: 600;">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock" aria-hidden="true"></i></span>
+                        <input type="password" class="form-control border-start-0" id="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                        <div class="invalid-feedback">
+                            La contraseña debe tener al menos 8 caracteres.
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="loginButton" class="btn text-white w-100 mt-3 d-flex align-items-center justify-content-center gap-2" style="font-weight: 600;" type="submit">
+                    <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Ingresar al Sistema
+                </button>
+                
+                <!-- Contenedor obligatorio para mostrar mensajes sin que el script falle -->
+                <div id="loginFeedback" class="text-center mt-3 fw-bold" style="font-size: 14px;" aria-live="polite"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    SECCIÓN DEL DASHBOARD (Visible por defecto)
+    ========================================== -->
+    <div id="dashboard-section" class="wrapper">
+        <aside class="sidebar" id="sidebar" aria-label="Menú de navegación lateral">
+            <button id="closeSidebarBtn" class="sidebar-close-btn" aria-label="Cerrar menú de navegación">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+
+            <div class="brand-logo">
+                <a href="#" aria-label="Ir a la página de inicio">
+                    <div class="logo-icon">
+                        <i class="bi bi-shield-fill" style="font-size: 20px; color: #fff;" aria-hidden="true"></i>
+                    </div>
+                </a>
+
+                <div class="brand-text">
+                    <h1>OmniTrain</h1>
+                    <span>Brigada de Emergencia</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Navegación principal">
+                <a href="#" class="sidebar-nav-item active" aria-current="page">
+                    <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                    <span>Inicio</span>
+                </a>
+
+                <a href="./modules/capacitaciones/capacitaciones.html" class="sidebar-nav-item">
+                    <i class="bi bi-journal-bookmark-fill" aria-hidden="true"></i>
+                    <span>Capacitaciones</span>
+                </a>
+
+                <a href="./modules/simulador-2d/index2d.html" class="sidebar-nav-item">
+                    <i class="bi bi-controller" aria-hidden="true"></i>
+                    <span>Simulador 2D</span>
+                </a>
+
+                <a href="./modules/showroom-3d/index3d.html" class="sidebar-nav-item">
+                    <i class="bi bi-box-fill" aria-hidden="true"></i>
+                    <span>Entorno 3D</span>
+                </a>
+
+                <a href="#" class="sidebar-nav-item">
+                    <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
+                    <span>Evaluaciones</span>
+                </a>
+
+                <a href="./modules/resultados/index-resultados.html" class="sidebar-nav-item">
+                    <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+                    <span>Métricas & KPIs</span>
+                </a>
+            </nav>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Alternar menú lateral" aria-expanded="false">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <div class="breadcrumb-title">
+                        <span class="subtitle">OMNITRAIN: BRIGADA DE EMERGENCIA</span>
+                        <h2>Dashboard Principal</h2>
+                    </div>
+                </div>
+
+                <div class="user-profile d-flex align-items-center">
+
+                    <!-- Botón de cambio de tema claro/oscuro -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Cambiar a modo oscuro" aria-pressed="false" type="button">
+                        <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- Botón de Inicio de sesión (Visible cuando no hay sesión) -->
+                    <button id="showLoginButton" class="btn btn-sm text-white ms-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Iniciar Sesión
+                    </button>
+                    
+                    <!-- Contenedor del usuario (Visible cuando SÍ hay sesión) -->
+                    <div id="loggedInContainer" class="d-none d-flex align-items-center">
+                        <div class="user-info d-none d-sm-block text-end">
+                            <h6 id="displayName" class="mb-0">Usuario</h6>
+                            <span id="displayRole" class="text-muted-custom" style="font-size: 0.85rem;">Brigadista Certificado</span>
+                        </div>
+                        <div class="user-avatar ms-3" id="displayAvatar" aria-hidden="true">U</div>
+                        
+                        <button id="logoutButton" class="btn btn-sm text-white ms-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Salir
+                        </button>
+                    </div>
+
+                </div>
+            </header>
+
+            <div class="content-padding">
+                <div class="global-progress">
+                    <div class="d-flex justify-content-between"><span>Progreso Global</span><span class="fw-bold icon-success">75%</span></div>
+                    <div class="progress" role="progressbar" aria-label="Progreso global de capacitación" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="alert-custom d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+
+                    <div>
+                        <h6>
+                            Capacitación Obligatoria:
+                            Protocolo de Respuesta ante Emergencias
+                        </h6>
+
+                        <span>
+                            Completa este módulo antes del 30 de junio de 2026
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-8 mb-4">
+                        <div class="card-custom">
+                            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 5px;" id="welcomeMessage">Bienvenido</h3>
+                            <p class="text-muted-custom mb-0">Continúa tu formación en prevención de incendios y protocolos de emergencia.</p>
+                            <div class="summary-cards-row d-flex flex-wrap gap-3 mt-3">
+                                <div class="summary-card green flex-fill">
+                                    <i class="bi bi-shield-check" aria-hidden="true"></i>
+                                    <h3>12</h3>
+                                    <span>Cursos Completados</span>
+                                </div>
+
+                                <div class="summary-card yellow flex-fill">
+                                    <i class="bi bi-clock-history" aria-hidden="true"></i>
+                                    <h3>3</h3>
+                                    <span>Pendientes</span>
+                                </div>
+
+                                <div class="summary-card red flex-fill">
+                                    <i class="bi bi-bullseye" aria-hidden="true"></i>
+                                    <h3>75%</h3>
+                                    <span>Progreso Total</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 mb-4">
+                        <div class="card-custom h-100">
+                            <h4 class="card-title">Accesos Rápidos</h4>
+                            <div class="d-grid gap-2">
+                                <a href="#" class="quick-access-btn">
+                                    <span><i class="bi bi-play-circle-fill me-2" aria-hidden="true"></i>Continuar Capacitación</span>
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </a>
+                                <a href="./modules/resultados/index-resultados.html" class="quick-access-btn">
+                                    <span><i class="bi bi-bar-chart-fill me-2" aria-hidden="true"></i>Ver Métricas & KPIs</span>
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </a>
+                                <a href="./modules/simulador-2d/index2d.html" class="quick-access-btn red">
+                                    <span><i class="bi bi-controller me-2" aria-hidden="true"></i>Entrar al Simulador 2D</span>
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </a>
+                                <a href="./modules/showroom-3d/index3d.html" class="quick-access-btn dark">
+                                    <span><i class="bi bi-box-fill me-2" aria-hidden="true"></i>Entrar al Entorno 3D</span>
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 mt-2">
+                    <h4 class="card-title mb-0" style="font-size: 18px;">Panel de Indicadores</h4>
+                    <a href="./modules/resultados/index-resultados.html" class="btn btn-outline-custom border-0 shadow-sm text-center d-inline-flex align-items-center gap-2">
+                        Ver detalle completo <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <div class="indicator-card accent-green">
+                            <i class="bi bi-patch-check-fill icon-success" style="font-size: 22px;" aria-hidden="true"></i>
+                            <span class="indicator-badge badge-green">+5%</span>
+                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">95%</h3>
+                            <span class="text-muted-custom" style="font-size: 13px;">Cumplimiento Normativo</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <div class="indicator-card accent-red">
+                            <i class="bi bi-stopwatch-fill icon-danger" style="font-size: 22px;" aria-hidden="true"></i>
+                            <span class="indicator-badge badge-red">-2s</span>
+                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">12s</h3>
+                            <span class="text-muted-custom" style="font-size: 13px;">Tiempo de Reacción</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <div class="indicator-card accent-green">
+                            <i class="bi bi-graph-up-arrow icon-success" style="font-size: 22px;" aria-hidden="true"></i>
+                            <span class="indicator-badge badge-green">+8%</span>
+                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">91%</h3>
+                            <span class="text-muted-custom" style="font-size: 13px;">Eficiencia en Control</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <div class="indicator-card accent-amber">
+                            <i class="bi bi-people-fill icon-warning" style="font-size: 22px;" aria-hidden="true"></i>
+                            <span class="indicator-badge badge-yellow">+12</span>
+                            <h3 style="font-size: 24px; font-weight: 800; margin:8px 0 0;">248</h3>
+                            <span class="text-muted-custom" style="font-size: 13px;">Usuarios Activos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script principal de la aplicación -->
+    <script type="module" src="./js/login.js"></script>
+
+    <!-- Script de soporte: menú lateral y modo oscuro -->
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebarOverlay');
+            var menuToggle = document.getElementById('menuToggle');
+            var closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            var themeToggle = document.getElementById('themeToggle');
+            var themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+
+            /* ---------- Cierre del menú lateral ---------- */
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function (e) {
+                    // Evita que el clic se propague a otros listeners globales
+                    // (por ejemplo, uno que vuelva a abrir el menú) y garantiza el cierre.
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            // Cierre al hacer clic fuera del menú (y fuera del botón que lo abre)
+            document.addEventListener('click', function (e) {
+                if (!sidebar || !sidebar.classList.contains('active')) return;
+                var clickedInsideSidebar = sidebar.contains(e.target);
+                var clickedToggle = menuToggle && menuToggle.contains(e.target);
+                if (!clickedInsideSidebar && !clickedToggle) {
+                    closeSidebar();
+                }
+            });
+
+            // Cierre con la tecla Escape
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
+                    closeSidebar();
+                }
+            });
+
+            /* ---------- Modo oscuro ---------- */
+            function applyThemeState(isDark) {
+                document.body.classList.toggle('dark-mode', isDark);
+                if (themeToggle) {
+                    themeToggle.setAttribute('aria-pressed', String(isDark));
+                    themeToggle.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+                }
+                if (themeIcon) {
+                    themeIcon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+                }
+            }
+
+            // Sincroniza el ícono/estado con la clase ya aplicada al cargar (evita parpadeo)
+            applyThemeState(document.body.classList.contains('dark-mode'));
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function () {
+                    var isDark = !document.body.classList.contains('dark-mode');
+                    applyThemeState(isDark);
+                    try {
+                        localStorage.setItem('omnitrain-theme', isDark ? 'dark' : 'light');
+                    } catch (e) { /* almacenamiento no disponible: la preferencia no persiste */ }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
