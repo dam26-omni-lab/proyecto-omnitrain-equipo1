@@ -20,6 +20,12 @@
   FP.activo = false;
   FP.bloqueado = false;
 
+  /* Modo táctil: en móvil y tablet no existe el bloqueo de puntero, así
+     que el recorrido se controla desde los mandos en pantalla que crea
+     controles-tactil.js. Ese archivo activa esta bandera. */
+  FP.modoTactil = false;
+  FP.entrada = { ad: 0, lat: 0, correr: false };
+
   var teclas = {};
   var giroY = 0, giroX = 0;
   var balanceo = 0;
@@ -49,13 +55,31 @@
     });
   };
 
+  /* Giro de cámara desde el arrastre táctil (píxeles recorridos) */
+  FP.girarPor = function (dx, dy) {
+    giroY -= dx * FP.sensibilidad * 1.7;
+    giroX -= dy * FP.sensibilidad * 1.7;
+    var limite = Math.PI / 2 - 0.05;
+    giroX = Math.max(-limite, Math.min(limite, giroX));
+  };
+
   FP.pedirBloqueo = function () {
+    if (FP.modoTactil) {
+      // En táctil el control es inmediato: no hay puntero que bloquear.
+      FP.bloqueado = true;
+      if (SIM.App) SIM.App.alCambiarBloqueo(true);
+      return;
+    }
     if (!lienzo) return;
     var p = lienzo.requestPointerLock && lienzo.requestPointerLock();
     if (p && p.catch) p.catch(function () { /* el navegador lo rechazó, se reintenta con el clic */ });
   };
 
   FP.soltarBloqueo = function () {
+    if (FP.modoTactil) {
+      FP.bloqueado = false;
+      return;
+    }
     if (document.pointerLockElement) document.exitPointerLock();
   };
 
@@ -80,6 +104,12 @@
     if (teclas['KeyD'] || teclas['ArrowRight']) lat += 1;
     if (teclas['KeyA'] || teclas['ArrowLeft']) lat -= 1;
 
+    // Palanca en pantalla (móvil y tablet)
+    ad += FP.entrada.ad;
+    lat += FP.entrada.lat;
+    ad = Math.max(-1, Math.min(1, ad));
+    lat = Math.max(-1, Math.min(1, lat));
+
     if (ad === 0 && lat === 0) {
       balanceo *= 0.9;
       camara.position.y += (SIM.Escena.ALTURA_OJOS - camara.position.y) * Math.min(1, dt * 8);
@@ -89,7 +119,7 @@
     var largo = Math.hypot(ad, lat);
     ad /= largo; lat /= largo;
 
-    var vel = (teclas['ShiftLeft'] || teclas['ShiftRight']) ? FP.velocidadCorrer : FP.velocidad;
+    var vel = (teclas['ShiftLeft'] || teclas['ShiftRight'] || FP.entrada.correr) ? FP.velocidadCorrer : FP.velocidad;
     var sin = Math.sin(giroY), cos = Math.cos(giroY);
     // Adelante en el espacio de la cámara es -Z
     var dx = (-sin * ad + cos * lat) * vel * dt;

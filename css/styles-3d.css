@@ -589,6 +589,80 @@ a.btn-omni { text-decoration: none; }
 .final-acciones { margin: 0 26px; display: flex; gap: 10px; flex-wrap: wrap; }
 
 /* ============================================================
+   Mandos táctiles (teléfono y tablet)
+   ============================================================ */
+/* Por omisión se muestran las pistas de teclado; el archivo
+   controles-tactil.js añade .modo-tactil al body cuando detecta
+   una pantalla táctil y se intercambian. */
+.solo-tactil { display: none !important; }
+body.modo-tactil .solo-teclado { display: none !important; }
+body.modo-tactil .solo-tactil { display: flex !important; }
+body.modo-tactil .rejilla-teclas.solo-tactil { display: grid !important; }
+
+#mandos-tactiles {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+#mandos-tactiles.visible { opacity: 1; }
+body.sin-hud #mandos-tactiles { opacity: 0; pointer-events: none; }
+
+.mando-palanca {
+  position: absolute;
+  left: max(20px, env(safe-area-inset-left));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, .45);
+  border: 2px solid rgba(255, 255, 255, .22);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+  touch-action: none;
+  display: grid;
+  place-items: center;
+}
+
+.mando-palanca.activa { border-color: rgba(255, 255, 255, .45); }
+
+.mando-punto {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .45);
+  transition: transform .05s linear;
+}
+
+.mando-boton {
+  position: absolute;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(40px, env(safe-area-inset-bottom));
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  min-height: 52px;
+  border: none;
+  border-radius: 14px;
+  font-size: .95rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--rojo, #e03927);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.mando-boton.mando-salir { background: rgba(30, 41, 59, .92); }
+.mando-boton i { font-size: 1.1rem; }
+.mando-boton:active { transform: scale(.96); }
+
+/* ============================================================
    Responsivo y accesibilidad
    ============================================================ */
 @media (max-width: 820px) {
@@ -602,9 +676,22 @@ a.btn-omni { text-decoration: none; }
     border-top: 1px solid var(--acero-500);
   }
   #panel-detalle.abierto { transform: translateY(0); }
-  #placa-avance { width: calc(100% - 36px); }
+  #placa-avance { width: calc(100% - 36px); max-width: 420px; }
   #barra-teclas { display: none; }
-  #aviso-proximidad { bottom: 24px; }
+  #aviso-proximidad { bottom: 190px; width: calc(100% - 40px); max-width: 380px; }
+  .tarjeta-inicio { max-height: 88vh; overflow-y: auto; }
+  .final-acciones .btn-omni,
+  .acciones-inicio .btn-omni { flex: 1 1 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  #placa-avance { padding: 12px 14px; }
+  .placa-titulo { font-size: 1rem; }
+  .inicio-titulo { font-size: 1.4rem; }
+  .rejilla-teclas { grid-template-columns: 1fr; }
+  .mando-palanca { width: 112px; height: 112px; }
+  .mando-punto { width: 46px; height: 46px; }
+  #panel-detalle { height: 70%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

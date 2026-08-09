@@ -754,8 +754,19 @@ class SimulatorSceneAgua extends Phaser.Scene {
         metrics.lastExtinguishTimeAgua = tiempoActual;
         metrics.bestExtinguishTimeAgua = mejorTiempo;
         try {
-            localStorage.setItem('omniTrainMetrics', JSON.stringify(metrics));
+            // Compuerta de KPIs: sin sesión iniciada no se registra nada
+            if (!window.OmniKPI || window.OmniKPI.haySesion()) {
+                localStorage.setItem('omniTrainMetrics', JSON.stringify(metrics));
+            }
         } catch (e) { /* sin almacenamiento no persiste */ }
+
+        if (window.OmniKPI && window.OmniKPI.haySesion()) {
+            window.OmniKPI.registrarEvento(
+                'Simulador 2D',
+                'Fuego extinguido en el escenario «Extintor de Agua»',
+                tiempoActual.toFixed(1) + 's'
+            );
+        }
 
         const victoryTimeEl = document.getElementById('victory-time');
         const victoryBestEl = document.getElementById('victory-best-time');
@@ -1154,8 +1165,18 @@ function saveAndReturn(targetUrl) {
 
     metrics.efficiencyScore = Math.min(100, Math.max(70, Math.round(80 + (score * 0.2))));
 
-    // Guardar objeto global en localStorage
-    localStorage.setItem('omniTrainMetrics', JSON.stringify(metrics));
+    // Compuerta de KPIs: el registro solo se persiste con sesión iniciada
+    if (!window.OmniKPI || window.OmniKPI.haySesion()) {
+        localStorage.setItem('omniTrainMetrics', JSON.stringify(metrics));
+    }
+
+    if (window.OmniKPI && window.OmniKPI.haySesion()) {
+        window.OmniKPI.registrarEvento(
+            'Simulador 2D',
+            'Cuestionario del escenario «Extintor de Agua»',
+            score + '%'
+        );
+    }
     
     window.location.href = targetUrl;
 }

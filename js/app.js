@@ -26,6 +26,17 @@
   var reloj = null;
   var lienzo3d, capaInicio;
 
+  /* ---- Medición de KPIs reales del entorno 3D ----
+     El núcleo compartido (js/omni-kpi.js) es el que persiste todo; aquí
+     solo se cronometra y se le avisa. Sin sesión iniciada no se guarda
+     nada: OmniKPI descarta la escritura. */
+  var KPI = global.OmniKPI || null;
+  var segSinVolcar = 0;      // tiempo en sala pendiente de guardar
+  var inicioRecorrido = 0;   // ms en que se entró a la sala
+  var inicioPieza = 0;       // ms en que se abrió la ficha actual
+  var recorridoContado = false;
+  var VOLCADO_CADA = 10;     // segundos entre guardados de tiempo en sala
+
   /* Datos de la transición de cámara */
   var trans = {
     activa: false, t: 0, dur: DURACION, hacia: 'detalle',
@@ -56,9 +67,27 @@
     conectarEventos();
     enlazarDashboard();
 
+    // Mandos en pantalla: se activan solos si el equipo es táctil
+    if (SIM.Tactil) SIM.Tactil.iniciar();
+
+    if (KPI) KPI.alCambiarSesion(aplicarCompuerta);
+
+    // Al salir de la página se vuelca el tiempo pendiente
+    window.addEventListener('pagehide', volcarTiempoPendiente);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') volcarTiempoPendiente();
+    });
+
     reloj = new THREE.Clock();
     requestAnimationFrame(ciclo);
   };
+
+  function volcarTiempoPendiente() {
+    if (KPI && segSinVolcar > 0.5) {
+      KPI.registrar3DTiempo(segSinVolcar);
+      segSinVolcar = 0;
+    }
+  }
 
   function enlazarDashboard() {
     var enlaces = document.querySelectorAll('[data-dashboard]');
@@ -121,6 +150,17 @@
   }
 
   function entrarASala() {
+    if (KPI && !KPI.haySesion()) {
+      mostrarCompuerta();
+      return;
+    }
+
+    if (KPI && !inicioRecorrido) {
+      KPI.registrar3DSesion();
+      KPI.registrarEvento('Entorno 3D', 'Entró a la sala de inspección');
+    }
+    if (!inicioRecorrido) inicioRecorrido = Date.now();
+
     capaInicio.classList.remove('visible');
     A.modo = 'explorar';
     SIM.Caminar.activo = true;
@@ -160,6 +200,7 @@
     if (A.modo !== 'explorar') return;
     A.estacionActual = est;
     A.modo = 'transicion';
+    inicioPieza = Date.now();
     SIM.Caminar.activo = false;
     SIM.Caminar.soltarBloqueo();
     SIM.UI.ocultarAviso();
@@ -188,6 +229,16 @@
 
   function salirDeDetalle() {
     if (A.modo !== 'detalle' && A.modo !== 'transicion') return;
+
+    // Tiempo real dedicado a esta pieza: alimenta el KPI de
+    // "tiempo medio por componente" del panel de métricas.
+    if (KPI && A.estacionActual && inicioPieza) {
+      var segundos = (Date.now() - inicioPieza) / 1000;
+      KPI.registrar3DInspeccion(A.estacionActual.parte.id, segundos);
+      inicioPieza = 0;
+      revisarRecorridoCompleto();
+    }
+
     SIM.Orbita.activo = false;
     SIM.UI.cerrarPanel();
 
@@ -234,30 +285,75 @@
   }
 
   function guardarAvance() {
-    if (!A.RECORDAR_AVANCE) return;
+    // El avance ya queda persistido pieza por pieza en el registro de
+    // KPIs (OmniKPI.registrar3DInspeccion). Esta función se conserva
+    // como respaldo cuando el núcleo de KPIs no está disponible.
+    if (KPI || !A.RECORDAR_AVANCE) return;
     try {
       localStorage.setItem(CLAVE_AVANCE, JSON.stringify(Object.keys(SIM.Escena.inspeccionadas)));
     } catch (e) { /* modo privado: el avance solo dura la sesión */ }
   }
 
   function cargarAvance() {
-    if (!A.RECORDAR_AVANCE) {
-      // Recorrido nuevo: se borra cualquier rastro de sesiones anteriores
-      try { localStorage.removeItem(CLAVE_AVANCE); } catch (e) {}
-      SIM.UI.pintarMarcas(SIM.Escena.inspeccionadas);
-      return;
-    }
     var ids = [];
-    try {
-      ids = JSON.parse(localStorage.getItem(CLAVE_AVANCE) || '[]');
-    } catch (e) { ids = []; }
+
+    if (KPI && KPI.haySesion()) {
+      // El avance mostrado es exactamente el que sostiene los KPIs:
+      // ambas pantallas leen la misma fuente.
+      var piezas = KPI.leer().showroom3D.piezas || {};
+      ids = Object.keys(piezas);
+    } else if (A.RECORDAR_AVANCE) {
+      try {
+        ids = JSON.parse(localStorage.getItem(CLAVE_AVANCE) || '[]');
+      } catch (e) { ids = []; }
+    } else {
+      try { localStorage.removeItem(CLAVE_AVANCE); } catch (e) {}
+    }
+
     for (var i = 0; i < ids.length; i++) SIM.Escena.marcarInspeccionada(ids[i]);
+    recorridoContado = SIM.Escena.totalInspeccionadas() >= SIM.PARTES.length;
     SIM.UI.pintarMarcas(SIM.Escena.inspeccionadas);
   }
 
   function reiniciarRecorrido() {
+    if (KPI) KPI.reiniciar3D();
     try { localStorage.removeItem(CLAVE_AVANCE); } catch (e) {}
     window.location.reload();
+  }
+
+  /* Recorrido terminado: se guarda el tiempo total como marca del usuario */
+  function revisarRecorridoCompleto() {
+    if (recorridoContado || !KPI) return;
+    if (SIM.Escena.totalInspeccionadas() < SIM.PARTES.length) return;
+
+    recorridoContado = true;
+    var duracion = inicioRecorrido ? (Date.now() - inicioRecorrido) / 1000 : 0;
+    KPI.registrar3DRecorrido(duracion);
+    KPI.registrarEvento('Entorno 3D', 'Recorrido completo (8/8 piezas)', KPI.formatearTiempo(duracion));
+  }
+
+  /* Compuerta: sin sesión no se entra a la simulación ni se registran KPIs */
+  function mostrarCompuerta() {
+    var titulo = document.getElementById('inicio-titulo');
+    var texto = document.getElementById('inicio-texto');
+    if (titulo) titulo.textContent = 'Necesitas iniciar sesión';
+    if (texto) {
+      texto.textContent = 'La sala de inspección y el registro de tu desempeño están reservados ' +
+        'a cuentas registradas. Vuelve al módulo Entorno 3D e inicia sesión para continuar.';
+    }
+    capaInicio.classList.add('visible');
+  }
+
+  function aplicarCompuerta() {
+    if (!KPI) return;
+    var botonEntrar = document.getElementById('btn-entrar');
+    var sinSesion = !KPI.haySesion();
+
+    if (botonEntrar) {
+      botonEntrar.disabled = sinSesion;
+      botonEntrar.classList.toggle('is-gated', sinSesion);
+    }
+    if (sinSesion && A.modo === 'inicio') mostrarCompuerta();
   }
 
   /* ========================================================
@@ -267,6 +363,17 @@
     requestAnimationFrame(ciclo);
     var dt = Math.min(reloj.getDelta(), 0.05);
     var cam = SIM.Escena.camara;
+
+    // Tiempo invertido dentro del entorno: se acumula mientras el
+    // recorrido está activo y se vuelca cada pocos segundos para no
+    // escribir en cada cuadro.
+    if (KPI && A.modo !== 'inicio') {
+      segSinVolcar += dt;
+      if (segSinVolcar >= VOLCADO_CADA) {
+        KPI.registrar3DTiempo(segSinVolcar);
+        segSinVolcar = 0;
+      }
+    }
 
     if (trans.activa) {
       trans.t += dt / trans.dur;

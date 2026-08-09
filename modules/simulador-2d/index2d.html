@@ -141,11 +141,6 @@
                     <span>Entorno 3D</span>
                 </a>
 
-                <a href="#" class="sidebar-nav-item">
-                    <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
-                    <span>Evaluaciones</span>
-                </a>
-
                 <a href="../../modules/resultados/index-resultados.html" class="sidebar-nav-item">
                     <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
                     <span>Métricas &amp; KPIs</span>
@@ -206,13 +201,20 @@
                 </div>
 
                 <div class="back-btn-row mt-3 d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                    <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">Volver al Dashboard</button>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Ver Capacitaciones</button>
-                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Ir al Entorno 3D</button>
+                    <button class="btn btn-outline-custom" onclick="window.location.href='../../index.html'">
+                        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Dashboard
+                    </button>
+                    <div class="module-actions d-flex flex-wrap gap-2">
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/showroom-3d/index3d.html'">Entorno 3D</button>
                         <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/resultados/index-resultados.html'">Ver Métricas</button>
-                        <button class="btn btn-outline-custom" onclick="window.open('pygame.html', '_blank')">Entrar al Simulador</button>
+                        <button class="btn btn-outline-custom" onclick="window.location.href='../../modules/capacitaciones/capacitaciones.html'">Capacitaciones</button>
                     </div>
+                </div>
+
+                <!-- Compuerta: sin sesión no se entra a los escenarios -->
+                <div id="sim2d-gate" class="kpi-gate-note d-none mt-3">
+                    <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+                    <span>Inicia sesión para entrar a los escenarios y que tus resultados queden registrados en tus KPIs.</span>
                 </div>
 
                 <div class="hero-banner red-bg mt-3">
@@ -358,8 +360,14 @@
         </main>
     </div>
 
+    <!-- Núcleo compartido de KPIs y sesión -->
+    <script src="../../js/omni-kpi.js"></script>
+
     <!-- Script principal de la aplicación -->
-    <script type="module" src="../../js/login.js"></script>
+    <script type="module" src="../../js/login.js" onerror="window.__omniLoginFallo = true;"></script>
+
+    <!-- Respaldo: reconecta menú y acceso solo si login.js no pudo ejecutarse -->
+    <script src="../../js/nav-respaldo.js"></script>
 
     <!-- Script de soporte: menú lateral y modo oscuro -->
     <script>
@@ -616,6 +624,13 @@
             }
 
             function abrirEscenario(url) {
+                // Compuerta de autenticación: los simuladores y el registro de
+                // KPIs quedan reservados a cuentas con sesión iniciada.
+                if (window.OmniKPI && !window.OmniKPI.haySesion()) {
+                    var disparador = document.getElementById('showLoginButton');
+                    if (disparador) disparador.click();
+                    return;
+                }
                 window.location.href = url;
             }
 
@@ -715,12 +730,29 @@
                 }
             }
 
+            // Refleja visualmente la compuerta: sin sesión las tarjetas de
+            // escenario quedan atenuadas y no responden al clic.
+            function aplicarCompuerta() {
+                var conSesion = !window.OmniKPI || window.OmniKPI.haySesion();
+                var aviso = document.getElementById('sim2d-gate');
+
+                if (aviso) aviso.classList.toggle('d-none', conSesion);
+
+                SCENARIOS.forEach(function (config) {
+                    var card = document.getElementById('scenario-card-' + config.id);
+                    if (!card) return;
+                    card.classList.toggle('is-gated', !conSesion);
+                    card.setAttribute('aria-disabled', String(!conSesion));
+                });
+            }
+
             function pintarTodo() {
                 var registro = leerRegistro();
                 pintarMetricas(registro);
                 SCENARIOS.forEach(function (config) {
                     pintarEscenario(config, registro);
                 });
+                aplicarCompuerta();
                 return registro;
             }
 
@@ -780,6 +812,9 @@
             // 5. ARRANQUE Y SINCRONIZACIÓN ENTRE PESTAÑAS
             // ======================================================
             document.addEventListener('DOMContentLoaded', pintarTodo);
+
+            // La compuerta se revisa también al iniciar o cerrar sesión
+            if (window.OmniKPI) window.OmniKPI.alCambiarSesion(pintarTodo);
 
             // Si el simulador se abrió en otra pestaña, el avance se refleja aquí
             window.addEventListener('storage', function (e) {
